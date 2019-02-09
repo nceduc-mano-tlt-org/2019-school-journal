@@ -10,16 +10,11 @@ import javax.persistence.*;
 @Data
 public class User extends AbstractEntity{
 
-    @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    @Column(name = "idUser")
-    private String id;
     private String login;
     private String password;
 
-    public User(String id, String login, String password) {
-        super(id);
+    public User(String login, String password) {
+        super();
         this.login = login;
         this.password = password;
     }
