@@ -10,13 +10,7 @@ import javax.persistence.*;
 @Table (name = "teacher")
 @Getter
 @Setter
-public class Teacher {
-    @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    private String id;
-    private String firstName;
-    private String lastName;
+public class Teacher extends Person {
 /*
     @OneToMany(
             fetch = FetchType.LAZY,

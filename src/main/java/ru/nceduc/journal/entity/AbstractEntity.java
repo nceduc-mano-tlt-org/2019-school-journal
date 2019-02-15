@@ -11,19 +11,13 @@ import java.util.Date;
 
 @MappedSuperclass
 @Getter
+@Setter
 public abstract class AbstractEntity {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    @Setter
     private String id;
     private Date createdDate;
-    @Setter
     private Date modifiedDate;
-
-    public AbstractEntity() {
-        this.createdDate = new Date();
-        this.modifiedDate = new Date();
-    }
 }
