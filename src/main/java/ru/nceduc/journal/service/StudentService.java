@@ -1,4 +1,7 @@
 package ru.nceduc.journal.service;
 
-public interface StudentService extends GenericService {
+import ru.nceduc.journal.dto.StudentDTO;
+import ru.nceduc.journal.entity.Student;
+
+public interface StudentService extends GenericService<Student, StudentDTO> {
 }
