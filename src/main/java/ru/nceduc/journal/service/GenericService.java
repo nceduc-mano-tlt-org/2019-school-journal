@@ -1,19 +1,20 @@
 package ru.nceduc.journal.service;
 
 import java.util.List;
+import java.util.Map;
 
-public interface GenericService <E> {
+public interface GenericService <E, DTO> {
 
     void create(E entity);
 
     void delete(String id);
 
-    void patch(String id,E entity);
+    void patch(String id, Map<String, E> patchValues);
 
-    void update(String id,E entity);
+    void update(String id, E entity);
 
-    E get(String id);
+    DTO get(String id);
 
-    List<E> getAll();
+    List<DTO> getAll();
 
 }
