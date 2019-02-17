@@ -2,23 +2,15 @@ package ru.nceduc.journal.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import ru.nceduc.journal.dto.StudentDTO;
-import ru.nceduc.journal.dto.TeacherDTO;
 import ru.nceduc.journal.entity.Student;
 import ru.nceduc.journal.entity.Teacher;
 import ru.nceduc.journal.service.StudentService;
-import ru.nceduc.journal.service.TeacherService;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @Controller
