@@ -1,21 +1,39 @@
 package ru.nceduc.journal.entity;
 
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.jws.soap.SOAPBinding;
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.Set;
+
 
 @Entity
-@Table(name = "users")
+@Table(name = "usr")
 @Data
-public class User extends AbstractEntity{
+public class User extends AbstractEntity {
 
-    private String login;
+    private String username;
     private String password;
+    private boolean active;
+    @ManyToOne
+    @JoinColumn(name = "id_project")
+    private Project project;
 
-    public User(String login, String password) {
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
+
+    public User(String username, String password) {
         super();
-        this.login = login;
+        this.username = username;
         this.password = password;
+    }
+
+    public User() {
     }
 }
