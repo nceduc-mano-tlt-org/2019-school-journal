@@ -1,65 +1,46 @@
 package ru.nceduc.journal.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
-import ru.nceduc.journal.dto.StudentDTO;
 import ru.nceduc.journal.entity.Student;
 import ru.nceduc.journal.repository.StudentRepository;
 import ru.nceduc.journal.service.StudentService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
-    private final ConversionService conversionService;
-
-    @Autowired
-    public StudentServiceImpl(StudentRepository studentRepository, ConversionService conversionService) {
-        this.studentRepository = studentRepository;
-        this.conversionService = conversionService;
-    }
-
 
     @Override
-    public void create(Student entity) {
+    public boolean create(Student entity, String parentId) {
         studentRepository.save(entity);
+        return true;
     }
 
     @Override
-    public void delete(String id) {
+    public boolean delete(String id) {
         studentRepository.deleteById(id);
+        return true;
     }
 
     @Override
-    public void patch(String id, Map<String, Student> patchValues) {
-        Student student = studentRepository.getOne(id);
-        StudentDTO dto = new StudentDTO();
-        //TODO: Доделать!!!
-    }
-
-    @Override
-    public void update(String id, Student entity) {
+    public boolean update(String id, Student entity) {
         entity.setId(id);
         studentRepository.save(entity);
+        return true;
     }
 
     @Override
-    public StudentDTO get(String id) {
-        Student Student = studentRepository.getOne(id);
-        return conversionService.convert(Student, StudentDTO.class);
+    public Student get(String id) {
+        return studentRepository.getOne(id);
     }
 
     @Override
-    public List<StudentDTO> getAll() {
-        List<Student> students = new ArrayList<>(studentRepository.findAll());
-        List<StudentDTO> StudentDTOS = new ArrayList<>();
-        for (Student t : students){
-            StudentDTOS.add(conversionService.convert(t,StudentDTO.class));
-        }
-        return StudentDTOS;
+    public List<Student> getAll() {
+        return new ArrayList<>(studentRepository.findAll());
     }
 }
