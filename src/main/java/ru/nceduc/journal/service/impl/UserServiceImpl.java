@@ -24,17 +24,31 @@ public class UserServiceImpl implements GenericService<User>{
 
     @Override
     public void delete(String id) {
-
+        repository.deleteById(id);
     }
 
     @Override
     public void patch(String id, User entity) {
-
+        User actual = repository.findById(id).get();
+        repository.deleteById(id);
+        if(entity.getPassword() != null){
+            actual.setPassword(entity.getPassword());
+        }
+        if(entity.getModifiedDate() != null){
+            actual.setModifiedDate(entity.getModifiedDate());
+        }
+        if(entity.getProject() != null){
+            actual.setProject(entity.getProject());
+        }
+        if(entity.getRoles() != null){
+            actual.setRoles(entity.getRoles());
+        }
+        repository.save(actual);
     }
 
     @Override
     public void update(String id, User entity) {
-
+        repository.save(entity);
     }
 
     @Override
