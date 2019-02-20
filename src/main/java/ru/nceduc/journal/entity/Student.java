@@ -7,7 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @Entity
-@Table (name = "student")
+@Table (name = "students")
 @Getter
 @Setter
 public class Student extends Person {
