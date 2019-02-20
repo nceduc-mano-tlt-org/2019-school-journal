@@ -1,4 +1,4 @@
-package ru.nceduc.journal.controller;
+package ru.nceduc.journal.controller.web;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.util.List;
 @Controller
 @RequestMapping("project/")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class ProjectController {
+public class ProjectWebController {
 
     private final SectionService sectionService;
 
@@ -24,5 +24,4 @@ public class ProjectController {
         model.addAttribute("sections", sections);
         return "project";
     }
-
 }
