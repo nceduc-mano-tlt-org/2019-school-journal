@@ -4,11 +4,13 @@ import java.util.List;
 
 public interface GenericService <E> {
 
-    boolean create(E entity, String parentId);
+    E create(E entity, String parentId);
 
-    boolean delete(String id);
+    void delete(String id);
 
-    boolean update(String id, E entity);
+    E update(E entity);
+
+    E patch(E entity);
 
     E get(String id);
 
