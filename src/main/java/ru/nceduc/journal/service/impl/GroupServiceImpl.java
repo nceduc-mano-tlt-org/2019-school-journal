@@ -1,15 +1,18 @@
 package ru.nceduc.journal.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import ru.nceduc.journal.controller.dto.GroupDTO;
 import ru.nceduc.journal.entity.Group;
 import ru.nceduc.journal.entity.Section;
 import ru.nceduc.journal.repository.GroupRepository;
 import ru.nceduc.journal.service.GroupService;
 import ru.nceduc.journal.service.SectionService;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -20,45 +23,55 @@ public class GroupServiceImpl implements GroupService {
 
     private final GroupRepository groupRepository;
     private final SectionService sectionService;
+    private final ModelMapper modelMapper;
 
     @Override
-    public Group get(String id) {
-        Group group = null;
+    public GroupDTO get(String id) {
+        Group group;
         Optional<Group> groupOptional = groupRepository.findById(id);
         if (groupOptional.isPresent()) {
             group = groupOptional.get();
+            return modelMapper.map(group, GroupDTO.class);
+        } else {
+            return null;
         }
-        return group;
     }
 
     @Override
-    public List<Group> getAll() {
-        return groupRepository.findAll(Sort.by("createdDate").ascending());
-    }
-
-    @Override
-    public Group create(Group entity) {
-        if (entity != null) {
-            groupRepository.save(entity);
+    public List<GroupDTO> getAll() {
+        List<Group> groups = groupRepository.findAll(Sort.by("createdDate").ascending());
+        List<GroupDTO> groupsDTO = new ArrayList<>();
+        for(Group group : groups) {
+            groupsDTO.add(modelMapper.map(group, GroupDTO.class));
         }
-        return entity;
+        return groupsDTO;
     }
 
     @Override
-    public Group patch(Group entity) {
+    public GroupDTO create(GroupDTO groupDTO) {
+        if (groupDTO != null) {
+            Group group = modelMapper.map(groupDTO, Group.class);
+            groupRepository.save(group);
+            return groupDTO;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public GroupDTO patch(GroupDTO entity) {
+        //TODO
         return null;
     }
 
     @Override
-    public Group update(Group entity) {
-        String id = entity.getId();
+    public GroupDTO update(GroupDTO groupDTO) {
+        String id = groupDTO.getId();
         if (id != null && groupRepository.existsById(id)) {
-            Group group = this.get(id);
-            group.setName(entity.getName());
-            group.setDescription(entity.getDescription());
+            Group group = modelMapper.map(groupDTO, Group.class);
             group.setModifiedDate(new Date());
             groupRepository.save(group);
-            return group;
+            return groupDTO;
         } else {
             return null;
         }
@@ -72,8 +85,14 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<Group> getAllBySectionId(String sectionId) {
+    public List<GroupDTO> getAllBySectionId(String sectionId) {
         Section section = sectionService.get(sectionId);
-        return groupRepository.findAllBySection(section, Sort.by("createdDate").ascending());
+        List<Group> groups = groupRepository.findAllBySection(section, Sort.by("createdDate").ascending());
+        List<GroupDTO> groupsDTO = new ArrayList<>();
+        for(Group group : groups) {
+            groupsDTO.add(modelMapper.map(group, GroupDTO.class));
+        }
+        return groupsDTO;
+
     }
 }
