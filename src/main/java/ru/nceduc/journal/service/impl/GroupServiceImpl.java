@@ -37,17 +37,20 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public boolean create(Group entity, String parentId) {
-        Section section = sectionService.get(parentId);
-        if (section != null) {
-            entity.setSection(section);
+    public Group create(Group entity) {
+        if (entity != null) {
+            groupRepository.save(entity);
         }
-        groupRepository.save(entity);
-        return true;
+        return entity;
     }
 
     @Override
-    public boolean update(Group entity) {
+    public Group patch(Group entity) {
+        return null;
+    }
+
+    @Override
+    public Group update(Group entity) {
         String id = entity.getId();
         if (id != null && groupRepository.existsById(id)) {
             Group group = this.get(id);
@@ -55,20 +58,16 @@ public class GroupServiceImpl implements GroupService {
             group.setDescription(entity.getDescription());
             group.setModifiedDate(new Date());
             groupRepository.save(group);
-            return true;
+            return group;
         } else {
-            return false;
+            return null;
         }
     }
 
     @Override
-    public boolean delete(String id) {
+    public void delete(String id) {
         if (id != null && groupRepository.existsById(id)) {
             groupRepository.deleteById(id);
-            return true;
-        }
-        else {
-            return false;
         }
     }
 

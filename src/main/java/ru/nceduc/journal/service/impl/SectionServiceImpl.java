@@ -34,16 +34,20 @@ public class SectionServiceImpl implements SectionService {
     }
 
     @Override
-    public boolean create(Section entity, String parentId) {
-
-        //TODO  ---  Need project id by context
-
-        sectionRepository.save(entity);
-        return true;
+    public Section create(Section entity) {
+        if (entity != null) {
+            sectionRepository.save(entity);
+        }
+        return entity;
     }
 
     @Override
-    public boolean update(Section entity) {
+    public Section patch(Section entity) {
+        return null;
+    }
+
+    @Override
+    public Section update(Section entity) {
         String id = entity.getId();
         if (id != null && sectionRepository.existsById(id)) {
             Section section = this.get(id);
@@ -51,20 +55,17 @@ public class SectionServiceImpl implements SectionService {
             section.setDescription(entity.getDescription());
             section.setModifiedDate(new Date());
             sectionRepository.save(section);
-            return true;
+            return section;
         } else {
-            return false;
+            return null;
         }
     }
 
     @Override
-    public boolean delete(String id) {
+    public void delete(String id) {
         Section section = this.get(id);
         if (id != null && sectionRepository.existsById(id) && section.getGroups().size() == 0) {
             sectionRepository.deleteById(id);
-            return true;
-        } else {
-            return false;
         }
     }
 
