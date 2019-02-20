@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import ru.nceduc.journal.entity.Group;
+import ru.nceduc.journal.controller.dto.GroupDTO;
 import ru.nceduc.journal.service.GroupService;
 
 @Controller
@@ -17,14 +17,15 @@ public class GroupController {
 
     @PostMapping("create")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void createGroup(Group group, String sectionId) {
-        groupService.create(group, sectionId);
+    public void createGroup(GroupDTO groupDTO, String sectionId) {
+        groupDTO.setSectionId(sectionId);
+        groupService.create(groupDTO);
     }
 
     @PutMapping("update")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateGroup(Group group) {
-        groupService.update(group);
+    public void updateGroup(GroupDTO groupDTO) {
+        groupService.update(groupDTO);
     }
 
     @DeleteMapping("delete")
