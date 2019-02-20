@@ -14,7 +14,7 @@ import java.util.Set;
 @Entity
 @Table(name = "usr")
 @Data
-public class User extends AbstractEntity {
+public class UserEntity extends AbstractEntity {
 
     private String username;
     private String password;
@@ -28,12 +28,12 @@ public class User extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    public User(String username, String password) {
+    public UserEntity(String username, String password) {
         super();
         this.username = username;
         this.password = password;
     }
 
-    public User() {
+    public UserEntity() {
     }
 }
