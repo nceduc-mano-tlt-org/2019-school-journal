@@ -1,8 +1,8 @@
 package ru.nceduc.journal.repository;
 
-import org.springframework.data.repository.CrudRepository;
-import ru.nceduc.journal.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import ru.nceduc.journal.entity.UserEntity;
 
-public interface UserRepository extends CrudRepository<User, String> {
-    User findByUsername(String username);
+public interface UserRepository extends JpaRepository<UserEntity, String> {
+    UserEntity findByUsername(String username);
 }
