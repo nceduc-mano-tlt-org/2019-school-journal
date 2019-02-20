@@ -25,7 +25,7 @@ public class StudentServiceImpl implements StudentService {
         if (studentDTO != null) {
             Student student = modelMapper.map(studentDTO, Student.class);
             studentRepository.save(student);
-            return studentDTO;
+            return modelMapper.map(student, StudentDTO.class);
         } else
             return null;
     }
@@ -38,17 +38,28 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentDTO patch(StudentDTO studentDTO) {
-        return null;
+        String id = studentDTO.getId();
+        if (id != null && studentRepository.existsById(id)) {
+            StudentDTO mainDTO = new StudentDTO();
+            modelMapper.map(studentDTO, mainDTO);
+            return getStudentDTO(mainDTO);
+        } else
+            return null;
+    }
+
+    private StudentDTO getStudentDTO(StudentDTO mainDTO) {
+        Student student = modelMapper.map(mainDTO, Student.class);
+        student.setModifiedDate(new Date());
+        studentRepository.save(student);
+
+        return modelMapper.map(student, StudentDTO.class);
     }
 
     @Override
     public StudentDTO update(StudentDTO studentDTO) {
         String id = studentDTO.getId();
         if (id != null && studentRepository.existsById(id)){
-            Student student = modelMapper.map(studentDTO, Student.class);
-            student.setModifiedDate(new Date());
-            studentRepository.save(student);
-            return studentDTO;
+            return getStudentDTO(studentDTO);
         } else
             return null;
     }
