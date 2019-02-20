@@ -8,10 +8,12 @@ public interface GenericService<E> {
 
     List<E> getAll();
 
-    boolean create(E entity, String parentId);
+    E create(E entity);
 
-    boolean update(E entity);
+    E patch(E entity);
 
-    boolean delete(String id);
+    E update(E entity);
+
+    void delete(String id);
 
 }
