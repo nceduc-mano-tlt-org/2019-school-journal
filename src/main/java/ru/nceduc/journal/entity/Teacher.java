@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table (name = "teacher")
+@Table (name = "teachers")
 @Getter
 @Setter
 public class Teacher extends Person {
