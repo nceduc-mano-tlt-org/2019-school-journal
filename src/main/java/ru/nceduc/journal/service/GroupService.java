@@ -1,7 +1,6 @@
 package ru.nceduc.journal.service;
 
-import ru.nceduc.journal.controller.dto.GroupDTO;
-import ru.nceduc.journal.entity.Group;
+import ru.nceduc.journal.dto.GroupDTO;
 
 import java.util.List;
 

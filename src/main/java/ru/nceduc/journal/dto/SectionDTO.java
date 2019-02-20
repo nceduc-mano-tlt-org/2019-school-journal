@@ -1,4 +1,4 @@
-package ru.nceduc.journal.controller.dto;
+package ru.nceduc.journal.dto;
 
 import lombok.Data;
 
