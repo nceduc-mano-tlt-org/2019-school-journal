@@ -5,10 +5,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import ru.nceduc.journal.entity.Student;
-import ru.nceduc.journal.entity.Teacher;
+import ru.nceduc.journal.dto.StudentDTO;
 import ru.nceduc.journal.service.StudentService;
 
 import java.util.Map;
@@ -57,28 +57,32 @@ public class StudentController {
     @ApiOperation(value = "Add a student")
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void createStudent(@RequestBody Student student, String groupId){
-        studentService.create(student, groupId);
+    public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentDTO studentDTO, String groupId){
+        studentService.create(studentDTO, groupId);
+        return new ResponseEntity<>(studentDTO, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Update a student")
     @PutMapping("/update")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateStudent(@PathVariable String id, @RequestBody Student student){
-        studentService.update(id, student);
+    public ResponseEntity<StudentDTO> updateStudent(@RequestBody StudentDTO studentDTO){
+        studentService.update(studentDTO);
+        return new ResponseEntity<>(studentDTO, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Patch a student")
     @PatchMapping("/patch")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void patchStudent(@PathVariable String id, Map<String, Teacher> patchValues){
-        //TODO: Finish!!!
+    public ResponseEntity<StudentDTO> patchStudent(@RequestBody StudentDTO studentDTO){
+        studentService.patch(studentDTO);
+        return new ResponseEntity<>(studentDTO, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete a student")
     @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteStudent(@PathVariable String id){
+    public ResponseEntity deleteStudent(@PathVariable String id){
         studentService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
