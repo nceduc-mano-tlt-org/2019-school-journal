@@ -4,13 +4,13 @@ import java.util.List;
 
 public interface GenericService <E> {
 
-    void create(E entity);
+    E create(E entity);
 
     void delete(String id);
 
-    void patch(String id,E entity);
+    E patch(E entity);
 
-    void update(String id,E entity);
+    E update(E entity);
 
     E get(String id);
 
