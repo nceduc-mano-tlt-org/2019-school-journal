@@ -23,7 +23,7 @@ public class SectionController {
 
         // TODO  ---  Need project id from context
 
-        sectionService.create(section, "0");
+        sectionService.create(section);
     }
 
     @PutMapping("update")
@@ -35,7 +35,7 @@ public class SectionController {
     @DeleteMapping("delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteSection(String id) {
-       boolean status = sectionService.delete(id);
+       sectionService.delete(id);
 
     }
 

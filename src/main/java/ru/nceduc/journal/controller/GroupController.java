@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import ru.nceduc.journal.controller.dto.GroupDTO;
+import ru.nceduc.journal.dto.GroupDTO;
 import ru.nceduc.journal.service.GroupService;
 
 @Controller
@@ -20,6 +20,13 @@ public class GroupController {
     public void createGroup(GroupDTO groupDTO, String sectionId) {
         groupDTO.setSectionId(sectionId);
         groupService.create(groupDTO);
+    }
+
+    @PatchMapping("patch")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void patchGroup(GroupDTO groupDTO) {
+        System.out.println(groupDTO);
+        groupService.patch(groupDTO);
     }
 
     @PutMapping("update")
