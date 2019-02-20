@@ -1,6 +1,6 @@
 package ru.nceduc.journal.service;
 
-import ru.nceduc.journal.entity.Teacher;
+import ru.nceduc.journal.dto.TeacherDTO;
 
-public interface TeacherService extends GenericService<Teacher> {
+public interface TeacherService extends GenericService<TeacherDTO> {
 }
