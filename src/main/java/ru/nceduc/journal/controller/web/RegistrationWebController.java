@@ -1,4 +1,4 @@
-package ru.nceduc.journal.controller;
+package ru.nceduc.journal.controller.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ import java.util.Collections;
 
 @Controller
 @RequestMapping(value = "/api/v1/registration")
-public class ControllerRegistration {
+public class RegistrationWebController {
 
     @Autowired
     private UserServiceImpl service;
