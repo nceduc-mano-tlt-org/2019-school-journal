@@ -1,6 +1,6 @@
 package ru.nceduc.journal.service;
 
-import ru.nceduc.journal.entity.Section;
+import ru.nceduc.journal.dto.SectionDTO;
 
-public interface SectionService extends GenericService<Section> {
+public interface SectionService extends GenericService<SectionDTO> {
 }
