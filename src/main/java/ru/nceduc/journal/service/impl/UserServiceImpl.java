@@ -8,18 +8,24 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import ru.nceduc.journal.dto.UserDTO;
+import ru.nceduc.journal.entity.Project;
 import ru.nceduc.journal.entity.UserEntity;
+import ru.nceduc.journal.repository.ProjectRepository;
 import ru.nceduc.journal.repository.UserRepository;
 import ru.nceduc.journal.service.GenericService;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserServiceImpl implements GenericService<UserDTO>{
 
-    private final UserRepository repository;
+    private final UserRepository repositoryUser;
+    private final ProjectRepository repositoryProject;
+    
     @Autowired
     private ModelMapper modelMapper;
     private UserEntity userEntity = null;
@@ -30,42 +36,51 @@ public class UserServiceImpl implements GenericService<UserDTO>{
                 .getAuthentication()
                 .getPrincipal();
         String name = user.getUsername();
-        return repository.findByUsername(name);
+        return repositoryUser.findByUsername(name);
     }
 
     @Override
     public UserDTO create(UserDTO entity) {
-        userEntity = modelMapper.map(entity,UserEntity.class);
-        repository.save(userEntity);
-        return entity;
+        if (entity != null) {
+            /*Project project = new Project();
+            repositoryProject.save(project);
+            entity.setProject(project);*/
+            UserEntity userEntity = modelMapper.map(entity, UserEntity.class);
+            repositoryUser.save(userEntity);
+            return modelMapper.map(userEntity, UserDTO.class);
+        } else
+            return null;
     }
 
     @Override
     public void delete(String id) {
-        repository.deleteById(id);
+        if (id != null && repositoryUser.existsById(id))
+        repositoryUser.deleteById(id);
     }
 
     @Override
     public UserDTO patch(UserDTO entity) {
-        userEntity.setId(entity.getId());
-        userEntity = repository.getOne(entity.getId());
-        userEntity = modelMapper.map(entity,UserEntity.class);
-        repository.save(userEntity);
-        return entity;
+        String id = entity.getId();
+        if (id != null && repositoryUser.existsById(id)) {
+            UserDTO mainDTO = new UserDTO();
+            modelMapper.map(entity, mainDTO);
+            return getUserDTO(mainDTO);
+        } else
+            return null;
     }
 
     @Override
     public UserDTO update(UserDTO entity) {
-        modelMapper.getConfiguration().setSkipNullEnabled(false);
-        userEntity = modelMapper.map(entity,UserEntity.class);
-        repository.save(userEntity);
-        modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(MatchingStrategies.STRICT);
-        return entity;
+        String id = entity.getId();
+        if (id != null && repositoryUser.existsById(id)){
+            return getUserDTO(entity);
+        } else
+            return null;
     }
 
     @Override
     public UserDTO get(String id) {
-        userEntity = repository.getOne(id);
+        userEntity = repositoryUser.getOne(id);
         UserDTO userDTO = modelMapper.map(userEntity,UserDTO.class);
         return userDTO;
     }
@@ -74,14 +89,20 @@ public class UserServiceImpl implements GenericService<UserDTO>{
     public List<UserDTO> getAll() {
         UserDTO projectDTO;
         List<UserDTO> all = new ArrayList<>();
-        for(UserEntity user: repository.findAll()){
-            projectDTO = modelMapper.map(user, UserDTO.class);
-            all.add(projectDTO);
+        for(UserEntity user: repositoryUser.findAll()){
+            all.add(modelMapper.map(user, UserDTO.class));
         }
         return all;
     }
+    private UserDTO getUserDTO(UserDTO mainDTO) {
+        UserEntity userEntity = modelMapper.map(mainDTO, UserEntity.class);
+        userEntity.setModifiedDate(new Date());
+        repositoryUser.save(userEntity);
+        return modelMapper.map(userEntity, UserDTO.class);
+    }
+
     public boolean getByName(String name){
-        userEntity = repository.findByUsername(name);
+        userEntity = repositoryUser.findByUsername(name);
         if (userEntity == null){
             return false;
         }
