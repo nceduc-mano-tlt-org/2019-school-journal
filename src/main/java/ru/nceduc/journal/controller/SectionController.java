@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import ru.nceduc.journal.entity.Section;
+import ru.nceduc.journal.dto.SectionDTO;
 import ru.nceduc.journal.service.GroupService;
 import ru.nceduc.journal.service.SectionService;
 
@@ -19,17 +19,17 @@ public class SectionController {
 
     @PostMapping("create")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void createSection(Section section) {
+    public void createSection(SectionDTO sectionDTO) {
 
         // TODO  ---  Need project id from context
 
-        sectionService.create(section);
+        sectionService.create(sectionDTO);
     }
 
     @PutMapping("update")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateSection(Section section) {
-        sectionService.update(section);
+    public void updateSection(SectionDTO sectionDTO) {
+        sectionService.update(sectionDTO);
     }
 
     @DeleteMapping("delete")

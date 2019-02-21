@@ -25,7 +25,6 @@ public class GroupController {
     @PatchMapping("patch")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void patchGroup(GroupDTO groupDTO) {
-        System.out.println(groupDTO);
         groupService.patch(groupDTO);
     }
 
