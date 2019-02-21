@@ -15,7 +15,6 @@ import ru.nceduc.journal.service.SectionService;
 import java.util.List;
 
 @Controller
-@RequestMapping("section/")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SectionWebController {
 
@@ -23,6 +22,13 @@ public class SectionWebController {
     private final SectionService sectionService;
 
     @GetMapping("{id}")
+    public String showProjectPage(Model model) {
+        List<Section> sections = sectionService.getAll();
+        model.addAttribute("sections", sections);
+        return "sections";
+    }
+
+    @GetMapping("section/{id}")
     public String showSectionPage(Model model, @PathVariable String id) {
         List<GroupDTO> groupsDTO = groupService.getAllBySectionId(id);
         Section section = sectionService.get(id);
