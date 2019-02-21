@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.nceduc.journal.dto.SectionDTO;
-import ru.nceduc.journal.service.GroupService;
 import ru.nceduc.journal.service.SectionService;
 
 @Controller
@@ -14,7 +13,6 @@ import ru.nceduc.journal.service.SectionService;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SectionController {
 
-    private final GroupService groupService;
     private final SectionService sectionService;
 
     @PostMapping("create")
@@ -24,6 +22,12 @@ public class SectionController {
         // TODO  ---  Need project id from context
 
         sectionService.create(sectionDTO);
+    }
+
+    @PatchMapping("patch")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void patchSection(SectionDTO sectionDTO) {
+        sectionService.patch(sectionDTO);
     }
 
     @PutMapping("update")
