@@ -62,16 +62,9 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public GroupDTO patch(GroupDTO groupDTO) {
         String id = groupDTO.getId();
-        if (id != null && groupRepository.existsById(id)) {
-            GroupDTO mainDTO = this.get(id);
-            modelMapper.map(groupDTO, mainDTO);
-            Group group = modelMapper.map(mainDTO, Group.class);
-            group.setModifiedDate(new Date());
-            groupRepository.save(group);
-            return groupDTO;
-        } else {
-            return null;
-        }
+        GroupDTO mainDTO = this.get(id);
+        modelMapper.map(groupDTO, mainDTO);
+        return update(mainDTO);
     }
 
     @Override
