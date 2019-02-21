@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.nceduc.journal.dto.GroupDTO;
+import ru.nceduc.journal.dto.SectionDTO;
 import ru.nceduc.journal.entity.Group;
 import ru.nceduc.journal.entity.Section;
 import ru.nceduc.journal.repository.GroupRepository;
@@ -24,7 +25,6 @@ public class GroupServiceImpl implements GroupService {
     private final GroupRepository groupRepository;
     private final SectionService sectionService;
     private final ModelMapper modelMapper;
-    private final ModelMapper modelMapperPatch;
 
     @Override
     public GroupDTO get(String id) {
@@ -89,7 +89,8 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<GroupDTO> getAllBySectionId(String sectionId) {
-        Section section = sectionService.get(sectionId);
+        SectionDTO sectionDTO = sectionService.get(sectionId);
+        Section section = modelMapper.map(sectionDTO, Section.class);
         List<Group> groups = groupRepository.findAllBySection(section, Sort.by("createdDate").ascending());
         List<GroupDTO> groupsDTO = new ArrayList<>();
         for(Group group : groups) {
