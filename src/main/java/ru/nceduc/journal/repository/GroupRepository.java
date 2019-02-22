@@ -12,4 +12,3 @@ public interface GroupRepository extends CrudRepository<Group, String> {
     List<Group> findAllBySection(Section section, Sort sort);
     boolean existsBySection(Section section);
 }
-
