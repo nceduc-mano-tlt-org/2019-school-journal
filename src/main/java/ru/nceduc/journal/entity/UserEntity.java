@@ -19,8 +19,9 @@ public class UserEntity extends AbstractEntity {
     private String username;
     private String password;
     private boolean active;
-    @ManyToOne
-    @JoinColumn(name = "id_project")
+
+    @OneToOne
+    @JoinColumn(name="project_id")
     private Project project;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
