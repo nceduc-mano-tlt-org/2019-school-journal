@@ -42,10 +42,10 @@ public class UserServiceImpl implements GenericService<UserDTO>{
     @Override
     public UserDTO create(UserDTO entity) {
         if (entity != null) {
-            /*Project project = new Project();
-            repositoryProject.save(project);
-            entity.setProject(project);*/
+            Project project = new Project();
+            Project projectInDB = repositoryProject.save(project);
             UserEntity userEntity = modelMapper.map(entity, UserEntity.class);
+            userEntity.setProject(projectInDB);
             repositoryUser.save(userEntity);
             return modelMapper.map(userEntity, UserDTO.class);
         } else
