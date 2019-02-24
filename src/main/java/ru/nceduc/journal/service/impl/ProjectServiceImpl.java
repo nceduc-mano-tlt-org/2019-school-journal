@@ -18,6 +18,7 @@ import java.util.List;
 public class ProjectServiceImpl implements GenericService<ProjectDTO> {
 
     private final ProjectRepository repository;
+    private final UserServiceImpl userService;
     @Autowired
     private ModelMapper modelMapper;
     private Project project = null;
@@ -79,6 +80,9 @@ public class ProjectServiceImpl implements GenericService<ProjectDTO> {
         project.setModifiedDate(new Date());
         repository.save(project);
         return modelMapper.map(project, ProjectDTO.class);
+    }
+    public Project getCurrentProject(){
+        return userService.getCurrentUsername().getProject();
     }
 }
 
