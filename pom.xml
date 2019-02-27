@@ -10,12 +10,13 @@
     </parent>
     <groupId>ru.nceduc</groupId>
     <artifactId>journal</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
     <name>journal</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
         <java.version>1.8</java.version>
+        <modelmapper.version>2.3.0</modelmapper.version>
     </properties>
 
     <dependencies>
@@ -54,7 +55,7 @@
         <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
-            <version>2.3.0</version>
+            <version>${modelmapper.version}</version>
         </dependency>
         <!-- For dev purposes -->
         <dependency>
