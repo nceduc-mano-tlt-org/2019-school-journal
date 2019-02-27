@@ -19,7 +19,7 @@ public class StudentController {
 
     @ApiOperation(value = "Add a student")
     @PostMapping("/create")
-    public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentDTO studentDTO, String groupId){
+    public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentDTO studentDTO){
         studentService.create(studentDTO);
         return new ResponseEntity<>(studentDTO, HttpStatus.CREATED);
     }
