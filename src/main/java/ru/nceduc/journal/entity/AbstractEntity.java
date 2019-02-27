@@ -22,4 +22,9 @@ public abstract class AbstractEntity {
     private Date createdDate;
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date modifiedDate;
+
+    public AbstractEntity() {
+        this.createdDate = new Date();
+        this.modifiedDate = new Date();
+    }
 }
