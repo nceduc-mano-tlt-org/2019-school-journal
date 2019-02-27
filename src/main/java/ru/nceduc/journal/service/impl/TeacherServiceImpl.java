@@ -21,7 +21,7 @@ public class TeacherServiceImpl implements TeacherService {
     private final ModelMapper modelMapper;
 
     @Override
-    public TeacherDTO create(TeacherDTO teacherDTO, String parentId) {
+    public TeacherDTO create(TeacherDTO teacherDTO) {
         if (teacherDTO != null) {
             Teacher teacher = modelMapper.map(teacherDTO, Teacher.class);
             teacherRepository.save(teacher);
