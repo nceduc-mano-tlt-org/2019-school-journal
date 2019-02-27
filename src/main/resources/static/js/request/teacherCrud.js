@@ -16,7 +16,7 @@ $(document).ready(function () {
         var teacherData = $(this).parents("form").serialize()
         $.ajax({
             url: "/teacher/update",
-            type: "POST",
+            type: "PUT",
             data: teacherData,
             dataType: "JSON",
             success: function(response) {
@@ -29,7 +29,7 @@ $(document).ready(function () {
         var teacherData = $(this).parents("form").serialize()
         $.ajax({
             url: "/teacher/delete",
-            type: "POST",
+            type: "DELETE",
             data: teacherData,
             dataType: "JSON",
             success: function(response) {
