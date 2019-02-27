@@ -21,7 +21,7 @@ public class StudentServiceImpl implements StudentService {
     private final ModelMapper modelMapper;
 
     @Override
-    public StudentDTO create(StudentDTO studentDTO, String parentId) {
+    public StudentDTO create(StudentDTO studentDTO) {
         if (studentDTO != null) {
             Student student = modelMapper.map(studentDTO, Student.class);
             studentRepository.save(student);
