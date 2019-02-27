@@ -1,4 +1,4 @@
-package ru.nceduc.journal.controller;
+package ru.nceduc.journal.controller.rest;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
