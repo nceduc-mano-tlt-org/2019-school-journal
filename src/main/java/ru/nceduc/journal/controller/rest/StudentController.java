@@ -17,40 +17,6 @@ import ru.nceduc.journal.service.StudentService;
 public class StudentController {
     private StudentService studentService;
 
-    /*
-    @ApiOperation(value = "View a list of existing teachers", response = Iterable.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved list"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
-    }
-    )
-
-    @ApiOperation(value = "View a list of existing students", response = Iterable.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved list"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
-    }
-    )
-    @GetMapping("/student/all")
-    public List<String> getAllStudents(){
-        List<StudentDTO> studentDTOS = studentService.getAll();
-        List<String> result = new ArrayList<>();
-        for (StudentDTO element : studentDTOS){
-            result.add(element.toString());
-        }
-        return result;
-    }
-
-    @ApiOperation(value = "Search a Student with an ID", response = Student.class)
-    public String getStudent(@PathVariable String id){
-        return studentService.get(id).toString();
-    }
-*/
-
     @ApiOperation(value = "Add a student")
     @PostMapping("/create")
     public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentDTO studentDTO, String groupId){
