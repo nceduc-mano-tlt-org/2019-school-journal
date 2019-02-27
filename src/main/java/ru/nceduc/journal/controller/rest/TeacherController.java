@@ -17,24 +17,6 @@ import ru.nceduc.journal.service.TeacherService;
 public class TeacherController {
     private TeacherService teacherService;
 
-    /*
-    @ApiOperation(value = "View a list of existing teachers", response = Iterable.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved list"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
-    }
-    )
-
-    @ApiOperation(value = "Search a teacher with an ID", response = Teacher.class)
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public String getTeacher(@PathVariable String id){
-        return teacherService.get(id).toString();
-    }
-*/
-
     @ApiOperation(value = "Add a teacher")
     @PostMapping("/create")
     public ResponseEntity<TeacherDTO> createTeacher(@RequestBody TeacherDTO teacherDTO, String groupId){
