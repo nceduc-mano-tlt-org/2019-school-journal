@@ -25,7 +25,7 @@ public class TeacherServiceImpl implements TeacherService {
         if (teacherDTO != null) {
             Teacher teacher = modelMapper.map(teacherDTO, Teacher.class);
             teacherRepository.save(teacher);
-            return modelMapper.map(teacher, TeacherDTO.class);
+            return teacherDTO;
         } else
             return null;
     }
@@ -40,26 +40,21 @@ public class TeacherServiceImpl implements TeacherService {
     public TeacherDTO patch(TeacherDTO teacherDTO) {
         String id = teacherDTO.getId();
         if (id != null && teacherRepository.existsById(id)) {
-            TeacherDTO mainDTO = new TeacherDTO();
+            TeacherDTO mainDTO = this.get(id);
             modelMapper.map(teacherDTO, mainDTO);
-            return getTeacherDTO(mainDTO);
+            return update(mainDTO);
         } else
             return null;
-    }
-
-    private TeacherDTO getTeacherDTO(TeacherDTO mainDTO) {
-        Teacher teacher = modelMapper.map(mainDTO, Teacher.class);
-        teacher.setModifiedDate(new Date());
-        teacherRepository.save(teacher);
-
-        return modelMapper.map(teacher, TeacherDTO.class);
     }
 
     @Override
     public TeacherDTO update(TeacherDTO teacherDTO){
         String id = teacherDTO.getId();
         if (id != null && teacherRepository.existsById(id)){
-            return getTeacherDTO(teacherDTO);
+            Teacher teacher = modelMapper.map(teacherDTO, Teacher.class);
+            teacher.setModifiedDate(new Date());
+            teacherRepository.save(teacher);
+            return teacherDTO;
         } else
             return null;
     }

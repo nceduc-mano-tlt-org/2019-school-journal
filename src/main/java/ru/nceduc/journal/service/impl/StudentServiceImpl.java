@@ -40,26 +40,21 @@ public class StudentServiceImpl implements StudentService {
     public StudentDTO patch(StudentDTO studentDTO) {
         String id = studentDTO.getId();
         if (id != null && studentRepository.existsById(id)) {
-            StudentDTO mainDTO = new StudentDTO();
+            StudentDTO mainDTO = this.get(id);
             modelMapper.map(studentDTO, mainDTO);
-            return getStudentDTO(mainDTO);
+            return update(mainDTO);
         } else
             return null;
-    }
-
-    private StudentDTO getStudentDTO(StudentDTO mainDTO) {
-        Student student = modelMapper.map(mainDTO, Student.class);
-        student.setModifiedDate(new Date());
-        studentRepository.save(student);
-
-        return modelMapper.map(student, StudentDTO.class);
     }
 
     @Override
     public StudentDTO update(StudentDTO studentDTO) {
         String id = studentDTO.getId();
         if (id != null && studentRepository.existsById(id)){
-            return getStudentDTO(studentDTO);
+            Student student = modelMapper.map(studentDTO, Student.class);
+            student.setModifiedDate(new Date());
+            studentRepository.save(student);
+            return studentDTO;
         } else
             return null;
     }
