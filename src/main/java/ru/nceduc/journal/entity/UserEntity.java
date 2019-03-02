@@ -1,11 +1,12 @@
 package ru.nceduc.journal.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Set;
 
-
+@NoArgsConstructor
 @Entity
 @Table(name = "usr")
 @Data
@@ -14,6 +15,7 @@ public class UserEntity extends AbstractEntity {
     private String username;
     private String password;
     private boolean active;
+
 
     @OneToOne
     @JoinColumn(name="project_id")
