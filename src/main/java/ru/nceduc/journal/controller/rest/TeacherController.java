@@ -44,4 +44,10 @@ public class TeacherController {
         teacherService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @ApiOperation(value = "Get teacher info")
+    @GetMapping("/{id}")
+    public ResponseEntity<TeacherDTO> getStudent(@PathVariable String id){
+        return new ResponseEntity<>(teacherService.get(id), HttpStatus.OK);
+    }
 }
