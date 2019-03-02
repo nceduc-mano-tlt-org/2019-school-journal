@@ -1,4 +1,4 @@
-package ru.nceduc.journal.controller;
+package ru.nceduc.journal.controller.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +10,7 @@ import ru.nceduc.journal.service.impl.UserServiceImpl;
 
 @Controller
 @RequestMapping(value = "/")
-public class ControllerMain {
+public class MainWebController {
 
     @Autowired
     UserServiceImpl service;

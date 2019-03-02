@@ -14,12 +14,4 @@ public class UserDTO {
     private boolean active;
     private Project project;
     private Set<Role> roles;
-
-    public UserDTO() {
-    }
-
-    public UserDTO(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
 }

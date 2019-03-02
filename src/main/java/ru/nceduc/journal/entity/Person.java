@@ -3,9 +3,9 @@ package ru.nceduc.journal.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
 
-@Entity
+@MappedSuperclass
 @Getter
 @Setter
 public abstract class Person extends AbstractEntity{

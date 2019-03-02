@@ -1,13 +1,8 @@
 package ru.nceduc.journal.entity;
 
 import lombok.Data;
-import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.jws.soap.SOAPBinding;
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Set;
 
 
@@ -33,8 +28,5 @@ public class UserEntity extends AbstractEntity {
         super();
         this.username = username;
         this.password = password;
-    }
-
-    public UserEntity() {
     }
 }
