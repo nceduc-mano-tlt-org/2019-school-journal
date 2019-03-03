@@ -9,13 +9,13 @@ import ru.nceduc.journal.dto.SectionDTO;
 import ru.nceduc.journal.service.SectionService;
 
 @RestController
-@RequestMapping("section/")
+@RequestMapping("api/v1/section")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SectionController {
 
     private final SectionService sectionService;
 
-    @PostMapping("create")
+    @PostMapping
     public ResponseEntity<SectionDTO> createSection(SectionDTO sectionDTO) {
 
         // TODO  ---  Need project id from context
@@ -24,20 +24,20 @@ public class SectionController {
         return new ResponseEntity<>(createdSection, HttpStatus.CREATED);
     }
 
-    @PatchMapping("patch")
+    @PatchMapping
     public ResponseEntity<SectionDTO> patchSection(SectionDTO sectionDTO) {
         SectionDTO patchedSection = sectionService.patch(sectionDTO);
         return new ResponseEntity<>(patchedSection, HttpStatus.OK);
     }
 
-    @PutMapping("update")
+    @PutMapping
     public ResponseEntity<SectionDTO> updateSection(SectionDTO sectionDTO) {
         SectionDTO updatedSection = sectionService.update(sectionDTO);
         return new ResponseEntity<>(updatedSection, HttpStatus.OK);
     }
 
-    @DeleteMapping("delete")
-    public ResponseEntity<SectionDTO> deleteSection(String id) {
+    @DeleteMapping("{id}")
+    public ResponseEntity<SectionDTO> deleteSection(@PathVariable String id) {
         sectionService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
