@@ -2,7 +2,6 @@ package ru.nceduc.journal.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -12,16 +11,15 @@ import ru.nceduc.journal.entity.Project;
 import ru.nceduc.journal.entity.UserEntity;
 import ru.nceduc.journal.repository.ProjectRepository;
 import ru.nceduc.journal.repository.UserRepository;
-import ru.nceduc.journal.service.GenericService;
+import ru.nceduc.journal.service.UserService;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class UserServiceImpl implements GenericService<UserDTO>{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository repositoryUser;
     private final ProjectRepository repositoryProject;
