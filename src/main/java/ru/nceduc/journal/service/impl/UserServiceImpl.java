@@ -28,6 +28,7 @@ public class UserServiceImpl implements UserService {
     private ModelMapper modelMapper;
     private UserEntity userEntity = null;
 
+    @Override
     public UserEntity getCurrentUsername() {
         User user = (User)SecurityContextHolder
                 .getContext()
@@ -92,6 +93,7 @@ public class UserServiceImpl implements UserService {
         }
         return all;
     }
+
     private UserDTO getUserDTO(UserDTO mainDTO) {
         UserEntity userEntity = modelMapper.map(mainDTO, UserEntity.class);
         userEntity.setModifiedDate(new Date());
@@ -99,6 +101,7 @@ public class UserServiceImpl implements UserService {
         return modelMapper.map(userEntity, UserDTO.class);
     }
 
+    @Override
     public boolean getByName(String name){
         userEntity = repositoryUser.findByUsername(name);
         if (userEntity == null){
