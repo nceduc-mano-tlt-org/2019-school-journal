@@ -1,5 +1,7 @@
 package ru.nceduc.journal.controller.rest;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,24 +15,28 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/section")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Api(description="Sections operations", tags = "SECTION-V1")
 public class SectionController {
 
     private final SectionService sectionService;
 
+    @ApiOperation(value = "Get details of specific section")
     @GetMapping("{id}")
     public ResponseEntity<SectionDTO> getSection(@PathVariable String id) {
         SectionDTO sectionDTO = sectionService.get(id);
         return new ResponseEntity<>(sectionDTO, HttpStatus.OK);
     }
-    
+
+    @ApiOperation(value = "Get all sections")
     @GetMapping
     public ResponseEntity<List<SectionDTO>> getAllSections() {
         List<SectionDTO> sectionsDTO = sectionService.getAll();
         return new ResponseEntity<>(sectionsDTO, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Create a new section")
     @PostMapping
-    public ResponseEntity<SectionDTO> createSection(SectionDTO sectionDTO) {
+    public ResponseEntity<SectionDTO> createSection(@RequestBody SectionDTO sectionDTO) {
 
         // TODO  ---  Need project id from context
 
@@ -38,18 +44,21 @@ public class SectionController {
         return new ResponseEntity<>(createdSection, HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "Patch section details")
     @PatchMapping
-    public ResponseEntity<SectionDTO> patchSection(SectionDTO sectionDTO) {
+    public ResponseEntity<SectionDTO> patchSection(@RequestBody SectionDTO sectionDTO) {
         SectionDTO patchedSection = sectionService.patch(sectionDTO);
         return new ResponseEntity<>(patchedSection, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Update section details")
     @PutMapping
-    public ResponseEntity<SectionDTO> updateSection(SectionDTO sectionDTO) {
+    public ResponseEntity<SectionDTO> updateSection(@RequestBody SectionDTO sectionDTO) {
         SectionDTO updatedSection = sectionService.update(sectionDTO);
         return new ResponseEntity<>(updatedSection, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Delete a section")
     @DeleteMapping("{id}")
     public ResponseEntity<SectionDTO> deleteSection(@PathVariable String id) {
         sectionService.delete(id);
