@@ -1,4 +1,4 @@
-package ru.nceduc.journal.controller.rest;
+package ru.nceduc.journal.controller.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import java.util.Collections;
 
 @Controller
 @RequestMapping(value = "/registration")
-public class RegistrationController {
+public class RegistrationWebController {
 
     @Autowired
     private UserServiceImpl service;
@@ -28,8 +28,8 @@ public class RegistrationController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "")
     public String createUser(UserDTO user){
-        Boolean expected = service.getByName(user.getUsername());
-        if (expected == true){
+        boolean expected = service.getByName(user.getUsername());
+        if (expected){
             return "registration";
         }
         user.setActive(true);
