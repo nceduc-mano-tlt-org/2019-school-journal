@@ -29,6 +29,12 @@ public class GroupController {
         return new ResponseEntity<>(groupsDTO, HttpStatus.OK);
     }
 
+    @GetMapping("by-section/{id}")
+    public ResponseEntity<List<GroupDTO>> getGroupsBySectionId(@PathVariable String id) {
+        List<GroupDTO> groupsDTO = groupService.getAllBySectionId(id);
+        return new ResponseEntity<>(groupsDTO, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<GroupDTO> createGroup(GroupDTO groupDTO) {
         GroupDTO createdGroup = groupService.create(groupDTO);
