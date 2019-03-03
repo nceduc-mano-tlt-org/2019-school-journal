@@ -8,12 +8,26 @@ import org.springframework.web.bind.annotation.*;
 import ru.nceduc.journal.dto.GroupDTO;
 import ru.nceduc.journal.service.GroupService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/group")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class GroupController {
 
     private final GroupService groupService;
+
+    @GetMapping("{id}")
+    public ResponseEntity<GroupDTO> getGroup(@PathVariable String id) {
+        GroupDTO groupDTO = groupService.get(id);
+        return new ResponseEntity<>(groupDTO, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<GroupDTO>> getAllGroups() {
+        List<GroupDTO> groupsDTO = groupService.getAll();
+        return new ResponseEntity<>(groupsDTO, HttpStatus.OK);
+    }
 
     @PostMapping
     public ResponseEntity<GroupDTO> createGroup(GroupDTO groupDTO) {
