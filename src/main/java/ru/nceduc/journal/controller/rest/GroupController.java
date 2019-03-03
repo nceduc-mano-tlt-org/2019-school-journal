@@ -9,32 +9,32 @@ import ru.nceduc.journal.dto.GroupDTO;
 import ru.nceduc.journal.service.GroupService;
 
 @RestController
-@RequestMapping("group/")
+@RequestMapping("api/v1/group")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class GroupController {
 
     private final GroupService groupService;
 
-    @PostMapping("create")
+    @PostMapping
     public ResponseEntity<GroupDTO> createGroup(GroupDTO groupDTO) {
         GroupDTO createdGroup = groupService.create(groupDTO);
         return new ResponseEntity<>(createdGroup, HttpStatus.CREATED);
     }
 
-    @PatchMapping("patch")
+    @PatchMapping
     public ResponseEntity<GroupDTO> patchGroup(GroupDTO groupDTO) {
         GroupDTO patchedGroup = groupService.patch(groupDTO);
         return new ResponseEntity<>(patchedGroup, HttpStatus.OK);
     }
 
-    @PutMapping("update")
+    @PutMapping
     public ResponseEntity<GroupDTO> updateGroup(GroupDTO groupDTO) {
         GroupDTO updatedGroup = groupService.update(groupDTO);
         return new ResponseEntity<>(updatedGroup, HttpStatus.OK);
     }
 
-    @DeleteMapping("delete")
-    public ResponseEntity<GroupDTO> deleteGroup(String id) {
+    @DeleteMapping("{id}")
+    public ResponseEntity<GroupDTO> deleteGroup(@PathVariable String id) {
         groupService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
