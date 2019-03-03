@@ -8,12 +8,26 @@ import org.springframework.web.bind.annotation.*;
 import ru.nceduc.journal.dto.SectionDTO;
 import ru.nceduc.journal.service.SectionService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/section")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SectionController {
 
     private final SectionService sectionService;
+
+    @GetMapping("{id}")
+    public ResponseEntity<SectionDTO> getSection(@PathVariable String id) {
+        SectionDTO sectionDTO = sectionService.get(id);
+        return new ResponseEntity<>(sectionDTO, HttpStatus.OK);
+    }
+    
+    @GetMapping
+    public ResponseEntity<List<SectionDTO>> getAllSections() {
+        List<SectionDTO> sectionsDTO = sectionService.getAll();
+        return new ResponseEntity<>(sectionsDTO, HttpStatus.OK);
+    }
 
     @PostMapping
     public ResponseEntity<SectionDTO> createSection(SectionDTO sectionDTO) {
