@@ -8,19 +8,18 @@ import org.springframework.stereotype.Service;
 import ru.nceduc.journal.dto.ProjectDTO;
 import ru.nceduc.journal.entity.Project;
 import ru.nceduc.journal.repository.ProjectRepository;
-import ru.nceduc.journal.service.GenericService;
+import ru.nceduc.journal.service.ProjectService;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class ProjectServiceImpl implements GenericService<ProjectDTO> {
+public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository repository;
     private final UserServiceImpl userService;
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
     private Project project = null;
 
     @Override
