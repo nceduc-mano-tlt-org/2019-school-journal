@@ -46,9 +46,8 @@ public class SectionController {
     @ApiOperation(value = "Create a new section")
     @PostMapping
     public ResponseEntity<SectionDTO> createSection(@RequestBody SectionDTO sectionDTO) {
-
-        // TODO  ---  Need project id from context
-
+        String projectId = projectService.getCurrentProject().getId();
+        // TODO -  sectionDTO.setProject(projectId);
         SectionDTO createdSection = sectionService.create(sectionDTO);
         return new ResponseEntity<>(createdSection, HttpStatus.CREATED);
     }
