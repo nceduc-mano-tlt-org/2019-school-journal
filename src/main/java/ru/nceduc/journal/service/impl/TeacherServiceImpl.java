@@ -74,4 +74,9 @@ public class TeacherServiceImpl implements TeacherService {
         }
         return teacherDTOS;
     }
+
+    @Override
+    public List<TeacherDTO> getAllByGroupId(String groupId) {
+        return null;
+    }
 }
