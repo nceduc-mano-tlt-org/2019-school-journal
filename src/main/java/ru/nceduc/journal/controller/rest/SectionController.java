@@ -37,7 +37,7 @@ public class SectionController {
     }
 
     @ApiOperation(value = "Get all sections by project id")
-    @GetMapping
+    @GetMapping("{by-project/projectId}")
     public ResponseEntity<List<SectionDTO>> getAllSectionsByProjectId(@PathVariable String projectId) {
         List<SectionDTO> sectionsDTO = sectionService.getAllByProjectId(projectId);
         return new ResponseEntity<>(sectionsDTO, HttpStatus.OK);
