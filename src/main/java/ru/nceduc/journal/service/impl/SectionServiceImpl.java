@@ -84,4 +84,8 @@ public class SectionServiceImpl implements SectionService {
         }
     }
 
+    @Override
+    public List<SectionDTO> getAllByProjectId(String projectId) {
+        return null;
+    }
 }
