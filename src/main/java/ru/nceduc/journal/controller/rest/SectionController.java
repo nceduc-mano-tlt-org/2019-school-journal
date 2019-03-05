@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.nceduc.journal.dto.SectionDTO;
+import ru.nceduc.journal.service.ProjectService;
 import ru.nceduc.journal.service.SectionService;
 
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
 public class SectionController {
 
     private final SectionService sectionService;
+    private final ProjectService projectService;
 
     @ApiOperation(value = "Get details of specific section")
     @GetMapping("{id}")
@@ -31,6 +33,13 @@ public class SectionController {
     @GetMapping
     public ResponseEntity<List<SectionDTO>> getAllSections() {
         List<SectionDTO> sectionsDTO = sectionService.getAll();
+        return new ResponseEntity<>(sectionsDTO, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Get all sections by project id")
+    @GetMapping
+    public ResponseEntity<List<SectionDTO>> getAllSectionsByProjectId(@PathVariable String projectId) {
+        List<SectionDTO> sectionsDTO = sectionService.getAllByProjectId(projectId);
         return new ResponseEntity<>(sectionsDTO, HttpStatus.OK);
     }
 

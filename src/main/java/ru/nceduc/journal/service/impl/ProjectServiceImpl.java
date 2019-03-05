@@ -80,8 +80,9 @@ public class ProjectServiceImpl implements ProjectService {
         repository.save(project);
         return modelMapper.map(project, ProjectDTO.class);
     }
-    public Project getCurrentProject(){
-        return userService.getCurrentUsername().getProject();
+    public ProjectDTO getCurrentProject(){
+        Project project = userService.getCurrentUsername().getProject();
+        return modelMapper.map(project, ProjectDTO.class);
     }
 }
 
