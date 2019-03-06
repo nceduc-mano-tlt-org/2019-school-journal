@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.nceduc.journal.dto.SectionDTO;
+import ru.nceduc.journal.entity.Project;
 import ru.nceduc.journal.entity.Section;
+import ru.nceduc.journal.repository.ProjectRepository;
 import ru.nceduc.journal.repository.SectionRepository;
 import ru.nceduc.journal.service.SectionService;
 
@@ -20,6 +22,7 @@ import java.util.Optional;
 public class SectionServiceImpl implements SectionService {
 
     private final SectionRepository sectionRepository;
+    private final ProjectRepository projectRepository;
     private final ModelMapper modelMapper;
 
     @Override
@@ -36,12 +39,11 @@ public class SectionServiceImpl implements SectionService {
 
     @Override
     public List<SectionDTO> getAll() {
-        List<Section> sections = sectionRepository.findAll(Sort.by("createdDate").ascending());
-        List<SectionDTO> sectionsDTO = new ArrayList<>();
-        for (Section section : sections) {
-            sectionsDTO.add(modelMapper.map(section, SectionDTO.class));
-        }
-        return sectionsDTO;
+        List<SectionDTO> sectionDTO = new ArrayList<>();
+        sectionRepository.findAll(Sort.by("createdDate").ascending()).forEach(section -> {
+            sectionDTO.add(modelMapper.map(section, SectionDTO.class));
+        });
+        return sectionDTO;
     }
 
     @Override
@@ -68,6 +70,7 @@ public class SectionServiceImpl implements SectionService {
         String id = sectionDTO.getId();
         if (id != null && sectionRepository.existsById(id)) {
             Section section = modelMapper.map(sectionDTO, Section.class);
+            section.setCreatedDate(sectionRepository.findById(id).get().getCreatedDate());
             section.setModifiedDate(new Date());
             sectionRepository.save(section);
             return sectionDTO;
@@ -84,4 +87,13 @@ public class SectionServiceImpl implements SectionService {
         }
     }
 
+    @Override
+    public List<SectionDTO> getAllByProjectId(String projectId) {
+        Project project = projectRepository.findById(projectId).get();
+        List<SectionDTO> sectionDTO = new ArrayList<>();
+        sectionRepository.findAllByProject(project, Sort.by("createdDate").ascending()).forEach(section -> {
+            sectionDTO.add(modelMapper.map(section, SectionDTO.class));
+        });
+        return sectionDTO;
+    }
 }
