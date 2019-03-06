@@ -40,11 +40,10 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<GroupDTO> getAll() {
-        List<Group> groups = groupRepository.findAll(Sort.by("createdDate").ascending());
         List<GroupDTO> groupsDTO = new ArrayList<>();
-        for(Group group : groups) {
+        groupRepository.findAll(Sort.by("createdDate").ascending()).forEach(group -> {
             groupsDTO.add(modelMapper.map(group, GroupDTO.class));
-        }
+        });
         return groupsDTO;
     }
 
@@ -72,6 +71,7 @@ public class GroupServiceImpl implements GroupService {
         String id = groupDTO.getId();
         if (id != null && groupRepository.existsById(id)) {
             Group group = modelMapper.map(groupDTO, Group.class);
+            group.setCreatedDate(groupRepository.findById(id).get().getCreatedDate());
             group.setModifiedDate(new Date());
             groupRepository.save(group);
             return groupDTO;
@@ -91,12 +91,10 @@ public class GroupServiceImpl implements GroupService {
     public List<GroupDTO> getAllBySectionId(String sectionId) {
         SectionDTO sectionDTO = sectionService.get(sectionId);
         Section section = modelMapper.map(sectionDTO, Section.class);
-        List<Group> groups = groupRepository.findAllBySection(section, Sort.by("createdDate").ascending());
         List<GroupDTO> groupsDTO = new ArrayList<>();
-        for(Group group : groups) {
+        groupRepository.findAllBySection(section, Sort.by("createdDate").ascending()).forEach(group -> {
             groupsDTO.add(modelMapper.map(group, GroupDTO.class));
-        }
+        });
         return groupsDTO;
-
     }
 }
