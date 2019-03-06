@@ -20,7 +20,6 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository repository;
     private final UserServiceImpl userService;
     private final ModelMapper modelMapper;
-    private Project project = null;
 
     @Override
     public ProjectDTO create(ProjectDTO entity) {
@@ -41,26 +40,27 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectDTO patch(ProjectDTO entity) {
         String id = entity.getId();
-        if (id != null && repository.existsById(id)) {
-            ProjectDTO mainDTO = new ProjectDTO();
-            modelMapper.map(entity, mainDTO);
-            return getProjectDTO(mainDTO);
-        } else
-            return null;
+        ProjectDTO projectDTO = this.get(id);
+        modelMapper.map(entity, projectDTO);
+        return update(projectDTO);
     }
 
     @Override
     public ProjectDTO update(ProjectDTO entity) {
         String id = entity.getId();
         if (id != null && repository.existsById(id)){
-            return getProjectDTO(entity);
+            Project project = modelMapper.map(entity, Project.class);
+            project.setCreatedDate(repository.findById(id).get().getCreatedDate());
+            project.setModifiedDate(new Date());
+            repository.save(project);
+            return entity;
         } else
             return null;
     }
 
     @Override
     public ProjectDTO get(String id) {
-        project = repository.getOne(id);
+        Project project = repository.getOne(id);
         ProjectDTO projectDTO = modelMapper.map(project,ProjectDTO.class);
         return projectDTO;
     }
@@ -74,14 +74,11 @@ public class ProjectServiceImpl implements ProjectService {
         }
         return all;
     }
-    private ProjectDTO getProjectDTO(ProjectDTO mainDTO) {
-        Project project = modelMapper.map(mainDTO, Project.class);
-        project.setModifiedDate(new Date());
-        repository.save(project);
+
+    @Override
+    public ProjectDTO getCurrentProject() {
+        Project project = userService.getCurrentUsername().getProject();
         return modelMapper.map(project, ProjectDTO.class);
-    }
-    public Project getCurrentProject(){
-        return userService.getCurrentUsername().getProject();
     }
 }
 
