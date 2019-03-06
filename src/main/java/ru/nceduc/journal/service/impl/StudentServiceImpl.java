@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.nceduc.journal.dto.StudentDTO;
+import ru.nceduc.journal.entity.Group;
 import ru.nceduc.journal.entity.Student;
+import ru.nceduc.journal.repository.GroupRepository;
 import ru.nceduc.journal.repository.StudentRepository;
 import ru.nceduc.journal.service.StudentService;
 
@@ -18,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
+    private final GroupRepository groupRepository;
     private final ModelMapper modelMapper;
 
     @Override
@@ -52,6 +55,7 @@ public class StudentServiceImpl implements StudentService {
         String id = studentDTO.getId();
         if (id != null && studentRepository.existsById(id)){
             Student student = modelMapper.map(studentDTO, Student.class);
+            student.setCreatedDate(groupRepository.findById(id).get().getCreatedDate());
             student.setModifiedDate(new Date());
             studentRepository.save(student);
             return studentDTO;
@@ -67,11 +71,20 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<StudentDTO> getAll() {
-        List<Student> students = studentRepository.findAll(Sort.by("createdDate").ascending());
-        List<StudentDTO> studentDTOS = new ArrayList<>();
-        for (Student element : students){
-            studentDTOS.add(modelMapper.map(element, StudentDTO.class));
-        }
-        return studentDTOS;
+        List<StudentDTO> studentDTO = new ArrayList<>();
+        studentRepository.findAll(Sort.by("createdDate").ascending()).forEach(student -> {
+            studentDTO.add(modelMapper.map(student, StudentDTO.class));
+        });
+        return studentDTO;
+    }
+
+    @Override
+    public List<StudentDTO> getAllByGroupId(String groupId) {
+        Group group = groupRepository.findById(groupId).get();
+        List<StudentDTO> studentDTO = new ArrayList<>();
+        studentRepository.findAllByGroup(group, Sort.by("createdDate").ascending()).forEach(student -> {
+            studentDTO.add(modelMapper.map(student, StudentDTO.class));
+        });
+        return studentDTO;
     }
 }
