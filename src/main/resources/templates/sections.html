@@ -1,0 +1,155 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/custom.css}">
+    <title>Секции</title>
+</head>
+<body>
+
+<div class="container">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white pb-0">
+            <li class="breadcrumb-item active" aria-current="page">Секции</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-4" th:each="section, iterStat : ${sections}">
+            <div class="card element">
+                <div class="card-header bg-header text-center">
+                    <h5 class="card-title mb-0" th:text="*{section.name}"></h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text" name="description" th:text="*{section.description}"></p>
+                </div>
+                <div class="card-footer bg-white text-center">
+                    <a th:href="@{'/section/' + *{section.id}}">
+                        <button class="btn btn-outline-primary">Группы</button>
+                    </a>
+                    <button class="btn btn-outline-primary" data-toggle="modal"
+                            th:data-target="'#editEntity' + ${iterStat.index}">Редактировать
+                    </button>
+                    <button class="btn btn-outline-primary" data-toggle="modal"
+                            th:data-target="'#deleteEntity' + ${iterStat.index}">Удалить
+                    </button>
+                </div>
+            </div>
+
+            <!-- Edit entity -->
+            <div class="modal fade" th:id="'editEntity' + ${iterStat.index}" tabindex="-1" role="dialog"
+                 aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Редактирование секции</h5>
+                        </div>
+                        <form>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <input name="id" th:value="*{section.id}" type="hidden">
+                                    <label>Название</label>
+                                    <input name="name" th:value="*{section.name}" type="text" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Описание</label>
+                                    <textarea name="description" th:text="*{section.description}" class="form-control"
+                                              rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                                <button type="button" class="updateSection btn btn-primary">Сохранить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete entity -->
+            <div class="modal fade" th:id="'deleteEntity' + ${iterStat.index}" tabindex="-1" role="dialog"
+                 aria-hidden="true"
+                 data-backdrop="static">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Удаление секции</h5>
+                        </div>
+                        <form>
+                            <div class="modal-body">
+                                <input name="id" th:value="*{section.id}" type="hidden">
+                                <p>Вы действительно хотите удалить секцию?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                                <button type="button" class="deleteSection btn btn-primary">Удалить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card element">
+                <div class="card-header bg-header text-center">
+                    <h5 class="card-title mb-0">Новая секция</h5>
+                </div>
+                <div class="card-body">
+
+                </div>
+                <div class="card-footer bg-white text-center">
+                    <button class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#addEntity">
+                        Добавить
+                    </button>
+                </div>
+            </div>
+
+            <!-- Add entity -->
+            <div class="modal fade" id="addEntity" tabindex="-1" role="dialog" aria-hidden="true"
+                 data-backdrop="static">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Добавление секции</h5>
+                        </div>
+                        <form>
+                            <div class="modal-body">
+
+                                <div class="form-group">
+                                    <label>Название</label>
+                                    <input name="name" type="text" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Описание</label>
+                                    <textarea name="description" class="form-control" rows="3"></textarea>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                                <button type="button" class="createSection btn btn-primary">Добавить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- jQuery, Popper.js, Bootstrap JS -->
+<script th:src="@{/js/jquery.js}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script th:src="@{/js/request/sectionCrud.js}"></script>
+</body>
+</html>
