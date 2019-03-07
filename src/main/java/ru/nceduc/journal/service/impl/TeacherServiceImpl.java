@@ -88,8 +88,4 @@ public class TeacherServiceImpl implements TeacherService {
         return teacherDTO;
     }
 
-    @Override
-    public List<TeacherDTO> getAllByGroupId(String groupId) {
-        return null;
-    }
 }

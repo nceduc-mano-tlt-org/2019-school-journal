@@ -47,7 +47,7 @@ public class SectionController {
     @PostMapping
     public ResponseEntity<SectionDTO> createSection(@RequestBody SectionDTO sectionDTO) {
         String projectId = projectService.getCurrentProject().getId();
-        // TODO -  sectionDTO.setProject(projectId);
+        sectionDTO.setProjectId(projectId);
         SectionDTO createdSection = sectionService.create(sectionDTO);
         return new ResponseEntity<>(createdSection, HttpStatus.CREATED);
     }

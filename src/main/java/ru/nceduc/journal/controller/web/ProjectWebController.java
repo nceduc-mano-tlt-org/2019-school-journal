@@ -23,7 +23,7 @@ public class ProjectWebController {
     public String getProjectPage(Model model) {
         UserEntity userEntity = serviceUser.getCurrentUsername();
         ProjectDTO project = serviceProject.get(userEntity.getProject().getId());
-        model.addAttribute("projectName", project.getNameProject());
+        model.addAttribute("projectName", project.getName());
         //TODO
         return "project";
     }
