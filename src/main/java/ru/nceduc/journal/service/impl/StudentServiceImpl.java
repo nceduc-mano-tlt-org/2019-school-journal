@@ -87,4 +87,9 @@ public class StudentServiceImpl implements StudentService {
         });
         return studentDTO;
     }
+
+    @Override
+    public List<StudentDTO> getAllByGroupId(String groupId) {
+        return null;
+    }
 }
