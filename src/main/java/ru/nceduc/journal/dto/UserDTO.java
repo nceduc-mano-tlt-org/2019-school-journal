@@ -1,7 +1,6 @@
 package ru.nceduc.journal.dto;
 
 import lombok.Data;
-import ru.nceduc.journal.entity.Project;
 import ru.nceduc.journal.entity.Role;
 
 import java.util.Set;
@@ -12,6 +11,6 @@ public class UserDTO {
     private String username;
     private String password;
     private boolean active;
-    private Project project;
+    private String projectId;
     private Set<Role> roles;
 }
