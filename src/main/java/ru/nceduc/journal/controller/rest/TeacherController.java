@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/teacher")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@Api(value="teacher", description="Operations pertaining to teachers in School Journal")
+@Api(description="Operations pertaining to teachers in School Journal", tags = "TEACHER-V1")
 public class TeacherController {
     private TeacherService teacherService;
 
