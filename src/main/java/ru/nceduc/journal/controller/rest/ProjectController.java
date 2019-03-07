@@ -1,5 +1,6 @@
 package ru.nceduc.journal.controller.rest;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/api/v1/project")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Api(description="Operations pertaining to project in School Journal", tags = "PROJECT-V1")
 public class ProjectController {
 
     private final ProjectServiceImpl service;
