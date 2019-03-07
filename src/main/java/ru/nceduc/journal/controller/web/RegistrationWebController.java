@@ -1,4 +1,4 @@
-package ru.nceduc.journal.controller.rest;
+package ru.nceduc.journal.controller.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,7 @@ import ru.nceduc.journal.service.impl.UserServiceImpl;
 
 @Controller
 @RequestMapping(value = "/registration")
-public class RegistrationController {
+public class RegistrationWebController {
 
     @Autowired
     private UserServiceImpl service;
