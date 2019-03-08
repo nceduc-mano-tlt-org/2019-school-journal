@@ -28,7 +28,7 @@ public class GroupController {
     }
 
     @ApiOperation(value = "Get all groups")
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<GroupDTO>> getAllGroups() {
         List<GroupDTO> groupsDTO = groupService.getAll();
         return new ResponseEntity<>(groupsDTO, HttpStatus.OK);
