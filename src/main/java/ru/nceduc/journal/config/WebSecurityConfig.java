@@ -2,15 +2,12 @@ package ru.nceduc.journal.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
 
@@ -25,17 +22,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    //.antMatchers("/**").permitAll()
-                    .antMatchers("/", "/signup/**", "/signin/**", "/api/**").permitAll()
+                    .antMatchers("/", "/signup.html", "/signin.html", "/api/v1/signin/", "/api/v1/signup/").permitAll() // DANGER: path can be changed during dev TODO: fix it
                     .antMatchers("/h2-console/**").permitAll()
                     .antMatchers("swagger-ui.html").permitAll()
                     .antMatchers("/assets/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
-                    .loginPage("/signin/index.html")
+                    .loginPage("/signin.html")
                     .loginProcessingUrl("/api/v1/signin/")
-                    .defaultSuccessUrl("/project/index.html", true)
+                    .defaultSuccessUrl("/project.html", true)
                     .permitAll()
                 .and()
                     .logout()

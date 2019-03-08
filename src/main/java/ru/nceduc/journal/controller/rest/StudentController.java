@@ -17,7 +17,8 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Api(description="Operations pertaining to students in School Journal", tags = "STUDENT-V1")
 public class StudentController {
-    private StudentService studentService;
+
+    private final StudentService studentService;
 
     @ApiOperation(value = "Get all students")
     @GetMapping("/")

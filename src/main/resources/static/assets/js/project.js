@@ -17,7 +17,7 @@ Vue.component('project-list', {
         '      <br>projectDescription \n' +
         '    </p>\n' +
         '    <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditProject(this)"  data-toggle="modal" id data-target="#editProjectModal">Manage</button>\n' +
-        '    <a href="/section/" class="btn textc-white bgc-primary">Enter</a>\n' +
+        '    <a href="/section.html" class="btn textc-white bgc-primary">Enter</a>\n' +
         '  </div>\n' +
         '</div>'
 });
@@ -41,7 +41,7 @@ var vm = new Vue({
             axios.post('/api/v1/project/', {
                 id: document.getElementById("add_project_id").value,
                 name: document.getElementById("add_project_name").value,
-                userId: document.getElementById("add_project_owner").value,
+                //userId: document.getElementById("add_project_owner").value
             })
                 .then(function (response) {
                     console.log(response);
@@ -56,7 +56,7 @@ var vm = new Vue({
             axios.put('/api/v1/project/', {
                 id: document.getElementById("edit_project_id").value,
                 name: document.getElementById("edit_project_name").value,
-                userId: document.getElementById("edit_project_owner").value,
+                //userId: document.getElementById("edit_project_owner").value
             })
                 .then(function (response) {
                     console.log(response);

@@ -13,7 +13,7 @@ import ru.nceduc.journal.service.impl.ProjectServiceImpl;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api/v1/project")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Api(description="Operations pertaining to project in School Journal", tags = "PROJECT-V1")

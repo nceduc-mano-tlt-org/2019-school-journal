@@ -21,7 +21,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @ApiOperation(value = "Get all users DEV ONLY!!!")
+    @ApiOperation(value = "Get all users") // TODO: move to secure location
     @GetMapping
     public ResponseEntity<List<UserDTO>> getUser() {
         return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);

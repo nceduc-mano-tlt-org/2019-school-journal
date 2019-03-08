@@ -17,7 +17,7 @@ public class Project extends AbstractEntity{
     @OneToOne(mappedBy = "project")
     private UserEntity user;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "project")
     private List<Section> sections;
 
     public Project() {
