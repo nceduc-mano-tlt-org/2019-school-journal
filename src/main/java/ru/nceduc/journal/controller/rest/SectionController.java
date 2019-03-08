@@ -23,28 +23,28 @@ public class SectionController {
     private final ProjectService projectService;
 
     @ApiOperation(value = "Get details of specific section")
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<SectionDTO> getSection(@PathVariable String id) {
         SectionDTO sectionDTO = sectionService.get(id);
         return new ResponseEntity<>(sectionDTO, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get all sections")
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<SectionDTO>> getAllSections() {
         List<SectionDTO> sectionsDTO = sectionService.getAll();
         return new ResponseEntity<>(sectionsDTO, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get all sections by project id")
-    @GetMapping("by-project/{projectId}")
+    @GetMapping("/by-project/{projectId}")
     public ResponseEntity<List<SectionDTO>> getAllSectionsByProjectId(@PathVariable String projectId) {
         List<SectionDTO> sectionsDTO = sectionService.getAllByProjectId(projectId);
         return new ResponseEntity<>(sectionsDTO, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Create a new section")
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<SectionDTO> createSection(@RequestBody SectionDTO sectionDTO) {
         String projectId = projectService.getCurrentProject().getId();
         sectionDTO.setProjectId(projectId);
@@ -52,22 +52,22 @@ public class SectionController {
         return new ResponseEntity<>(createdSection, HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "Patch section details")
-    @PatchMapping
-    public ResponseEntity<SectionDTO> patchSection(@RequestBody SectionDTO sectionDTO) {
-        SectionDTO patchedSection = sectionService.patch(sectionDTO);
-        return new ResponseEntity<>(patchedSection, HttpStatus.OK);
-    }
-
     @ApiOperation(value = "Update section details")
-    @PutMapping
+    @PutMapping("/")
     public ResponseEntity<SectionDTO> updateSection(@RequestBody SectionDTO sectionDTO) {
         SectionDTO updatedSection = sectionService.update(sectionDTO);
         return new ResponseEntity<>(updatedSection, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Patch section details")
+    @PatchMapping("/")
+    public ResponseEntity<SectionDTO> patchSection(@RequestBody SectionDTO sectionDTO) {
+        SectionDTO patchedSection = sectionService.patch(sectionDTO);
+        return new ResponseEntity<>(patchedSection, HttpStatus.OK);
+    }
+
     @ApiOperation(value = "Delete a section")
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<SectionDTO> deleteSection(@PathVariable String id) {
         sectionService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

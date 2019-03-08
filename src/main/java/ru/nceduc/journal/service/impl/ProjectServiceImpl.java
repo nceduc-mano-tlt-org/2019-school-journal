@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.nceduc.journal.dto.ProjectDTO;
 import ru.nceduc.journal.entity.Project;
+import ru.nceduc.journal.entity.UserEntity;
 import ru.nceduc.journal.repository.ProjectRepository;
 import ru.nceduc.journal.service.ProjectService;
 
@@ -48,7 +49,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectDTO update(ProjectDTO entity) {
         String id = entity.getId();
-        if (id != null && repository.existsById(id)){
+        if (id != null && id != "" && repository.existsById(id)){
             Project project = modelMapper.map(entity, Project.class);
             project.setCreatedDate(repository.findById(id).get().getCreatedDate());
             project.setModifiedDate(new Date());
@@ -77,7 +78,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectDTO getCurrentProject() {
-        Project project = userService.getCurrentUsername().getProject();
+        Project project = userService.getCurrentUser().getProject();
         return modelMapper.map(project, ProjectDTO.class);
     }
 }

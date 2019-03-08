@@ -13,13 +13,25 @@ import ru.nceduc.journal.service.impl.ProjectServiceImpl;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api/v1/project")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Api(description="Operations pertaining to project in School Journal", tags = "PROJECT-V1")
 public class ProjectController {
 
     private final ProjectServiceImpl service;
+
+    @ApiOperation(value = "Get all projects")
+    @GetMapping("/")
+    public ResponseEntity<List<ProjectDTO>> getAllProjects(){
+        return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Get project details")
+    @GetMapping("/{id}")
+    public ResponseEntity<ProjectDTO> getProject(@PathVariable String id){
+        return new ResponseEntity<>(service.get(id), HttpStatus.OK);
+    }
 
     @ApiOperation(value = "Create a new project")
     @PostMapping("/")
@@ -28,17 +40,17 @@ public class ProjectController {
         return new ResponseEntity<>(projectDTO, HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "Update project")
+    @PutMapping("/")
+    public ResponseEntity<ProjectDTO> updateProject(@RequestBody ProjectDTO projectDTO) {
+        service.update(projectDTO);
+        return new ResponseEntity<>(projectDTO, HttpStatus.OK);
+    }
+
     @ApiOperation(value = "Patch project")
     @PatchMapping("/")
     public ResponseEntity<ProjectDTO> patchProject(@RequestBody ProjectDTO projectDTO) {
         service.patch(projectDTO);
-        return new ResponseEntity<>(projectDTO, HttpStatus.OK);
-    }
-
-    @ApiOperation(value = "Update project")
-    @PutMapping("/")
-    public ResponseEntity<ProjectDTO> updateGroup(@RequestBody ProjectDTO projectDTO) {
-        service.update(projectDTO);
         return new ResponseEntity<>(projectDTO, HttpStatus.OK);
     }
 
@@ -49,15 +61,7 @@ public class ProjectController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get project details")
-    @GetMapping("/{id}")
-    public ResponseEntity<ProjectDTO> getProject(@PathVariable String id){
-        return new ResponseEntity<>(service.get(id), HttpStatus.OK);
-    }
 
-    @ApiOperation(value = "Get all projects")
-    @GetMapping("/")
-    public ResponseEntity<List<ProjectDTO>> getAllProjects(){
-        return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
-    }
+
+
 }

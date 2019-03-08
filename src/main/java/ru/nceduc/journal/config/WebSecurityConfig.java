@@ -22,13 +22,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/registration").permitAll()
+                    .antMatchers("/", "/signup.html", "/signin.html", "/api/v1/signin/", "/api/v1/signup/").permitAll() // DANGER: path can be changed during dev TODO: fix it
                     .antMatchers("/h2-console/**").permitAll()
+                    .antMatchers("swagger-ui.html").permitAll()
+                    .antMatchers("/assets/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
-                    .defaultSuccessUrl("/")
-                    .loginPage("/login")
+                    .loginPage("/signin.html")
+                    .loginProcessingUrl("/api/v1/signin/")
+                    .defaultSuccessUrl("/project.html", true)
                     .permitAll()
                 .and()
                     .logout()

@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <title>Teach'em all!</title>
+</head>
+<body>
+  <div id="app">
+
+    <!-- Modal ADD-->
+    <div class="modal fade" id="addProjectModal" tabindex="-1" role="dialog" aria-labelledby="addProjectModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addProjectModalTitle">Add project</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="vm.loadProject()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="add_project_name">Project name:</label>
+                <input type="text" class="form-control" id="add_project_name" name="project_name" value="Some default project">
+              </div>
+              <div class="form-group d-none">
+                <label for="add_project_owner">Project owner:</label>
+                <input type="text" class="form-control" id="add_project_owner" name="project_owner">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn textc-white bgc-primary" onClick="vm.addProject()">ADD</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Modal EDIT-->
+    <div class="modal fade" id="editProjectModal" tabindex="-1" role="dialog" aria-labelledby="editProjectModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editProjectModalTitle">Manage project</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="vm.loadProject()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <input id="edit_project_id" name="project_id" type="hidden" value="">
+              <div class="form-group">
+                <label for="edit_project_name">Project name:</label>
+                <input type="text" class="form-control" id="edit_project_name" name="project_name">
+              </div>
+              <div class="form-group d-none">
+                <label for="edit_project_owner">Project owner:</label>
+                <input type="text" class="form-control" id="edit_project_owner" name="project_owner">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn textc-white bgc-primary" onClick="vm.editProject()">SAVE</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="container-fluid bgc-white">
+      <div class="header-container">
+       <div class="row header">
+         <div class="col-md-3 pt-2 bgc-primary textc-white logo-container">
+          <img src="/assets/i/logo/logo-white-bg-none.png" height="50px" class="d-inline-block" alt="...">
+        </div>
+        <div class="col-md-5 pt-4"></div>
+        <div class="col-md-4 pt-4 textc-white text-right">
+          <h5 class="textc-black d-inline-block pr-3">You are signed as: thirdmadman</h5> 
+          <div class="btn btn-signout d-inline-block">Sign out</div>
+        </div>
+      </div>
+    </div>
+    <div class="mainframe-container">
+      <div class="row mainframe">
+        <div class="col-md-3 pt-4 bgc-primary textc-white">
+          <h2 class="mb-4 pl-3">Project sructure:</h2>
+          <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action bgc-white">Enter to the project to see structure </a>
+          </div>
+        </div>
+        <div class="col-md-9 pt-3 textc-black">
+          <h2 class="p-3 cp-title">Projects list:</h2>
+
+          <button type="button" class="btn textc-white bgc-primary d-none"  data-toggle="modal" id data-target="#addProjectModal">
+            Add project
+          </button>
+
+          <project-list v-for="project in projects" :key="project.id" :project-id="project.id" :project-name="project.name" :project-owner="project.userId">
+
+
+          </project-list>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+crossorigin="anonymous"></script>
+<!-- development version, includes helpful console warnings -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/assets/js/project.js"></script>
+</body>
+</html>
