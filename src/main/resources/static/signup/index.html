@@ -19,13 +19,13 @@
           <form>
             <h4>Sign Up</h4>
             <div class="form-group">
-              <label for="inputLogin">Email address/Login</label>
-              <input type="email" class="form-control" id="inputLogin" placeholder="Enter email/Login">
+              <label for="input-username">Email address/Login</label>
+              <input type="text" class="form-control" id="input-username" name="username" aria-describedby="emailHelp" placeholder="Enter email/Login">
+              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
             </div>
             <div class="form-group">
-              <label for="inputPassword">Password</label>
-              <input type="password" aria-describedby="passwordNotice" class="form-control" id="inputPassword" placeholder="Password">
-              <small id="passwordNotice" class="form-text text-muted">Always include numbers, symbols, and uppercase and lowercase letters</small>
+              <label for="input-password">Password</label>
+              <input type="password" class="form-control" id="input-password" name="password" placeholder="Password">
             </div>
             <div class="form-group form-check">
               <input type="checkbox" class="form-check-input" id="termsAgree">

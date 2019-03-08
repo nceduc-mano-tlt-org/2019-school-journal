@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ru.nceduc.journal.dto.UserDTO;
 import ru.nceduc.journal.entity.Project;
@@ -29,13 +30,14 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
 
     @Override
-    public UserEntity getCurrentUsername() {
-        User user = (User)SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
-        String name = user.getUsername();
-        return repositoryUser.findByUsername(name);
+    public UserEntity getCurrentUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = "";
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails)principal).getUsername();
+        }
+        UserEntity user = repositoryUser.findByUsername(username);
+        return user;
     }
 
     @Override

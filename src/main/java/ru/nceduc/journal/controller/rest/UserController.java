@@ -14,19 +14,12 @@ import ru.nceduc.journal.service.UserService;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/signup")
+@RequestMapping("api/v1/signup/")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Api(description="Users operations", tags = "USER-V1")
 public class UserController {
 
     private final UserService userService;
-
-    @ApiOperation(value = "Create a new user")
-    @ResponseStatus(HttpStatus.OK)
-    @PostMapping
-    public void createUser(@RequestBody UserDTO userDTO) {
-        userService.create(userDTO);
-    }
 
     @ApiOperation(value = "Get all users DEV ONLY!!!")
     @GetMapping
@@ -34,4 +27,10 @@ public class UserController {
         return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Create a new user")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping
+    public void createUser(@RequestBody UserDTO userDTO) {
+        userService.create(userDTO);
+    }
 }

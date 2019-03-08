@@ -15,16 +15,9 @@ public class MainWebController {
 
     @GetMapping(value = "/hello/")
     public String getHello(Model model){
-//        UserEntity user = service.getCurrentUsername();
-//        if (user.getUsername()!= null) {
-//            model.addAttribute("username", user.getUsername());
-//            model.addAttribute("password", user.getPassword());
-//        }
+        UserEntity user = service.getCurrentUser();
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("password", user.getPassword());
         return "hello";
     }
-
-/*    @GetMapping(value = "/")
-    public String getHome(){
-        return "home";
-    }*/
 }

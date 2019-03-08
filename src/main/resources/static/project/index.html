@@ -29,6 +29,10 @@
                 <label for="add_project_name">Project name:</label>
                 <input type="text" class="form-control" id="add_project_name" name="project_name" value="Some default project">
               </div>
+              <div class="form-group d-none">
+                <label for="add_project_owner">Project owner:</label>
+                <input type="text" class="form-control" id="add_project_owner" name="project_owner">
+              </div>
             </form>
           </div>
           <div class="modal-footer">
@@ -52,10 +56,14 @@
           </div>
           <div class="modal-body">
             <form>
-              <input id="edit_project_id" name="personId" type="hidden" value="xm234jq">
+              <input id="edit_project_id" name="project_id" type="hidden" value="">
               <div class="form-group">
                 <label for="edit_project_name">Project name:</label>
                 <input type="text" class="form-control" id="edit_project_name" name="project_name">
+              </div>
+              <div class="form-group d-none">
+                <label for="edit_project_owner">Project owner:</label>
+                <input type="text" class="form-control" id="edit_project_owner" name="project_owner">
               </div>
             </form>
           </div>
@@ -97,7 +105,8 @@
             Add project
           </button>
 
-          <project-list v-for="project in projects" :key="project.id" :project-id="project.id" :project-name="project.nameProject">
+          <project-list v-for="project in projects" :key="project.id" :project-id="project.id" :project-name="project.name" :project-owner="project.userId">
+
 
           </project-list>
         </div>

@@ -6,12 +6,11 @@ var vm = new Vue({
     methods: {
         signIn: function (element) {
                 axios.post('/api/v1/signin/', {
-                    login: document.getElementById("inputLogin").value,
-                    password: document.getElementById("inputPassword").value,
+                    username: document.getElementById("input-username").value,
+                    password: document.getElementById("input-password").value,
                 })
                 .then(function (response) {
                     console.log(response);
-                    setTimeout(vm.loadData(), 1000);
                 })
                 .catch(function (error) {
                     console.log(error);

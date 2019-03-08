@@ -1,5 +1,5 @@
 Vue.component('project-list', {
-    props: ['projectId','projectName'],
+    props: ['projectId','projectName','projectOwner'],
     template:
         '<div class="card d-inline-block mt-2" style="width: 18rem;">\n' +
         '  <img src="/assets/i/no-image.png" class="card-img-top" alt="">\n' +
@@ -7,8 +7,9 @@ Vue.component('project-list', {
         '   <button type="button" class="close d-none" aria-label="Close" onclick="vm.deleteProject(this)">\n' +
         '       <span aria-hidden="true">&times;</span>\n' +
         '   </button>'+
+        '    <h6 class="d-none" >Project ID: <b>{{projectId}}</b></h6>\n' +
         '    <h5 class="card-title"><b>{{projectName}}</b></h5>\n' +
-        '    <h6 class="d-none" >ID: <b>{{projectId}}</b></h6>\n' +
+        '    <h6 class="d-none" >Owner ID: <b>{{projectOwner}}</b></h6>\n' +
         '    <p class="card-text d-none"><span class="font-weight-bold">Project owner:</span>\n' +
         '      <span class="badge badge-primary bgc-primary">projectOwner</span>\n' +
         '    </p>\n' +
@@ -25,17 +26,10 @@ Vue.component('project-list', {
 var vm = new Vue({
     el: '#app',
     data: {
-        projects: [{
-            id: 1,
-            nameProject: 'My journey with Vue'  
-        }] //TODO: del after API became works
+        projects: []
     },
     mounted() {
-        //axios.get('/api/v1/project/').then(response => (this.projects = response.data));
-        this.projects [{
-            id: 1,
-            nameProject: 'My journey with Vue'  
-        }]
+        axios.get('/api/v1/project/').then(response => (this.projects = response.data));
     },
     methods: {
         loadProject: function () {
@@ -45,14 +39,13 @@ var vm = new Vue({
         },
         addProject: function () {
             axios.post('/api/v1/project/', {
-                id: "1",
-                name: document.getElementById("add_person_name").value,
-                lastName: document.getElementById("add_person_last_name").value,
-                cars: []
+                id: document.getElementById("add_project_id").value,
+                name: document.getElementById("add_project_name").value,
+                userId: document.getElementById("add_project_owner").value,
             })
                 .then(function (response) {
                     console.log(response);
-                    setTimeout(vm.loadData(), 1000);
+                    setTimeout(vm.loadProject(), 1000);
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -61,14 +54,13 @@ var vm = new Vue({
         },
         editProject: function () {
             axios.put('/api/v1/project/', {
-                id: document.getElementById("edit_person_id").value,
-                name: document.getElementById("edit_person_name").value,
-                lastName: document.getElementById("edit_person_last_name").value,
-                cars: []
+                id: document.getElementById("edit_project_id").value,
+                name: document.getElementById("edit_project_name").value,
+                userId: document.getElementById("edit_project_owner").value,
             })
                 .then(function (response) {
                     console.log(response);
-                    setTimeout(vm.loadData(), 1000);
+                    setTimeout(vm.loadProject(), 1000);
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -77,12 +69,12 @@ var vm = new Vue({
         },
         deleteProject: function (element) {
             var button = element;
-            personId = button.parentNode.getElementsByTagName("h5")[0].getElementsByTagName("b")[0].innerText;
+            var projectId = button.parentNode.getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
 
-            axios.delete('/api/v1/project/'+personId, {})
+            axios.delete('/api/v1/project/'+ projectId, {})
                 .then(function (response) {
                     console.log(response);
-                    setTimeout(vm.loadData(), 1000);
+                    setTimeout(vm.loadProject(), 1000);
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -91,12 +83,12 @@ var vm = new Vue({
         },
         openEditProject: function (element) {
             var button = element;
-            personId = button.parentNode.getElementsByTagName("h5")[0].getElementsByTagName("b")[0].innerText;
-            personName = button.parentNode.getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
-            personLastName = button.parentNode.getElementsByTagName("h6")[1].getElementsByTagName("b")[0].innerText;
-            document.getElementById("edit_person_id").value = personId;
-            document.getElementById("edit_person_name").value = personName;
-            document.getElementById("edit_person_last_name").value = personLastName;
+            var projectId = button.parentNode.getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
+            var projectName = button.parentNode.getElementsByTagName("h5")[0].getElementsByTagName("b")[0].innerText;
+            var projectOwner = button.parentNode.getElementsByTagName("h6")[1].getElementsByTagName("b")[0].innerText;
+            document.getElementById("edit_project_id").value = projectId;
+            document.getElementById("edit_project_name").value = projectName;
+            document.getElementById("edit_project_owner").value = projectOwner;
 
         }
     }

@@ -19,6 +19,24 @@ import java.util.List;
 public class StudentController {
     private StudentService studentService;
 
+    @ApiOperation(value = "Get all students")
+    @GetMapping("/")
+    public ResponseEntity<List<StudentDTO>> getAllStudents() {
+        return new ResponseEntity<>(studentService.getAll(), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Get specific student details")
+    @GetMapping("/{id}")
+    public ResponseEntity<StudentDTO> getStudent(@PathVariable String id) {
+        return new ResponseEntity<>(studentService.get(id), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Get all students by ID of group")
+    @GetMapping("/by-group/{id}")
+    public ResponseEntity<List<StudentDTO>> getAllStudentsByGroupId(@PathVariable String id) {
+        return new ResponseEntity<>(studentService.getAllByGroupId(id), HttpStatus.OK);
+    }
+
     @ApiOperation(value = "Create a new student")
     @PostMapping("/")
     public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentDTO studentDTO) {
@@ -47,22 +65,6 @@ public class StudentController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get specific student details")
-    @GetMapping("/{id}")
-    public ResponseEntity<StudentDTO> getStudent(@PathVariable String id) {
-        return new ResponseEntity<>(studentService.get(id), HttpStatus.OK);
-    }
 
-    @ApiOperation(value = "Get all students")
-    @GetMapping("/")
-    public ResponseEntity<List<StudentDTO>> getAllStudents() {
-        return new ResponseEntity<>(studentService.getAll(), HttpStatus.OK);
-    }
-
-    @ApiOperation(value = "Get all students by ID of group")
-    @GetMapping("/by-group/{id}")
-    public ResponseEntity<List<StudentDTO>> getAllStudentsByGroupId(@PathVariable String id) {
-        return new ResponseEntity<>(studentService.getAllByGroupId(id), HttpStatus.OK);
-    }
 }
 

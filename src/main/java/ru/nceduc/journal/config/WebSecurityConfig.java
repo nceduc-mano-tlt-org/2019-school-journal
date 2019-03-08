@@ -25,16 +25,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/**").permitAll()
-                    //.antMatchers("/", "/signup/**", "/signin/**").permitAll()
-                    //.antMatchers("/h2-console/**").permitAll()
-                    //.antMatchers("/assets/**").permitAll()
+                    //.antMatchers("/**").permitAll()
+                    .antMatchers("/", "/signup/**", "/signin/**", "/api/**").permitAll()
+                    .antMatchers("/h2-console/**").permitAll()
+                    .antMatchers("swagger-ui.html").permitAll()
+                    .antMatchers("/assets/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
-                .loginPage("/signin/index.html")
-                .loginProcessingUrl("/api/v1/signin/")
-                .defaultSuccessUrl("/index.html", true)
+                    .loginPage("/signin/index.html")
+                    .loginProcessingUrl("/api/v1/signin/")
+                    .defaultSuccessUrl("/project/index.html", true)
                     .permitAll()
                 .and()
                     .logout()
@@ -52,10 +53,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(NoOpPasswordEncoder.getInstance())
                 .usersByUsernameQuery("select username, password, active from usr where username=?")
                 .authoritiesByUsernameQuery("select u.username, ur.roles from usr u inner join user_role ur on u.id = ur.user_id where u.username=?");
-    }
-
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
     }
 }

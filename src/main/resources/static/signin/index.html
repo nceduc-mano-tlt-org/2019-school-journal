@@ -16,16 +16,16 @@
       <div class="container signin__form textc-white">
         <div class="row align-items-center justify-content-center">
          <div class="col-md-4">
-          <form action="/api/v1/signin/">
+          <form action="/api/v1/signin/" method="POST">
             <h4>Sign in</h4>
             <div class="form-group">
-              <label for="login">Email address/Login</label>
-              <input type="text" class="form-control" id="login" aria-describedby="emailHelp" placeholder="Enter email/Login">
+              <label for="input-username">Email address/Login</label>
+              <input type="text" class="form-control" id="input-username" name="username" aria-describedby="emailHelp" placeholder="Enter email/Login" value="123">
               <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
             </div>
             <div class="form-group">
-              <label for="password">Password</label>
-              <input type="password" class="form-control" id="password" placeholder="Password">
+              <label for="input-password">Password</label>
+              <input type="password" class="form-control" id="input-password" name="password" placeholder="Password" value="123">
             </div>
               <button type="submit" class="btn btn-primary" onClick="vm.signIn(this)">Sign In!</button>
           </form>
