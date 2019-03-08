@@ -22,7 +22,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/signup.html", "/signin.html", "/api/v1/signin/", "/api/v1/signup/").permitAll() // DANGER: path can be changed during dev TODO: fix it
+                    .antMatchers("/", "/signup.html", "/signin.html", "/api/v1/signin/", "/api/v1/user/signup/").permitAll() // DANGER: path can be changed during dev TODO: fix it
                     .antMatchers("/h2-console/**").permitAll()
                     .antMatchers("swagger-ui.html").permitAll()
                     .antMatchers("/assets/**").permitAll()

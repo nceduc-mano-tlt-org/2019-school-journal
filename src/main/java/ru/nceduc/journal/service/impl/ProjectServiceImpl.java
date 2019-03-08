@@ -81,5 +81,15 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = userService.getCurrentUser().getProject();
         return modelMapper.map(project, ProjectDTO.class);
     }
+
+    @Override
+    public List<ProjectDTO> getAllByUser() {
+        ProjectDTO projectDTO;
+        List<ProjectDTO> all = new ArrayList<>();
+        for(Project project: repository.findAllByUser(userService.getCurrentUser())){
+            all.add(modelMapper.map(project, ProjectDTO.class));
+        }
+        return all;
+    }
 }
 

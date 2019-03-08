@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.nceduc.journal.dto.ProjectDTO;
+import ru.nceduc.journal.service.ProjectService;
 import ru.nceduc.journal.service.impl.ProjectServiceImpl;
 
 import java.util.List;
@@ -19,12 +20,18 @@ import java.util.List;
 @Api(description="Operations pertaining to project in School Journal", tags = "PROJECT-V1")
 public class ProjectController {
 
-    private final ProjectServiceImpl service;
+    private final ProjectService service;
 
     @ApiOperation(value = "Get all projects")
     @GetMapping("/")
     public ResponseEntity<List<ProjectDTO>> getAllProjects(){
         return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Get current project ")
+    @GetMapping("/current/")
+    public ResponseEntity<List<ProjectDTO>> getProjectByUser(){
+        return new ResponseEntity<>(service.getAllByUser(), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get project details")
@@ -60,8 +67,5 @@ public class ProjectController {
         service.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
-
 
 }

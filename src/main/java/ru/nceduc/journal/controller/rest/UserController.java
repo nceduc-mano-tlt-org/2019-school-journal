@@ -14,22 +14,22 @@ import ru.nceduc.journal.service.UserService;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/signup/")
+@RequestMapping("/api/v1/user")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Api(description="Users operations", tags = "USER-V1")
 public class UserController {
 
     private final UserService userService;
 
-    @ApiOperation(value = "Get all users") // TODO: move to secure location
-    @GetMapping
+    @ApiOperation(value = "Get all users") // TODO: secure this
+    @GetMapping("/")
     public ResponseEntity<List<UserDTO>> getUser() {
         return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Create a new user")
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping
+    @PostMapping("/signup")
     public void createUser(@RequestBody UserDTO userDTO) {
         userService.create(userDTO);
     }

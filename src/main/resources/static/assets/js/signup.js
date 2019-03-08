@@ -6,7 +6,7 @@ var vm = new Vue({
     methods: {
         signUp: function (element) {
             if (document.getElementById("termsAgree").checked == true) {
-                axios.post('/api/v1/signup/', {
+                axios.post('/api/v1/user/signup/', {
                     username: document.getElementById("input-username").value,
                     password: document.getElementById("input-password").value,
                 })

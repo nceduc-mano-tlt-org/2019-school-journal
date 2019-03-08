@@ -29,13 +29,11 @@ var vm = new Vue({
         projects: []
     },
     mounted() {
-        axios.get('/api/v1/project/').then(response => (this.projects = response.data));
+        axios.get('/api/v1/project/current/').then(response => (this.projects = response.data));
     },
     methods: {
         loadProject: function () {
-                axios
-                    .get('/api/v1/project/')
-                    .then(response => (this.projects = response.data));
+                axios.get('/api/v1/project/current/').then(response => (this.projects = response.data));
         },
         addProject: function () {
             axios.post('/api/v1/project/', {
