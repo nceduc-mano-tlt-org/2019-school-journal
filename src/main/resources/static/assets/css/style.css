@@ -1,0 +1,122 @@
+body, html {
+  height: 100%;
+}
+
+.bgc-primary {
+	background-color: #2980b9;
+}
+.bgc-white {
+	background-color: #ecf0f1;
+}
+
+.bgc-green {
+	background-color: #27ae60;
+}
+
+.textc-primary {
+	color: #2980b9;
+}
+.textc-white {
+	color: #ecf0f1;
+}
+.textc-black {
+	color: #2c3e50;
+}
+
+.header {
+	height: 80px;
+}
+
+.logo-container {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.btn-signout {
+	background-color: #27ae60;
+	color: #ecf0f1;
+}
+
+.mainframe {
+	min-height: 800px;
+}
+
+.cp-title {
+	border-bottom: 2px #2980b9 solid;
+}
+
+.cp {
+	height:100%;
+}
+
+.btn-signin {
+	background-color: #27ae60;
+	color: #ecf0f1;
+	width: 8rem;
+}
+
+.header-landing {
+	min-height: 500px;
+	background: url(/assets/i/bg/mainpage_bg.png);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	padding-top:50px;
+}
+
+.what-we-offer {
+	background-color: #ecf0f1;
+	min-height: 500px;
+}
+
+.signin {
+	height: 100%;
+	background: url(/assets/i/bg/signup.png);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.signup {
+	height: 100%;
+	background: url(/assets/i/bg/signup.png);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.signin__form {
+	padding-top:10%;
+	padding-bottom:10%;
+}
+
+.signin__form a {
+	color: #ecf0f1;
+}
+
+.signin__form a:hover {
+	color: #bdc3c7;
+}
+
+.signin__form button {
+	color: #ecf0f1;
+	background-color: #2ecc71;
+}
+
+.signin__form button:hover {
+	color: #bdc3c7;
+	background-color: #27ae60;
+}
+
+.signin__form button:active {
+	color: #bdc3c7;
+	background-color: #2980b9;
+}
+
+.signin .text-muted {
+	color: #bdc3c7 !important;
+}
+
+#app {
+	height: 100%;
+}

@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <title>Teach'em all!</title>
+</head>
+<body>
+  <div id="app">
+
+    <!-- Modal ADD-->
+    <div class="modal fade" id="addSectionModal" tabindex="-1" role="dialog" aria-labelledby="addSectionModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addSectionModalTitle">Add section</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="vm.loadSection()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <input id="add_section_id" name="sectio-id" type="hidden" value="xm234jq">
+              <div class="form-group">
+                <label for="add_section_name">Section name:</label>
+                <input type="text" class="form-control" id="add_section_name">
+              </div>
+              <div class="form-group">
+                <label for="add_section_description">Section description:</label>
+                <textarea class="form-control" rows="5" id="add_section_description"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn textc-white bgc-primary" onClick="vm.addProject()">ADD</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Modal EDIT-->
+    <div class="modal fade" id="editSectionModal" tabindex="-1" role="dialog" aria-labelledby="editSectionModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editSectionModalTitle">Manage section</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="vm.loadSection()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <input id="edit_section_id" name="sectio-id" type="hidden" value="xm234jq">
+              <div class="form-group">
+                <label for="edit_section_name">Section name:</label>
+                <input type="text" class="form-control" id="edit_section_name">
+              </div>
+              <div class="form-group">
+                <label for="edit_section_description">Section description:</label>
+                <textarea class="form-control" rows="5" id="edit_section_description"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn textc-white bgc-primary" onClick="vm.editSetion()">SAVE</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container-fluid bgc-white">
+      <div class="header-container">
+       <div class="row header">
+         <div class="col-md-3 pt-2 bgc-primary textc-white logo-container">
+          <img src="/assets/i/logo/logo-white-bg-none.png" height="50px" class="d-inline-block" alt="...">
+        </div>
+        <div class="col-md-5 pt-4"></div>
+        <div class="col-md-4 pt-4 textc-white text-right">
+          <h5 class="textc-black d-inline-block pr-3">You are signed as: thirdmadman</h5> 
+          <div class="btn btn-signout d-inline-block">Sign out</div>
+        </div>
+      </div>
+    </div>
+    <div class="mainframe-container">
+      <div class="row mainframe">
+        <div class="col-md-3 pt-4 bgc-primary textc-white">
+          <h2 class="mb-4 pl-3">Project sructure:</h2>
+          <div class="list-group">
+            <a href="/project/" class="list-group-item list-group-item-action bgc-white">Project name: <b>Some new Project</b> </a>
+            <a href="/section/" class="list-group-item list-group-item-action bgc-white">Sections: <span class="badge badge-primary bgc-primary">2</span></a>
+          </div>
+        </div>
+        <div class="col-md-9 pt-3 textc-black">
+          <h2 class="p-3 cp-title">Sections List:
+            <button type="button" class="btn textc-white bgc-primary"  data-toggle="modal" id data-target="#addSectionModal">
+              Add section
+            </button>
+          </h2>
+
+          <section-list v-for="section in sections" :key="section.id" :section-id="section.id" :section-name="section.name" :section-description="section.description"> 
+          </section-list>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+crossorigin="anonymous"></script>
+<!-- development version, includes helpful console warnings -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/assets/js/section.js"></script>
+</body>
+</html>

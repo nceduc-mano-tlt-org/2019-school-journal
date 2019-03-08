@@ -2,12 +2,15 @@ package ru.nceduc.journal.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
 
@@ -22,13 +25,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/registration").permitAll()
-                    .antMatchers("/h2-console/**").permitAll()
+                    .antMatchers("/**").permitAll()
+                    //.antMatchers("/", "/signup/**", "/signin/**").permitAll()
+                    //.antMatchers("/h2-console/**").permitAll()
+                    //.antMatchers("/assets/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
-                    .defaultSuccessUrl("/")
-                    .loginPage("/login")
+                .loginPage("/signin/index.html")
+                .loginProcessingUrl("/api/v1/signin/")
+                .defaultSuccessUrl("/index.html", true)
                     .permitAll()
                 .and()
                     .logout()
@@ -46,5 +52,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(NoOpPasswordEncoder.getInstance())
                 .usersByUsernameQuery("select username, password, active from usr where username=?")
                 .authoritiesByUsernameQuery("select u.username, ur.roles from usr u inner join user_role ur on u.id = ur.user_id where u.username=?");
+    }
+
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
     }
 }

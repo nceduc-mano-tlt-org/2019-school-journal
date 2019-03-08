@@ -1,3 +1,4 @@
+/*
 package ru.nceduc.journal.controller.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,3 +30,4 @@ public class RegistrationWebController {
         return "login";
     }
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package ru.nceduc.journal.controller.web;
 
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,7 @@ import ru.nceduc.journal.service.impl.ProjectServiceImpl;
 import ru.nceduc.journal.service.impl.UserServiceImpl;
 
 @Controller
-@RequestMapping("project/")
+@RequestMapping("/project/")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ProjectWebController {
 
@@ -28,3 +29,4 @@ public class ProjectWebController {
         return "project";
     }
 }
+*/

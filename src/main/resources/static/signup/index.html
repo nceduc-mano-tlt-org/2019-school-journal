@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <title>Teach'em all!</title>
+</head>
+<body>
+  <div id="app">
+    <div class="signin">
+      <div class="container signin__form textc-white">
+        <div class="row align-items-center justify-content-center">
+         <div class="col-md-4">
+          <form>
+            <h4>Sign Up</h4>
+            <div class="form-group">
+              <label for="inputLogin">Email address/Login</label>
+              <input type="email" class="form-control" id="inputLogin" placeholder="Enter email/Login">
+            </div>
+            <div class="form-group">
+              <label for="inputPassword">Password</label>
+              <input type="password" aria-describedby="passwordNotice" class="form-control" id="inputPassword" placeholder="Password">
+              <small id="passwordNotice" class="form-text text-muted">Always include numbers, symbols, and uppercase and lowercase letters</small>
+            </div>
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="termsAgree">
+              <label class="form-check-label" for="termsAgree">I agree with <a href="/">terms of services</a></label>
+            </div>
+          </form>
+          <button class="btn btn-primary" onClick="vm.signUp(this)">Sign Up!</button>
+          <span class="d-inline-block pl-4 pr-4">or</span>
+          <a href="/signin/" class="d-inline-block">Sign in</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+crossorigin="anonymous"></script>
+<!-- development version, includes helpful console warnings -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/assets/js/signup.js"></script>
+</body>
+</html>

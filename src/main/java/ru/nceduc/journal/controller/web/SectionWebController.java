@@ -1,3 +1,4 @@
+/*
 package ru.nceduc.journal.controller.web;
 
 import lombok.RequiredArgsConstructor;
@@ -20,14 +21,14 @@ public class SectionWebController {
     private final GroupService groupService;
     private final SectionService sectionService;
 
-    @GetMapping("sections")
+    @GetMapping("/sections")
     public String showAllSectionsPage(Model model) {
         List<SectionDTO> sectionsDTO = sectionService.getAll();
         model.addAttribute("sections", sectionsDTO);
         return "sections";
     }
 
-    @GetMapping("section/{id}")
+    @GetMapping("/section/{id}")
     public String showSectionPage(Model model, @PathVariable String id) {
         List<GroupDTO> groupsDTO = groupService.getAllBySectionId(id);
         SectionDTO sectionDTO = sectionService.get(id);
@@ -37,3 +38,4 @@ public class SectionWebController {
         return "section";
     }
 }
+*/
