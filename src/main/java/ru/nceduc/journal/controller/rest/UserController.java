@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.nceduc.journal.dto.UserDTO;
 import ru.nceduc.journal.service.AuthService;
@@ -16,15 +17,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/user")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@Api(description="Users operations", tags = "USER-V1")
+@Api(description = "Users operations", tags = "USER-V1")
 public class UserController {
 
     private final UserService userService;
     private final AuthService authService;
 
-    @ApiOperation(value = "Get all users") // TODO: secure this
+    @ApiOperation(value = "Get all users")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/")
-    public ResponseEntity<List<UserDTO>> getUser() {
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
         return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
 
@@ -37,6 +39,7 @@ public class UserController {
 
     @ApiOperation(value = "Authorize a new user")
     @PostMapping("/signin/")
+    @ResponseStatus(HttpStatus.OK)
     public void authenticate(@RequestBody UserDTO userDTO) {
         authService.authUser(userDTO);
     }
