@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/", "/signup.html", "/signin.html", "/api/v1/signin/", "/api/v1/user/signup/").permitAll() // DANGER: path can be changed during dev TODO: fix it
                     .antMatchers("/h2-console/**").permitAll()
-                    .antMatchers("swagger-ui.html").permitAll()
+                    .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**").permitAll()
                     .antMatchers("/assets/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
