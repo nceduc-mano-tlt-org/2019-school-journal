@@ -11,15 +11,13 @@ var vm = new Vue({
                 })
                 .then(function (response) {
                     console.log(response);
+                    if (response.status == 200) {
+                        window.location.href = "/project.html";
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
-                this.checkSignIn();
-        },
-        checkSignIn: function () {
-            console.log('Do some signIn check');
-            //window.location.href = "/project";
         }
     }
 });

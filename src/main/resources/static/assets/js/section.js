@@ -1,9 +1,10 @@
 Vue.component('section-list', {
-    props: ['sectionId','sectionName','sectionDescription'],
+    props: ['sectionId','sectionName','sectionDescription','sectionProjectId'],
     template:
         '<div class="card textc-black mt-3">\n' +
         '  <div class="card-header">\n' +
-        '    <b class="d-none">{{sectionId}}</b>\n' +
+        '    <h6 class="d-none">Section Id: <b>{{sectionId}}</b></h6>\n' +
+        '    <h6 class="d-none">Section Project Id: <b>{{sectionProjectId}}</b></h6>\n' +
         '    <h5 class="card-title">{{sectionName}}</h5>\n' +
         '  </div>\n' +
         '  <div class="card-body">\n' +
@@ -23,7 +24,7 @@ Vue.component('section-list', {
         '      </p>\n' +
         '    </div>\n' +
         '    <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditSection(this)"  data-toggle="modal" id data-target="#editSectionModal">Manage section</button>\n' +
-        '    <a href="/section/1" class="btn textc-white bgc-primary">Enter</a>\n' +
+        '    <a :href="\'/group.html?section_id=\' + sectionId" class="btn textc-white bgc-primary">Enter</a>\n' +
         '  </div>\n' +
         '</div>'
 });
@@ -32,69 +33,59 @@ Vue.component('section-list', {
 var vm = new Vue({
     el: '#app',
     data: {
-        sections: [{
-            id: '1',
-            name: 'Box',
-            description: 'Box is cool!'
-        },
-        {
-            id: '2',
-            name: 'Football',
-            description: 'Football is cool!'
-        }]
+        sections: []
     },
     mounted() {
         var url_string = window.location.href;
         var url = new URL(url_string);
-        if (url.searchParams.get("id")!=''){
+        if (url.searchParams.get("project_id")!=''){
             axios
-            .get('/api/v1/section/'+ url.searchParams.get("id"))
-            .then(response => (this.persons = response.data));
-        } else {
+            .get('/api/v1/section/by-project/'+ url.searchParams.get("project_id"))
+            .then(response => (this.sections = response.data));
+        } else if (rl.searchParams.get("id")!=''){
             axios
             .get('/api/v1/section/')
-            .then(response => (this.persons = response.data));
+            .then(response => (this.sections = response.data));
         }
     },
     methods: {
         loadSection: function () {
             var url_string = window.location.href;
             var url = new URL(url_string);
-            if (url.searchParams.get("id")!=''){
+            if (url.searchParams.get("project_id")!=''){
                 axios
-                .get('/api/v1/section/'+ url.searchParams.get("id"))
-                .then(response => (this.persons = response.data));
-            } else {
+                    .get('/api/v1/section/by-project/'+ url.searchParams.get("project_id"))
+                    .then(response => (this.sections = response.data));
+            } else if (rl.searchParams.get("id")!=''){
                 axios
-                .get('/api/v1/section/')
-                .then(response => (this.persons = response.data));
+                    .get('/api/v1/section/')
+                    .then(response => (this.sections = response.data));
             }
         },
         addSection: function () {
             axios.post('/api/v1/section/', {
                 id: "1",
                 name: document.getElementById("add_section_name").value,
-                description: document.getElementById("add_section_description").value,
+                description: document.getElementById("add_section_description").value
             })
                 .then(function (response) {
                     console.log(response);
-                    setTimeout(vm.loadData(), 1000);
+                    setTimeout(vm.loadSection(), 300);
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
-            this.loadSection();
         },
         editSection: function () {
-            axios.put('/api/v1/person/', {
-                id: document.getElementById("edit_person_id").value,
-                name: document.getElementById("edit_person_name").value,
-                lastName: document.getElementById("edit_person_last_name").value,
-                cars: []
+            axios.put('/api/v1/section/', {
+                id: document.getElementById("edit_section_name").value,
+                name: document.getElementById("edit_section_name").value,
+                description: document.getElementById("edit_section_description").value,
+                projectId: document.getElementById("edit_section_project_id").value
             })
                 .then(function (response) {
                     console.log(response);
-                    setTimeout(vm.loadData(), 1000);
+                    setTimeout(vm.loadSection(), 300);
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -103,12 +94,12 @@ var vm = new Vue({
         },
         deleteSection: function (element) {
             var button = element;
-            personId = button.parentNode.getElementsByTagName("h5")[0].getElementsByTagName("b")[0].innerText;
+            sectionId = button.parentNode.getElementsByTagName("h5")[0].getElementsByTagName("b")[0].innerText;
 
-            axios.delete('/api/v1/person/'+personId, {})
+            axios.delete('/api/v1/section/'+sectionId, {})
                 .then(function (response) {
                     console.log(response);
-                    setTimeout(vm.loadData(), 1000);
+                    setTimeout(vm.loadSection(), 300);
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -117,13 +108,16 @@ var vm = new Vue({
         },
         openEditSection: function (element) {
             var button = element;
-            personId = button.parentNode.getElementsByTagName("h5")[0].getElementsByTagName("b")[0].innerText;
-            personName = button.parentNode.getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
-            personLastName = button.parentNode.getElementsByTagName("h6")[1].getElementsByTagName("b")[0].innerText;
+            var sectionId = button.parentNode.getElementsByTagName("h5")[0].getElementsByTagName("b")[0].innerText;
+            var sectionName = button.parentNode.getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
+            var sectionDescription = button.parentNode.getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
+            var sectionProjectId = button.parentNode.getElementsByTagName("h6")[1].getElementsByTagName("b")[0].innerText;
 
-            document.getElementById("edit_person_id").value = personId;
-            document.getElementById("edit_person_name").value = personName;
-            document.getElementById("edit_person_last_name").value = personLastName;
+            document.getElementById("edit_section_id").value = sectionId;
+            document.getElementById("edit_section_name").value = sectionName;
+            document.getElementById("edit_section_description").value = sectionDescription;
+            document.getElementById("edit_section_project_id").value = sectionProjectId;
+
         }
     }
 });
