@@ -5,7 +5,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ru.nceduc.journal.dto.UserDTO;
@@ -16,10 +15,7 @@ import ru.nceduc.journal.repository.ProjectRepository;
 import ru.nceduc.journal.repository.UserRepository;
 import ru.nceduc.journal.service.UserService;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -41,7 +37,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO create(UserDTO entity) {
+    public Optional<UserDTO> create(UserDTO entity) {
         if (entity != null && !repositoryUser.existsByUsername(entity.getUsername())) {
             Project project = new Project();
             Project projectInDB = repositoryProject.save(project);
@@ -50,9 +46,10 @@ public class UserServiceImpl implements UserService {
             userEntity.setActive(true);
             userEntity.setRoles(Collections.singleton(Role.USER));
             repositoryUser.save(userEntity);
-            return modelMapper.map(userEntity, UserDTO.class);
+            Optional<UserDTO> optionalDTO = Optional.of(modelMapper.map(userEntity, UserDTO.class));
+            return optionalDTO;
         } else
-            return null;
+            return Optional.empty();
     }
 
     @Override
@@ -100,7 +97,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean getByName(String name){
+    public boolean findByName(String name) {
         UserEntity userEntity = repositoryUser.findByUsername(name);
         if (userEntity == null){
             return false;
@@ -118,4 +115,5 @@ public class UserServiceImpl implements UserService {
         return userDTO;
     }
 }
+
 
