@@ -6,59 +6,63 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.nceduc.journal.dto.ProjectDTO;
 import ru.nceduc.journal.service.ProjectService;
-import ru.nceduc.journal.service.impl.ProjectServiceImpl;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/project")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@Api(description="Operations pertaining to project in School Journal", tags = "PROJECT-V1")
+@Api(description = "Operations pertaining to project in School Journal", tags = "PROJECT-V1")
 public class ProjectController {
 
     private final ProjectService service;
 
     @ApiOperation(value = "Get all projects")
     @GetMapping("/")
-    public ResponseEntity<List<ProjectDTO>> getAllProjects(){
+    public ResponseEntity<List<ProjectDTO>> getAllProjects() {
         return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get current project ")
     @GetMapping("/current/")
-    public ResponseEntity<List<ProjectDTO>> getProjectByUser(){
+    public ResponseEntity<List<ProjectDTO>> getProjectByUser() {
         return new ResponseEntity<>(service.getAllByUser(), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get project details")
     @GetMapping("/{id}")
-    public ResponseEntity<ProjectDTO> getProject(@PathVariable String id){
-        return new ResponseEntity<>(service.get(id), HttpStatus.OK);
+    public ResponseEntity<ProjectDTO> getProject(@PathVariable String id) {
+        Optional<ProjectDTO> optionalDTO = service.get(id);
+        return optionalDTO.map(projectDTO -> new ResponseEntity<>(projectDTO, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @ApiOperation(value = "Create a new project")
     @PostMapping("/")
     public ResponseEntity<ProjectDTO> createProject(@RequestBody ProjectDTO projectDTO) {
-        service.create(projectDTO);
-        return new ResponseEntity<>(projectDTO, HttpStatus.CREATED);
+        Optional<ProjectDTO> optionalDTO = service.create(projectDTO);
+        return optionalDTO.map(projectDTO1 -> new ResponseEntity<>(projectDTO1, HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.OK));
     }
 
     @ApiOperation(value = "Update project")
     @PutMapping("/")
     public ResponseEntity<ProjectDTO> updateProject(@RequestBody ProjectDTO projectDTO) {
-        service.update(projectDTO);
-        return new ResponseEntity<>(projectDTO, HttpStatus.OK);
+        Optional<ProjectDTO> optionalDTO = service.update(projectDTO);
+        return optionalDTO.map(projectDTO1 -> new ResponseEntity<>(projectDTO1, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.OK));
     }
 
     @ApiOperation(value = "Patch project")
     @PatchMapping("/")
     public ResponseEntity<ProjectDTO> patchProject(@RequestBody ProjectDTO projectDTO) {
-        service.patch(projectDTO);
-        return new ResponseEntity<>(projectDTO, HttpStatus.OK);
+        Optional<ProjectDTO> optionalDTO = service.patch(projectDTO);
+        return optionalDTO.map(projectDTO1 -> new ResponseEntity<>(projectDTO1, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.OK));
     }
 
     @ApiOperation(value = "Delete project")

@@ -33,10 +33,10 @@ public class ProjectServiceImpl implements ProjectService {
 //            return modelMapper.map(project, ProjectDTO.class);
 //        } else
 //            return null;
-        Optional<ProjectDTO> projectDTO = Optional.ofNullable(entity);
-        if (projectDTO.isPresent()) {
-            repository.save(modelMapper.map(projectDTO.get(), Project.class));
-            return projectDTO;
+        Optional<ProjectDTO> optionalDTO = Optional.ofNullable(entity);
+        if (optionalDTO.isPresent()) {
+            repository.save(modelMapper.map(optionalDTO.get(), Project.class));
+            return optionalDTO;
         }
         return Optional.empty();
     }
@@ -55,10 +55,10 @@ public class ProjectServiceImpl implements ProjectService {
         ProjectDTO projectDTO = this.get(id);
         modelMapper.map(entity, projectDTO);
         return update(projectDTO);*/
-        Optional<ProjectDTO> projectDTO = Optional.ofNullable(entity);
-        if (projectDTO.isPresent() && repository.findById(projectDTO.get().getId()).isPresent()) {
-            ProjectDTO entityDTO = modelMapper.map(repository.getOne(projectDTO.get().getId()), ProjectDTO.class);
-            modelMapper.map(projectDTO.get(), entityDTO);
+        Optional<ProjectDTO> optionalDTO = Optional.ofNullable(entity);
+        if (optionalDTO.isPresent() && repository.findById(optionalDTO.get().getId()).isPresent()) {
+            ProjectDTO entityDTO = modelMapper.map(this.get(optionalDTO.get().getId()), ProjectDTO.class);
+            modelMapper.map(optionalDTO.get(), entityDTO);
             return update(entityDTO);
         }
         return Optional.empty();
@@ -75,14 +75,14 @@ public class ProjectServiceImpl implements ProjectService {
             return entity;
         } else
             return null;*/
-        Optional<ProjectDTO> projectDTO = Optional.of(entity);
-        String id = projectDTO.get().getId();
+        Optional<ProjectDTO> optionalDTO = Optional.of(entity);
+        String id = optionalDTO.get().getId();
         if (id != null && repository.findById(id).isPresent()) {
-            Project project = modelMapper.map(projectDTO.get(), Project.class);
+            Project project = modelMapper.map(optionalDTO.get(), Project.class);
             project.setCreatedDate(repository.findById(id).get().getCreatedDate());
             project.setModifiedDate(new Date());
             repository.save(project);
-            return projectDTO;
+            return optionalDTO;
         }
         return Optional.empty();
     }
@@ -91,11 +91,7 @@ public class ProjectServiceImpl implements ProjectService {
     public Optional<ProjectDTO> get(String id) {
         /*Project project = repository.getOne(id);
         return modelMapper.map(project,ProjectDTO.class);*/
-        if (repository.findById(id).isPresent()) {
-            Project project = repository.getOne(id);
-            return Optional.of(modelMapper.map(project, ProjectDTO.class));
-        }
-        return Optional.empty();
+        return repository.findById(id).map(project -> modelMapper.map(project, ProjectDTO.class));
     }
 
     @Override
@@ -123,4 +119,3 @@ public class ProjectServiceImpl implements ProjectService {
         return projectDTO;
     }
 }
-
