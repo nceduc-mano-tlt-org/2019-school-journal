@@ -5,7 +5,7 @@ var vm = new Vue({
     },
     methods: {
         signIn: function (element) {
-                axios.post('/api/v1/signin/', {
+                axios.post('/api/v1/user/signin/', {
                     username: document.getElementById("input-username").value,
                     password: document.getElementById("input-password").value,
                 })

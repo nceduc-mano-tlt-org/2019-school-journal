@@ -5,8 +5,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.nceduc.journal.dto.UserDTO;
 import ru.nceduc.journal.entity.Project;
@@ -28,6 +28,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository repositoryUser;
     private final ProjectRepository repositoryProject;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserEntity getCurrentUser() {
@@ -49,6 +50,7 @@ public class UserServiceImpl implements UserService {
             userEntity.setProject(projectInDB);
             userEntity.setActive(true);
             userEntity.setRoles(Collections.singleton(Role.USER));
+            userEntity.setPassword(passwordEncoder.encode(entity.getPassword()));
             repositoryUser.save(userEntity);
             return modelMapper.map(userEntity, UserDTO.class);
         } else
