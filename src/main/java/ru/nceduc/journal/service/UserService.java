@@ -8,5 +8,6 @@ import java.util.List;
 public interface UserService extends GenericService<UserDTO> {
     List<UserDTO> findAllByProject(String projectId);
     UserEntity getCurrentUser();
-    boolean getByName(String name);
+
+    boolean findByName(String name);
 }
