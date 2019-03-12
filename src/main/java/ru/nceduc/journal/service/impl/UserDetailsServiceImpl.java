@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.nceduc.journal.entity.Role;
 import ru.nceduc.journal.entity.UserEntity;
 import ru.nceduc.journal.repository.UserRepository;
 
