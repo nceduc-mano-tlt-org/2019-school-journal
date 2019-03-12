@@ -4,7 +4,6 @@ package ru.nceduc.journal.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.nceduc.journal.dto.ProjectDTO;
 import ru.nceduc.journal.entity.Project;
@@ -15,8 +14,6 @@ import ru.nceduc.journal.service.ProjectService;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ProjectServiceImpl implements ProjectService {
@@ -26,47 +23,32 @@ public class ProjectServiceImpl implements ProjectService {
     private final ModelMapper modelMapper;
 
     @Override
-    public Optional<ProjectDTO> create(ProjectDTO entity) {
-//        if (entity != null) {
-//            Project project = modelMapper.map(entity, Project.class);
-//            repository.save(project);
-//            return modelMapper.map(project, ProjectDTO.class);
-//        } else
-//            return null;
-        Optional<ProjectDTO> projectDTO = Optional.ofNullable(entity);
-        if (projectDTO.isPresent()) {
-            repository.save(modelMapper.map(projectDTO.get(), Project.class));
-            return projectDTO;
-        }
-        return Optional.empty();
+    public ProjectDTO create(ProjectDTO entity) {
+        if (entity != null) {
+            Project project = modelMapper.map(entity, Project.class);
+            repository.save(project);
+            return modelMapper.map(project, ProjectDTO.class);
+        } else
+            return null;
     }
 
     @Override
     public void delete(String id) {
-        /*if (id != null && repository.existsById(id))
-        repository.deleteById(id);*/
-        if (repository.findById(id).isPresent())
-            repository.deleteById(id);
+        if (id != null && repository.existsById(id))
+        repository.deleteById(id);
     }
 
     @Override
-    public Optional<ProjectDTO> patch(ProjectDTO entity) {
-        /*String id = entity.getId();
+    public ProjectDTO patch(ProjectDTO entity) {
+        String id = entity.getId();
         ProjectDTO projectDTO = this.get(id);
         modelMapper.map(entity, projectDTO);
-        return update(projectDTO);*/
-        Optional<ProjectDTO> projectDTO = Optional.ofNullable(entity);
-        if (projectDTO.isPresent() && repository.findById(projectDTO.get().getId()).isPresent()) {
-            ProjectDTO entityDTO = modelMapper.map(repository.getOne(projectDTO.get().getId()), ProjectDTO.class);
-            modelMapper.map(projectDTO.get(), entityDTO);
-            return update(entityDTO);
-        }
-        return Optional.empty();
+        return update(projectDTO);
     }
 
     @Override
-    public Optional<ProjectDTO> update(ProjectDTO entity) {
-        /*String id = entity.getId();
+    public ProjectDTO update(ProjectDTO entity) {
+        String id = entity.getId();
         if (id != null && id != "" && repository.existsById(id)){
             Project project = modelMapper.map(entity, Project.class);
             project.setCreatedDate(repository.findById(id).get().getCreatedDate());
@@ -74,37 +56,24 @@ public class ProjectServiceImpl implements ProjectService {
             repository.save(project);
             return entity;
         } else
-            return null;*/
-        Optional<ProjectDTO> projectDTO = Optional.of(entity);
-        String id = projectDTO.get().getId();
-        if (id != null && repository.findById(id).isPresent()) {
-            Project project = modelMapper.map(projectDTO.get(), Project.class);
-            project.setCreatedDate(repository.findById(id).get().getCreatedDate());
-            project.setModifiedDate(new Date());
-            repository.save(project);
-            return projectDTO;
-        }
-        return Optional.empty();
+            return null;
     }
 
     @Override
-    public Optional<ProjectDTO> get(String id) {
-        /*Project project = repository.getOne(id);
-        return modelMapper.map(project,ProjectDTO.class);*/
-        if (repository.findById(id).isPresent()) {
-            Project project = repository.getOne(id);
-            return Optional.of(modelMapper.map(project, ProjectDTO.class));
-        }
-        return Optional.empty();
+    public ProjectDTO get(String id) {
+        Project project = repository.getOne(id);
+        ProjectDTO projectDTO = modelMapper.map(project,ProjectDTO.class);
+        return projectDTO;
     }
 
     @Override
     public List<ProjectDTO> getAll() {
-        List<ProjectDTO> projectDTO = new ArrayList<>();
-        repository.findAll(Sort.by("createdDate").ascending()).forEach(project -> {
-            projectDTO.add(modelMapper.map(project, ProjectDTO.class));
-        });
-        return projectDTO;
+        ProjectDTO projectDTO;
+        List<ProjectDTO> all = new ArrayList<>();
+        for(Project project: repository.findAll()){
+            all.add(modelMapper.map(project, ProjectDTO.class));
+        }
+        return all;
     }
 
     @Override
@@ -115,12 +84,12 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectDTO> getAllByUser() {
-        UserEntity user = userService.getCurrentUser();
-        List<ProjectDTO> projectDTO = new ArrayList<>();
-        repository.findAllByUser(user, Sort.by("createdDate").ascending()).forEach(project -> {
-            projectDTO.add(modelMapper.map(project, ProjectDTO.class));
-        });
-        return projectDTO;
+        ProjectDTO projectDTO;
+        List<ProjectDTO> all = new ArrayList<>();
+        for(Project project: repository.findAllByUser(userService.getCurrentUser())){
+            all.add(modelMapper.map(project, ProjectDTO.class));
+        }
+        return all;
     }
 }
 
