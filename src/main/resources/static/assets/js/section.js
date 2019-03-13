@@ -11,11 +11,9 @@ Vue.component('section-list', {
         '   <button type="button" class="close" aria-label="Close" onclick="vm.deleteSection(this)">\n' +
         '       <span aria-hidden="true">&times;</span>\n' +
         '   </button>'+
-        '    <div class="card-info">'+
-        '      <p class="card-text">'+ 
-        '        <b>Описание секции</b>'+
-        '        <br>{{sectionDescription}}</br>'+
-        '      </p>'+
+        '    <div class="card-info mb-2">'+
+        '      <h5>Описание секции</h5>'+
+        '      <b>{{sectionDescription}}</b>'+
         '      <p class="d-none">Groups in this section:</p>\n' +
         '      <p class="card-text d-none">         \n' +
         '        <a href="/group/1" class="badge textc-white bgc-primary">Default 1</a>\n' +
@@ -94,8 +92,7 @@ var vm = new Vue({
         },
         deleteSection: function (element) {
             var button = element;
-            sectionId = button.parentNode.getElementsByTagName("h5")[0].getElementsByTagName("b")[0].innerText;
-
+            var sectionId = button.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
             axios.delete('/api/v1/section/'+sectionId, {})
                 .then(function (response) {
                     console.log(response);
@@ -108,10 +105,10 @@ var vm = new Vue({
         },
         openEditSection: function (element) {
             var button = element;
-            var sectionId = button.parentNode.getElementsByTagName("h5")[0].getElementsByTagName("b")[0].innerText;
-            var sectionName = button.parentNode.getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
-            var sectionDescription = button.parentNode.getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
-            var sectionProjectId = button.parentNode.getElementsByTagName("h6")[1].getElementsByTagName("b")[0].innerText;
+            var sectionId = button.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
+            var sectionProjectId = button.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[1].getElementsByTagName("b")[0].innerText;
+            var sectionName = button.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h5")[0].innerText;
+            var sectionDescription = button.parentNode.getElementsByTagName("div")[0].getElementsByTagName("b")[0].innerText;
 
             document.getElementById("edit_section_id").value = sectionId;
             document.getElementById("edit_section_name").value = sectionName;
