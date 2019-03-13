@@ -27,71 +27,51 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Optional<ProjectDTO> create(ProjectDTO entity) {
-//        if (entity != null) {
-//            Project project = modelMapper.map(entity, Project.class);
-//            repository.save(project);
-//            return modelMapper.map(project, ProjectDTO.class);
-//        } else
-//            return null;
         Optional<ProjectDTO> optionalDTO = Optional.ofNullable(entity);
         if (optionalDTO.isPresent()) {
-            repository.save(modelMapper.map(optionalDTO.get(), Project.class));
-            return optionalDTO;
+            Project project = repository.save(modelMapper.map(optionalDTO.get(), Project.class));
+            return Optional.of(modelMapper.map(project,ProjectDTO.class));
         }
         return Optional.empty();
     }
 
     @Override
     public void delete(String id) {
-        /*if (id != null && repository.existsById(id))
-        repository.deleteById(id);*/
         if (repository.findById(id).isPresent())
             repository.deleteById(id);
     }
 
     @Override
     public Optional<ProjectDTO> patch(ProjectDTO entity) {
-        /*String id = entity.getId();
-        ProjectDTO projectDTO = this.get(id);
-        modelMapper.map(entity, projectDTO);
-        return update(projectDTO);*/
         Optional<ProjectDTO> optionalDTO = Optional.ofNullable(entity);
         if (optionalDTO.isPresent() && repository.findById(optionalDTO.get().getId()).isPresent()) {
-            ProjectDTO entityDTO = modelMapper.map(this.get(optionalDTO.get().getId()), ProjectDTO.class);
-            modelMapper.map(optionalDTO.get(), entityDTO);
-            return update(entityDTO);
+            ProjectDTO projectDTO = modelMapper.map(this.get(optionalDTO.get().getId()), ProjectDTO.class);
+            modelMapper.map(optionalDTO.get(), projectDTO);
+            return update(projectDTO);
         }
         return Optional.empty();
     }
 
     @Override
     public Optional<ProjectDTO> update(ProjectDTO entity) {
-        /*String id = entity.getId();
-        if (id != null && id != "" && repository.existsById(id)){
-            Project project = modelMapper.map(entity, Project.class);
-            project.setCreatedDate(repository.findById(id).get().getCreatedDate());
-            project.setModifiedDate(new Date());
-            repository.save(project);
-            return entity;
-        } else
-            return null;*/
         Optional<ProjectDTO> optionalDTO = Optional.of(entity);
         String id = optionalDTO.get().getId();
         if (id != null && repository.findById(id).isPresent()) {
             Project project = modelMapper.map(optionalDTO.get(), Project.class);
             project.setCreatedDate(repository.findById(id).get().getCreatedDate());
             project.setModifiedDate(new Date());
-            repository.save(project);
-            return optionalDTO;
+            project = repository.save(project);
+            return Optional.of(modelMapper.map(project,ProjectDTO.class));
         }
         return Optional.empty();
     }
 
     @Override
     public Optional<ProjectDTO> get(String id) {
-        /*Project project = repository.getOne(id);
-        return modelMapper.map(project,ProjectDTO.class);*/
-        return repository.findById(id).map(project -> modelMapper.map(project, ProjectDTO.class));
+        if(repository.findById(id).isPresent()){
+            return Optional.of(modelMapper.map(repository.findById(id),ProjectDTO.class));
+        }
+        return Optional.empty();
     }
 
     @Override
