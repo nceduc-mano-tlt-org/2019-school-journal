@@ -37,7 +37,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void delete(String id) {
-        if (repository.findById(id).isPresent())
+        if (id != null && repository.findById(id).isPresent())
             repository.deleteById(id);
     }
 
