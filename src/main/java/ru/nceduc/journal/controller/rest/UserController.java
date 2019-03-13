@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.nceduc.journal.dto.UserDTO;
-import ru.nceduc.journal.entity.UserEntity;
 import ru.nceduc.journal.service.UserService;
 
 import java.util.List;
