@@ -12,7 +12,7 @@ Vue.component('section-list', {
         '       <span aria-hidden="true">&times;</span>\n' +
         '   </button>'+
         '    <div class="card-info mb-2">'+
-        '      <h5>Описание секции</h5>'+
+        '      <h5>Section description</h5>'+
         '      <b>{{sectionDescription}}</b>'+
         '      <p class="d-none">Groups in this section:</p>\n' +
         '      <p class="card-text d-none">         \n' +
