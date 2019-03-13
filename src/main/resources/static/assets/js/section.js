@@ -76,7 +76,7 @@ var vm = new Vue({
         },
         editSection: function () {
             axios.put('/api/v1/section/', {
-                id: document.getElementById("edit_section_name").value,
+                id: document.getElementById("edit_section_id").value,
                 name: document.getElementById("edit_section_name").value,
                 description: document.getElementById("edit_section_description").value,
                 projectId: document.getElementById("edit_section_project_id").value
