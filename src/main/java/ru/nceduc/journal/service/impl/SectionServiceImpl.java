@@ -26,12 +26,15 @@ public class SectionServiceImpl implements SectionService {
     private final ModelMapper modelMapper;
 
     @Override
-    public Optional<SectionDTO> get(String id) {
-        if(sectionRepository.findById(id).isPresent()){
-            return Optional.of(modelMapper.map(sectionRepository.findById(id), SectionDTO.class));
+    public SectionDTO get(String id) {
+        Section section;
+        Optional<Section> sectionOptional = sectionRepository.findById(id);
+        if (sectionOptional.isPresent()) {
+            section = sectionOptional.get();
+            return modelMapper.map(section, SectionDTO.class);
+        } else {
+            return null;
         }
-        else
-            return Optional.empty();
     }
 
     @Override
@@ -44,13 +47,14 @@ public class SectionServiceImpl implements SectionService {
     }
 
     @Override
-    public Optional<SectionDTO> create(SectionDTO sectionDTO) {
-        Optional<SectionDTO> optionalDTO = Optional.ofNullable(sectionDTO);
-        if (optionalDTO.isPresent()) {
-            Section section = sectionRepository.save(modelMapper.map(optionalDTO.get(), Section.class));
-            return Optional.of(modelMapper.map(section,SectionDTO.class));
+    public SectionDTO create(SectionDTO sectionDTO) {
+        if (sectionDTO != null) {
+            Section section = modelMapper.map(sectionDTO, Section.class);
+            sectionRepository.save(section);
+            return sectionDTO;
+        } else {
+            return null;
         }
-        return Optional.empty();
     }
 
     @Override
