@@ -49,7 +49,7 @@ public class GroupController {
     public ResponseEntity<GroupDTO> createGroup(@RequestBody GroupDTO groupDTO) {
         Optional<GroupDTO> optionalDTO = groupService.create(groupDTO);
         return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.CREATED))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @ApiOperation(value = "Update group details")
@@ -57,7 +57,7 @@ public class GroupController {
     public ResponseEntity<GroupDTO> updateGroup(@RequestBody GroupDTO groupDTO) {
         Optional<GroupDTO> optionalDTO = groupService.update(groupDTO);
         return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @ApiOperation(value = "Patch group details")
@@ -65,13 +65,13 @@ public class GroupController {
     public ResponseEntity<GroupDTO> patchGroup(@RequestBody GroupDTO groupDTO) {
         Optional<GroupDTO> optionalDTO = groupService.patch(groupDTO);
         return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @ApiOperation(value = "Delete a group")
     @DeleteMapping("/{id}")
     public ResponseEntity<GroupDTO> deleteGroup(@PathVariable String id) {
         groupService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

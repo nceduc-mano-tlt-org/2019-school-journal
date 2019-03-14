@@ -49,12 +49,12 @@ public class SectionController {
 
     @ApiOperation(value = "Create a new section")
     @PostMapping("/")
-    public ResponseEntity<SectionDTO> createSection(@RequestBody SectionDTO sectionDTO) throws ActionException {
+    public ResponseEntity<SectionDTO> createSection(@RequestBody SectionDTO sectionDTO) {
         String projectId = projectService.getCurrentProject().getId();
         sectionDTO.setProjectId(projectId);
         Optional<SectionDTO> optionalDTO = sectionService.create(sectionDTO);
         return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.CREATED))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @ApiOperation(value = "Update section details")
@@ -62,7 +62,7 @@ public class SectionController {
     public ResponseEntity<SectionDTO> updateSection(@RequestBody SectionDTO sectionDTO) {
         Optional<SectionDTO> optionalDTO = sectionService.update(sectionDTO);
         return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @ApiOperation(value = "Patch section details")
@@ -70,14 +70,14 @@ public class SectionController {
     public ResponseEntity<SectionDTO> patchSection(@RequestBody SectionDTO sectionDTO) {
         Optional<SectionDTO> optionalDTO = sectionService.patch(sectionDTO);
         return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @ApiOperation(value = "Delete a section")
     @DeleteMapping("/{id}")
     public ResponseEntity<SectionDTO> deleteSection(@PathVariable String id) {
         sectionService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
