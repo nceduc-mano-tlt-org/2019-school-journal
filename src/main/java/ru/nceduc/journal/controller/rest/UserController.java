@@ -11,6 +11,7 @@ import ru.nceduc.journal.dto.UserDTO;
 import ru.nceduc.journal.service.UserService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -27,9 +28,10 @@ public class UserController {
     }
 
     @ApiOperation(value = "Create a new user")
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/signup")
-    public void createUser(@RequestBody UserDTO userDTO) {
-        userService.create(userDTO);
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+        Optional<UserDTO> optionalDTO = userService.create(userDTO);
+        return optionalDTO.map(userDTO1 -> new ResponseEntity<>(userDTO1, HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 }
