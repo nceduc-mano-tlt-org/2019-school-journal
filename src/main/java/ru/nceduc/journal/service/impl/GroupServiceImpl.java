@@ -27,15 +27,12 @@ public class GroupServiceImpl implements GroupService {
     private final ModelMapper modelMapper;
 
     @Override
-    public GroupDTO get(String id) {
-        Group group;
-        Optional<Group> groupOptional = groupRepository.findById(id);
-        if (groupOptional.isPresent()) {
-            group = groupOptional.get();
-            return modelMapper.map(group, GroupDTO.class);
-        } else {
-            return null;
+    public Optional<GroupDTO> get(String id) {
+        if(groupRepository.findById(id).isPresent()){
+            return Optional.of(modelMapper.map(groupRepository.findById(id), GroupDTO.class));
         }
+        else
+            return Optional.empty();
     }
 
     @Override
@@ -48,36 +45,39 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupDTO create(GroupDTO groupDTO) {
-        if (groupDTO != null) {
-            Group group = modelMapper.map(groupDTO, Group.class);
-            groupRepository.save(group);
-            return groupDTO;
-        } else {
-            return null;
+    public Optional<GroupDTO> create(GroupDTO groupDTO) {
+        Optional<GroupDTO> optionalDTO = Optional.ofNullable(groupDTO);
+        if (optionalDTO.isPresent()) {
+            Group group = groupRepository.save(modelMapper.map(optionalDTO.get(), Group.class));
+            return Optional.of(modelMapper.map(group,GroupDTO.class));
         }
+        else
+            return Optional.empty();
     }
 
     @Override
-    public GroupDTO patch(GroupDTO groupDTO) {
-        String id = groupDTO.getId();
-        GroupDTO mainDTO = this.get(id);
-        modelMapper.map(groupDTO, mainDTO);
-        return update(mainDTO);
+    public Optional<GroupDTO> patch(GroupDTO groupDTO) {
+        Optional<GroupDTO> optionalDTO = Optional.ofNullable(groupDTO);
+        if (optionalDTO.isPresent() && groupRepository.findById(optionalDTO.get().getId()).isPresent()) {
+            GroupDTO projectDTO = modelMapper.map(this.get(optionalDTO.get().getId()), GroupDTO.class);
+            modelMapper.map(optionalDTO.get(), projectDTO);
+            return update(projectDTO);
+        }
+        return Optional.empty();
     }
 
     @Override
-    public GroupDTO update(GroupDTO groupDTO) {
-        String id = groupDTO.getId();
-        if (id != null && groupRepository.existsById(id)) {
-            Group group = modelMapper.map(groupDTO, Group.class);
+    public Optional<GroupDTO> update(GroupDTO groupDTO) {
+        Optional<GroupDTO> optionalDTO = Optional.of(groupDTO);
+        String id = optionalDTO.get().getId();
+        if (id != null && groupRepository.findById(id).isPresent()) {
+            Group group = modelMapper.map(optionalDTO.get(), Group.class);
             group.setCreatedDate(groupRepository.findById(id).get().getCreatedDate());
             group.setModifiedDate(new Date());
-            groupRepository.save(group);
-            return groupDTO;
-        } else {
-            return null;
+            group = groupRepository.save(group);
+            return Optional.of(modelMapper.map(group,GroupDTO.class));
         }
+        return Optional.empty();
     }
 
     @Override
@@ -89,8 +89,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<GroupDTO> getAllBySectionId(String sectionId) {
-        SectionDTO sectionDTO = sectionService.get(sectionId);
-        Section section = modelMapper.map(sectionDTO, Section.class);
+        Section section = modelMapper.map(sectionService.get(sectionId), Section.class);
         List<GroupDTO> groupsDTO = new ArrayList<>();
         groupRepository.findAllBySection(section, Sort.by("createdDate").ascending()).forEach(group -> {
             groupsDTO.add(modelMapper.map(group, GroupDTO.class));
