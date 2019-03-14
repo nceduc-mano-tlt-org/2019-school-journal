@@ -27,12 +27,15 @@ public class GroupServiceImpl implements GroupService {
     private final ModelMapper modelMapper;
 
     @Override
-    public Optional<GroupDTO> get(String id) {
-        if(groupRepository.findById(id).isPresent()){
-            return Optional.of(modelMapper.map(groupRepository.findById(id), GroupDTO.class));
+    public GroupDTO get(String id) {
+        Group group;
+        Optional<Group> groupOptional = groupRepository.findById(id);
+        if (groupOptional.isPresent()) {
+            group = groupOptional.get();
+            return modelMapper.map(group, GroupDTO.class);
+        } else {
+            return null;
         }
-        else
-            return Optional.empty();
     }
 
     @Override
@@ -45,25 +48,26 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public Optional<GroupDTO> create(GroupDTO groupDTO) {
-        Optional<GroupDTO> optionalDTO = Optional.ofNullable(groupDTO);
-        if (optionalDTO.isPresent()) {
-            Group group = groupRepository.save(modelMapper.map(optionalDTO.get(), Group.class));
-            return Optional.of(modelMapper.map(group,GroupDTO.class));
+    public GroupDTO create(GroupDTO groupDTO) {
+        if (groupDTO != null) {
+            Group group = modelMapper.map(groupDTO, Group.class);
+            groupRepository.save(group);
+            return groupDTO;
+        } else {
+            return null;
         }
-        return Optional.empty();
     }
 
     @Override
-    public Optional<GroupDTO> patch(GroupDTO groupDTO) {
+    public GroupDTO patch(GroupDTO groupDTO) {
         String id = groupDTO.getId();
-        Optional<GroupDTO> mainDTO = this.get(id);
+        GroupDTO mainDTO = this.get(id);
         modelMapper.map(groupDTO, mainDTO);
         return update(mainDTO);
     }
 
     @Override
-    public Optional<GroupDTO> update(GroupDTO groupDTO) {
+    public GroupDTO update(GroupDTO groupDTO) {
         String id = groupDTO.getId();
         if (id != null && groupRepository.existsById(id)) {
             Group group = modelMapper.map(groupDTO, Group.class);
