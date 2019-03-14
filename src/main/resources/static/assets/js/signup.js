@@ -12,16 +12,14 @@ var vm = new Vue({
                 })
                 .then(function (response) {
                     console.log(response);
+                    if (response.status == 200) {
+                        window.location.href = "/signin.html";
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
-                this.checkSignUp();
             }
-        },
-        checkSignUp: function () {
-            console.log('Do some signUP check');
-            //window.location.href = "/signin";
         }
     }
 });

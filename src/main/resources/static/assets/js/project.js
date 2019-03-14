@@ -17,7 +17,7 @@ Vue.component('project-list', {
         '      <br>projectDescription \n' +
         '    </p>\n' +
         '    <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditProject(this)"  data-toggle="modal" id data-target="#editProjectModal">Manage</button>\n' +
-        '    <a href="/section.html" class="btn textc-white bgc-primary">Enter</a>\n' +
+        '    <a :href="\'/section.html?project_id=\' + projectId" class="btn textc-white bgc-primary">Enter</a>\n' +
         '  </div>\n' +
         '</div>'
 });

@@ -25,7 +25,7 @@
           </div>
           <div class="modal-body">
             <form>
-              <input id="add_section_id" name="sectio-id" type="hidden" value="xm234jq">
+                <input id="add_section_id" type="hidden" value="xm234jq">
               <div class="form-group">
                 <label for="add_section_name">Section name:</label>
                 <input type="text" class="form-control" id="add_section_name">
@@ -38,7 +38,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn textc-white bgc-primary" onClick="vm.addProject()">ADD</button>
+              <button type="button" class="btn textc-white bgc-primary" onClick="vm.addSection()">ADD</button>
           </div>
         </div>
       </div>
@@ -57,7 +57,8 @@
           </div>
           <div class="modal-body">
             <form>
-              <input id="edit_section_id" name="sectio-id" type="hidden" value="xm234jq">
+                <input id="edit_section_id" type="hidden" value="xm234jq">
+                <input id="edit_section_project_id" type="hidden" value="xm234jq">
               <div class="form-group">
                 <label for="edit_section_name">Section name:</label>
                 <input type="text" class="form-control" id="edit_section_name">
@@ -70,7 +71,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn textc-white bgc-primary" onClick="vm.editSetion()">SAVE</button>
+              <button type="button" class="btn textc-white bgc-primary" onClick="vm.editSection()">SAVE</button>
           </div>
         </div>
       </div>
@@ -85,8 +86,8 @@
         </div>
         <div class="col-md-5 pt-4"></div>
         <div class="col-md-4 pt-4 textc-white text-right">
-          <h5 class="textc-black d-inline-block pr-3">You are signed as: thirdmadman</h5> 
-          <div class="btn btn-signout d-inline-block">Sign out</div>
+            <h5 class="textc-black d-inline-block pr-3">You are signed as: thirdmadman</h5>
+            <a href="/logout" class="btn btn-signout d-inline-block">Sign out</a>
         </div>
       </div>
     </div>
@@ -106,7 +107,9 @@
             </button>
           </h2>
 
-          <section-list v-for="section in sections" :key="section.id" :section-id="section.id" :section-name="section.name" :section-description="section.description"> 
+            <section-list v-for="section in sections" :key="section.id" :section-id="section.id"
+                          :section-name="section.name" :section-description="section.description"
+                          :section-project-id="section.projectId">
           </section-list>
 
 

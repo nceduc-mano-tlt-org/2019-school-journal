@@ -1,11 +1,13 @@
 package ru.nceduc.journal.controller.rest;
 
+import ch.qos.logback.core.joran.spi.ActionException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.nceduc.journal.dto.SectionDTO;
 import ru.nceduc.journal.service.ProjectService;
@@ -30,6 +32,7 @@ public class SectionController {
     }
 
     @ApiOperation(value = "Get all sections")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/")
     public ResponseEntity<List<SectionDTO>> getAllSections() {
         List<SectionDTO> sectionsDTO = sectionService.getAll();
@@ -45,7 +48,7 @@ public class SectionController {
 
     @ApiOperation(value = "Create a new section")
     @PostMapping("/")
-    public ResponseEntity<SectionDTO> createSection(@RequestBody SectionDTO sectionDTO) {
+    public ResponseEntity<SectionDTO> createSection(@RequestBody SectionDTO sectionDTO) throws ActionException {
         String projectId = projectService.getCurrentProject().getId();
         sectionDTO.setProjectId(projectId);
         SectionDTO createdSection = sectionService.create(sectionDTO);
