@@ -1,18 +1,19 @@
 package ru.nceduc.journal.service;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GenericService<E> {
 
-    E get(String id);
+    Optional<E> get(String id);
 
     List<E> getAll();
 
-    E create(E entity);
+    Optional<E> create(E entity);
 
-    E patch(E entity);
+    Optional<E> patch(E entity);
 
-    E update(E entity);
+    Optional<E> update(E entity);
 
     void delete(String id);
 }
