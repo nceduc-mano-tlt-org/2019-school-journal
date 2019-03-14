@@ -46,7 +46,7 @@ public class ProjectController {
     public ResponseEntity<ProjectDTO> createProject(@RequestBody ProjectDTO projectDTO) {
         Optional<ProjectDTO> optionalDTO = service.create(projectDTO);
         return optionalDTO.map(projectDTO1 -> new ResponseEntity<>(projectDTO1, HttpStatus.CREATED))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.OK));
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @ApiOperation(value = "Update project")
@@ -54,7 +54,7 @@ public class ProjectController {
     public ResponseEntity<ProjectDTO> updateProject(@RequestBody ProjectDTO projectDTO) {
         Optional<ProjectDTO> optionalDTO = service.update(projectDTO);
         return optionalDTO.map(projectDTO1 -> new ResponseEntity<>(projectDTO1, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.OK));
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @ApiOperation(value = "Patch project")
@@ -62,7 +62,7 @@ public class ProjectController {
     public ResponseEntity<ProjectDTO> patchProject(@RequestBody ProjectDTO projectDTO) {
         Optional<ProjectDTO> optionalDTO = service.patch(projectDTO);
         return optionalDTO.map(projectDTO1 -> new ResponseEntity<>(projectDTO1, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.OK));
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @ApiOperation(value = "Delete project")
