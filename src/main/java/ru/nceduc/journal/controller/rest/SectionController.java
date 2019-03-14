@@ -8,12 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.nceduc.journal.dto.SectionDTO;
-import ru.nceduc.journal.entity.Section;
 import ru.nceduc.journal.service.ProjectService;
 import ru.nceduc.journal.service.SectionService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/section")
@@ -27,21 +25,22 @@ public class SectionController {
     @ApiOperation(value = "Get details of specific section")
     @GetMapping("/{id}")
     public ResponseEntity<SectionDTO> getSection(@PathVariable String id) {
-        Optional<SectionDTO> optionalDTO = sectionService.get(id);
-        return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        SectionDTO sectionDTO = sectionService.get(id);
+        return new ResponseEntity<>(sectionDTO, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get all sections")
     @GetMapping("/")
     public ResponseEntity<List<SectionDTO>> getAllSections() {
-        return new ResponseEntity<>(sectionService.getAll(), HttpStatus.OK);
+        List<SectionDTO> sectionsDTO = sectionService.getAll();
+        return new ResponseEntity<>(sectionsDTO, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get all sections by project id")
     @GetMapping("/by-project/{projectId}")
     public ResponseEntity<List<SectionDTO>> getAllSectionsByProjectId(@PathVariable String projectId) {
-        return new ResponseEntity<>(sectionService.getAllByProjectId(projectId), HttpStatus.OK);
+        List<SectionDTO> sectionsDTO = sectionService.getAllByProjectId(projectId);
+        return new ResponseEntity<>(sectionsDTO, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Create a new section")
@@ -49,25 +48,22 @@ public class SectionController {
     public ResponseEntity<SectionDTO> createSection(@RequestBody SectionDTO sectionDTO) {
         String projectId = projectService.getCurrentProject().getId();
         sectionDTO.setProjectId(projectId);
-        Optional<SectionDTO> optionalDTO = sectionService.create(sectionDTO);
-        return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.CREATED))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+        SectionDTO createdSection = sectionService.create(sectionDTO);
+        return new ResponseEntity<>(createdSection, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Update section details")
     @PutMapping("/")
     public ResponseEntity<SectionDTO> updateSection(@RequestBody SectionDTO sectionDTO) {
-        Optional<SectionDTO> optionalDTO = sectionService.update(sectionDTO);
-        return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+        SectionDTO updatedSection = sectionService.update(sectionDTO);
+        return new ResponseEntity<>(updatedSection, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Patch section details")
     @PatchMapping("/")
     public ResponseEntity<SectionDTO> patchSection(@RequestBody SectionDTO sectionDTO) {
-        Optional<SectionDTO> optionalDTO = sectionService.patch(sectionDTO);
-        return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+        SectionDTO patchedSection = sectionService.patch(sectionDTO);
+        return new ResponseEntity<>(patchedSection, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete a section")
