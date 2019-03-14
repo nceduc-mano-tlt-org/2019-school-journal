@@ -8,11 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.nceduc.journal.dto.GroupDTO;
-import ru.nceduc.journal.entity.Group;
 import ru.nceduc.journal.service.GroupService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/group")
@@ -25,45 +23,43 @@ public class GroupController {
     @ApiOperation(value = "Get details of specific group")
     @GetMapping("/{id}")
     public ResponseEntity<GroupDTO> getGroup(@PathVariable String id) {
-        Optional<GroupDTO> optionalDTO = groupService.get(id);
-        return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        GroupDTO groupDTO = groupService.get(id);
+        return new ResponseEntity<>(groupDTO, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get all groups")
     @GetMapping("/")
     public ResponseEntity<List<GroupDTO>> getAllGroups() {
-        return new ResponseEntity<>(groupService.getAll(), HttpStatus.OK);
+        List<GroupDTO> groupsDTO = groupService.getAll();
+        return new ResponseEntity<>(groupsDTO, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get all groups by section id")
     @GetMapping("/by-section/{sectionId}")
     public ResponseEntity<List<GroupDTO>> getGroupsBySectionId(@PathVariable String sectionId) {
-        return new ResponseEntity<>(groupService.getAllBySectionId(sectionId), HttpStatus.OK);
+        List<GroupDTO> groupsDTO = groupService.getAllBySectionId(sectionId);
+        return new ResponseEntity<>(groupsDTO, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Create a new group")
     @PostMapping("/")
     public ResponseEntity<GroupDTO> createGroup(@RequestBody GroupDTO groupDTO) {
-        Optional<GroupDTO> optionalDTO = groupService.create(groupDTO);
-        return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.CREATED))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+        GroupDTO createdGroup = groupService.create(groupDTO);
+        return new ResponseEntity<>(createdGroup, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Update group details")
     @PutMapping("/")
     public ResponseEntity<GroupDTO> updateGroup(@RequestBody GroupDTO groupDTO) {
-        Optional<GroupDTO> optionalDTO = groupService.update(groupDTO);
-        return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+        GroupDTO updatedGroup = groupService.update(groupDTO);
+        return new ResponseEntity<>(updatedGroup, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Patch group details")
     @PatchMapping("/")
     public ResponseEntity<GroupDTO> patchGroup(@RequestBody GroupDTO groupDTO) {
-        Optional<GroupDTO> optionalDTO = groupService.patch(groupDTO);
-        return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+        GroupDTO patchedGroup = groupService.patch(groupDTO);
+        return new ResponseEntity<>(patchedGroup, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete a group")
