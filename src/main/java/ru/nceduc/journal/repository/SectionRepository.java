@@ -8,6 +8,6 @@ import ru.nceduc.journal.entity.Section;
 import java.util.List;
 
 public interface SectionRepository extends JpaRepository<Section, String> {
-    List<Section> findAllByProject(Project project, Sort sort);
+    List<Section> findAllByProjectId(String projectId, Sort sort);
     List<Section> findAll(Sort sort);
 }

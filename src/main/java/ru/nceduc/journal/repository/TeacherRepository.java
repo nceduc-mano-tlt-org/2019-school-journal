@@ -8,5 +8,5 @@ import ru.nceduc.journal.entity.Teacher;
 import java.util.List;
 
 public interface TeacherRepository extends JpaRepository<Teacher, String> {
-    List<Teacher> findAllByGroup(Group group, Sort sort);
+    List<Teacher> findAllByGroupId(String groupId, Sort sort);
 }

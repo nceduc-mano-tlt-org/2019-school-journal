@@ -9,6 +9,5 @@ import java.util.List;
 
 public interface GroupRepository extends JpaRepository<Group, String> {
     List<Group> findAll(Sort sort);
-    List<Group> findAllBySection(Section section, Sort sort);
-    boolean existsBySection(Section section);
+    List<Group> findAllBySectionId(String sectionId, Sort sort);
 }

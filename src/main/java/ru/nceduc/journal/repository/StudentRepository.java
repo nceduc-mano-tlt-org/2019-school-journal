@@ -8,5 +8,5 @@ import ru.nceduc.journal.entity.Student;
 import java.util.List;
 
 public interface StudentRepository extends JpaRepository<Student, String> {
-    List<Student> findAllByGroup(Group group, Sort sort);
+    List<Student> findAllByGroupId(String groupId, Sort sort);
 }
