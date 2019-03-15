@@ -11,6 +11,7 @@ import ru.nceduc.journal.dto.TeacherDTO;
 import ru.nceduc.journal.service.TeacherService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/teacher")
@@ -29,7 +30,9 @@ public class TeacherController {
     @ApiOperation(value = "Get details of specific teacher")
     @GetMapping("/{id}")
     public ResponseEntity<TeacherDTO> getTeacher(@PathVariable String id){
-        return new ResponseEntity<>(teacherService.get(id), HttpStatus.OK);
+        Optional<TeacherDTO> optionalDTO = teacherService.get(id);
+        return optionalDTO.map(teacherDTO -> new ResponseEntity<>(teacherDTO, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @ApiOperation(value = "Get all teachers by ID of group")
@@ -41,22 +44,25 @@ public class TeacherController {
     @ApiOperation(value = "Create a new teacher")
     @PostMapping("/")
     public ResponseEntity<TeacherDTO> createTeacher(@RequestBody TeacherDTO teacherDTO){
-        teacherService.create(teacherDTO);
-        return new ResponseEntity<>(teacherDTO, HttpStatus.CREATED);
+        Optional<TeacherDTO> optionalDTO = teacherService.create(teacherDTO);
+        return optionalDTO.map(teacherDTO1 -> new ResponseEntity<>(teacherDTO1, HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @ApiOperation(value = "Update teacher's details")
     @PutMapping("/")
     public ResponseEntity<TeacherDTO> updateTeacher(@RequestBody TeacherDTO teacherDTO){
-        teacherService.update(teacherDTO);
-        return new ResponseEntity<>(teacherDTO, HttpStatus.OK);
+        Optional<TeacherDTO> optionalDTO = teacherService.update(teacherDTO);
+        return optionalDTO.map(teacherDTO1 -> new ResponseEntity<>(teacherDTO1, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @ApiOperation(value = "Patch teacher's details")
     @PatchMapping("/")
     public ResponseEntity<TeacherDTO> patchTeacher(@RequestBody TeacherDTO teacherDTO){
-        teacherService.patch(teacherDTO);
-        return new ResponseEntity<>(teacherDTO, HttpStatus.OK);
+        Optional<TeacherDTO> optionalDTO = teacherService.patch(teacherDTO);
+        return optionalDTO.map(teacherDTO1 -> new ResponseEntity<>(teacherDTO1 , HttpStatus.OK))
+                .orElseGet(()-> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @ApiOperation(value = "Delete a teacher")

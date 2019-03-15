@@ -15,6 +15,7 @@ import ru.nceduc.journal.service.TeacherService;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -24,49 +25,52 @@ public class TeacherServiceImpl implements TeacherService {
     private final ModelMapper modelMapper;
 
     @Override
-    public TeacherDTO create(TeacherDTO teacherDTO) {
-        if (teacherDTO != null) {
-            Teacher teacher = modelMapper.map(teacherDTO, Teacher.class);
-            teacherRepository.save(teacher);
-            return teacherDTO;
-        } else
-            return null;
+    public Optional<TeacherDTO> create(TeacherDTO entity) {
+        Optional<TeacherDTO> optionalDTO = Optional.ofNullable(entity);
+        if (optionalDTO.isPresent()) {
+            Teacher teacher = teacherRepository.save(modelMapper.map(optionalDTO.get(), Teacher.class));
+            return Optional.of(modelMapper.map(teacher, TeacherDTO.class));
+        }else
+        return Optional.empty();
     }
 
     @Override
     public void delete(String id) {
-        if (id != null && teacherRepository.existsById(id))
+        if (teacherRepository.findById(id).isPresent())
             teacherRepository.deleteById(id);
     }
 
     @Override
-    public TeacherDTO patch(TeacherDTO teacherDTO) {
-        String id = teacherDTO.getId();
-        if (id != null && teacherRepository.existsById(id)) {
-            TeacherDTO mainDTO = this.get(id);
-            modelMapper.map(teacherDTO, mainDTO);
-            return update(mainDTO);
-        } else
-            return null;
+    public Optional<TeacherDTO> patch(TeacherDTO entity) {
+        Optional<TeacherDTO> optionalDTO = Optional.ofNullable(entity);
+        if (optionalDTO.isPresent() && teacherRepository.findById(optionalDTO.get().getId()).isPresent()) {
+            TeacherDTO teacherDTO = modelMapper.map(this.get(optionalDTO.get().getId()), TeacherDTO.class);
+            modelMapper.map(optionalDTO.get(), teacherDTO);
+            return update(teacherDTO);
+        }else
+        return Optional.empty();
     }
 
     @Override
-    public TeacherDTO update(TeacherDTO teacherDTO){
-        String id = teacherDTO.getId();
-        if (id != null && teacherRepository.existsById(id)){
-            Teacher teacher = modelMapper.map(teacherDTO, Teacher.class);
+    public Optional<TeacherDTO> update(TeacherDTO entity) {
+        Optional<TeacherDTO> optionalDTO = Optional.of(entity);
+        String id = optionalDTO.get().getId();
+        if (id != null && teacherRepository.findById(id).isPresent()) {
+            Teacher teacher = modelMapper.map(optionalDTO.get(), Teacher.class);
             teacher.setCreatedDate(teacherRepository.findById(id).get().getCreatedDate());
             teacher.setModifiedDate(new Date());
-            teacherRepository.save(teacher);
-            return teacherDTO;
-        } else
-            return null;
+            teacher = teacherRepository.save(teacher);
+            return Optional.of(modelMapper.map(teacher, TeacherDTO.class));
+        }else
+        return Optional.empty();
     }
 
     @Override
-    public TeacherDTO get(String id) {
-        Teacher teacher = teacherRepository.getOne(id);
-        return modelMapper.map(teacher, TeacherDTO.class);
+    public Optional<TeacherDTO> get(String id) {
+        if (teacherRepository.findById(id).isPresent()) {
+            return Optional.of(modelMapper.map(teacherRepository.findById(id), TeacherDTO.class));
+        }else
+        return Optional.empty();
     }
 
     @Override

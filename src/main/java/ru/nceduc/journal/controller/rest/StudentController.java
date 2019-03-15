@@ -11,6 +11,7 @@ import ru.nceduc.journal.dto.StudentDTO;
 import ru.nceduc.journal.service.StudentService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/student")
@@ -29,7 +30,9 @@ public class StudentController {
     @ApiOperation(value = "Get specific student details")
     @GetMapping("/{id}")
     public ResponseEntity<StudentDTO> getStudent(@PathVariable String id) {
-        return new ResponseEntity<>(studentService.get(id), HttpStatus.OK);
+        Optional<StudentDTO> optionalDTO = studentService.get(id);
+        return optionalDTO.map(studentDTO -> new ResponseEntity<>(studentDTO, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @ApiOperation(value = "Get all students by ID of group")
@@ -41,22 +44,25 @@ public class StudentController {
     @ApiOperation(value = "Create a new student")
     @PostMapping("/")
     public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentDTO studentDTO) {
-        studentService.create(studentDTO);
-        return new ResponseEntity<>(studentDTO, HttpStatus.CREATED);
+        Optional<StudentDTO> optionalDTO = studentService.create(studentDTO);
+        return optionalDTO.map(studentDTO1 -> new ResponseEntity<>(studentDTO1, HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @ApiOperation(value = "Update student details")
     @PutMapping("/")
     public ResponseEntity<StudentDTO> updateStudent(@RequestBody StudentDTO studentDTO) {
-        studentService.update(studentDTO);
-        return new ResponseEntity<>(studentDTO, HttpStatus.OK);
+        Optional<StudentDTO> optionalDTO = studentService.update(studentDTO);
+        return optionalDTO.map(studentDTO1 -> new ResponseEntity<>(studentDTO1, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @ApiOperation(value = "Patch student details")
     @PatchMapping("/")
     public ResponseEntity<StudentDTO> patchStudent(@RequestBody StudentDTO studentDTO) {
-        studentService.patch(studentDTO);
-        return new ResponseEntity<>(studentDTO, HttpStatus.OK);
+        Optional<StudentDTO> optionalDTO = studentService.patch(studentDTO);
+        return optionalDTO.map(studentDTO1 -> new ResponseEntity<>(studentDTO1, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @ApiOperation(value = "Delete a student")
