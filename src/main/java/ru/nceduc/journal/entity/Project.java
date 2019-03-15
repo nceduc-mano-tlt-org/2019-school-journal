@@ -1,23 +1,23 @@
 package ru.nceduc.journal.entity;
 
-
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "projects")
-@Data
-public class Project extends AbstractEntity{
+@Getter
+@Setter
+public class Project extends AbstractEntity {
 
     private String name;
+    private String description;
     @OneToOne(mappedBy = "project")
     private UserEntity user;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
     private List<Section> sections;
 
     public Project() {

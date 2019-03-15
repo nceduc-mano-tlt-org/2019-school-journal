@@ -19,10 +19,10 @@ public class Group extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Section section;
 
-    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "group",  fetch = FetchType.LAZY)
     private List<Student> students;
 
-    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
     private List<Teacher> teachers;
 
 
