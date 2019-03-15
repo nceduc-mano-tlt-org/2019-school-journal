@@ -8,8 +8,7 @@ import ru.nceduc.journal.entity.UserEntity;
 import java.util.List;
 
 public interface UserRepository extends JpaRepository<UserEntity, String> {
-    List<UserEntity> findAllByProject(Project project, Sort sort);
+    List<UserEntity> findAllByProjectId(String projectId, Sort sort);
     UserEntity findByUsername(String username);
-
     boolean existsByUsername(String username);
 }
