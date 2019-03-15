@@ -47,31 +47,31 @@ public class TeacherController {
     @PostMapping("/")
     public ResponseEntity<TeacherDTO> createTeacher(@RequestBody TeacherDTO teacherDTO) {
         Optional<TeacherDTO> optionalDTO = teacherService.create(teacherDTO);
-        return optionalDTO.map(teacherDTO1 -> new ResponseEntity<>(teacherDTO1, HttpStatus.CREATED))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+        return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @ApiOperation(value = "Update teacher's details")
     @PutMapping("/")
     public ResponseEntity<TeacherDTO> updateTeacher(@RequestBody TeacherDTO teacherDTO) {
         Optional<TeacherDTO> optionalDTO = teacherService.update(teacherDTO);
-        return optionalDTO.map(teacherDTO1 -> new ResponseEntity<>(teacherDTO1, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+        return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @ApiOperation(value = "Patch teacher's details")
     @PatchMapping("/")
     public ResponseEntity<TeacherDTO> patchTeacher(@RequestBody TeacherDTO teacherDTO) {
         Optional<TeacherDTO> optionalDTO = teacherService.patch(teacherDTO);
-        return optionalDTO.map(teacherDTO1 -> new ResponseEntity<>(teacherDTO1, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+        return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @ApiOperation(value = "Delete a teacher")
     @DeleteMapping("/{id}")
     public ResponseEntity deleteTeacher(@PathVariable String id) {
         teacherService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

@@ -72,6 +72,6 @@ public class GroupController {
     @DeleteMapping("/{id}")
     public ResponseEntity<GroupDTO> deleteGroup(@PathVariable String id) {
         groupService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

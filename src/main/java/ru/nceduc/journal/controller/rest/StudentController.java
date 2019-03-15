@@ -47,31 +47,31 @@ public class StudentController {
     @PostMapping("/")
     public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentDTO studentDTO) {
         Optional<StudentDTO> optionalDTO = studentService.create(studentDTO);
-        return optionalDTO.map(studentDTO1 -> new ResponseEntity<>(studentDTO1, HttpStatus.CREATED))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+        return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @ApiOperation(value = "Update student details")
     @PutMapping("/")
     public ResponseEntity<StudentDTO> updateStudent(@RequestBody StudentDTO studentDTO) {
         Optional<StudentDTO> optionalDTO = studentService.update(studentDTO);
-        return optionalDTO.map(studentDTO1 -> new ResponseEntity<>(studentDTO1, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+        return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @ApiOperation(value = "Patch student details")
     @PatchMapping("/")
     public ResponseEntity<StudentDTO> patchStudent(@RequestBody StudentDTO studentDTO) {
         Optional<StudentDTO> optionalDTO = studentService.patch(studentDTO);
-        return optionalDTO.map(studentDTO1 -> new ResponseEntity<>(studentDTO1, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+        return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @ApiOperation(value = "Delete a student")
     @DeleteMapping("/{id}")
     public ResponseEntity deleteStudent(@PathVariable String id) {
         studentService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 

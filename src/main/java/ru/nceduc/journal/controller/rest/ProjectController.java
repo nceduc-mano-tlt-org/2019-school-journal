@@ -45,7 +45,7 @@ public class ProjectController {
     @PostMapping("/")
     public ResponseEntity<ProjectDTO> createProject(@RequestBody ProjectDTO projectDTO) {
         Optional<ProjectDTO> optionalDTO = service.create(projectDTO);
-        return optionalDTO.map(projectDTO1 -> new ResponseEntity<>(projectDTO1, HttpStatus.CREATED))
+        return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.CREATED))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
@@ -53,7 +53,7 @@ public class ProjectController {
     @PutMapping("/")
     public ResponseEntity<ProjectDTO> updateProject(@RequestBody ProjectDTO projectDTO) {
         Optional<ProjectDTO> optionalDTO = service.update(projectDTO);
-        return optionalDTO.map(projectDTO1 -> new ResponseEntity<>(projectDTO1, HttpStatus.OK))
+        return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
@@ -61,7 +61,7 @@ public class ProjectController {
     @PatchMapping("/")
     public ResponseEntity<ProjectDTO> patchProject(@RequestBody ProjectDTO projectDTO) {
         Optional<ProjectDTO> optionalDTO = service.patch(projectDTO);
-        return optionalDTO.map(projectDTO1 -> new ResponseEntity<>(projectDTO1, HttpStatus.OK))
+        return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
@@ -69,7 +69,7 @@ public class ProjectController {
     @DeleteMapping("/{id}")
     public ResponseEntity deleteGroup(@PathVariable String id) {
         service.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

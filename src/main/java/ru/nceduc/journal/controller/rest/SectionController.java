@@ -77,7 +77,7 @@ public class SectionController {
     @DeleteMapping("/{id}")
     public ResponseEntity<SectionDTO> deleteSection(@PathVariable String id) {
         sectionService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
