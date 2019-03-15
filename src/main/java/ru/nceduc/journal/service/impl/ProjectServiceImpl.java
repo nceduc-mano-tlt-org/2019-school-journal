@@ -68,10 +68,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Optional<ProjectDTO> get(String id) {
-        if(repository.findById(id).isPresent()){
-            return Optional.of(modelMapper.map(repository.findById(id),ProjectDTO.class));
-        }
-        return Optional.empty();
+        return repository.findById(id).map(project -> modelMapper.map(project, ProjectDTO.class));
     }
 
     @Override

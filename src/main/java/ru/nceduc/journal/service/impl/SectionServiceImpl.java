@@ -5,12 +5,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import ru.nceduc.journal.dto.GroupDTO;
 import ru.nceduc.journal.dto.SectionDTO;
-import ru.nceduc.journal.entity.Project;
 import ru.nceduc.journal.entity.Section;
 import ru.nceduc.journal.repository.SectionRepository;
-import ru.nceduc.journal.service.ProjectService;
 import ru.nceduc.journal.service.SectionService;
 
 import java.util.ArrayList;
@@ -23,16 +20,11 @@ import java.util.Optional;
 public class SectionServiceImpl implements SectionService {
 
     private final SectionRepository sectionRepository;
-    private final ProjectService projectService;
     private final ModelMapper modelMapper;
 
     @Override
     public Optional<SectionDTO> get(String id) {
-        if(sectionRepository.findById(id).isPresent()){
-            return Optional.of(modelMapper.map(sectionRepository.findById(id), SectionDTO.class));
-        }
-        else
-            return Optional.empty();
+        return sectionRepository.findById(id).map(section -> modelMapper.map(section, SectionDTO.class));
     }
 
     @Override
@@ -59,9 +51,9 @@ public class SectionServiceImpl implements SectionService {
     public Optional<SectionDTO> patch(SectionDTO sectionDTO) {
         Optional<SectionDTO> optionalDTO = Optional.ofNullable(sectionDTO);
         if (optionalDTO.isPresent() && sectionRepository.findById(optionalDTO.get().getId()).isPresent()) {
-            SectionDTO projectDTO = modelMapper.map(this.get(optionalDTO.get().getId()), SectionDTO.class);
-            modelMapper.map(optionalDTO.get(), projectDTO);
-            return update(projectDTO);
+            SectionDTO dto = modelMapper.map(this.get(optionalDTO.get().getId()), SectionDTO.class);
+            modelMapper.map(optionalDTO.get(), dto);
+            return update(dto);
         }
         else
             return Optional.empty();
@@ -91,9 +83,8 @@ public class SectionServiceImpl implements SectionService {
 
     @Override
     public List<SectionDTO> getAllByProjectId(String projectId) {
-        Project project = modelMapper.map(projectService.get(projectId), Project.class);
         List<SectionDTO> sectionDTO = new ArrayList<>();
-        sectionRepository.findAllByProject(project, Sort.by("createdDate").ascending()).forEach(section -> {
+        sectionRepository.findAllByProjectId(projectId, Sort.by("createdDate").ascending()).forEach(section -> {
             sectionDTO.add(modelMapper.map(section, SectionDTO.class));
         });
         return sectionDTO;

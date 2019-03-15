@@ -28,11 +28,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Optional<GroupDTO> get(String id) {
-        if(groupRepository.findById(id).isPresent()){
-            return Optional.of(modelMapper.map(groupRepository.findById(id), GroupDTO.class));
-        }
-        else
-            return Optional.empty();
+        return groupRepository.findById(id).map(group -> modelMapper.map(group, GroupDTO.class));
     }
 
     @Override
@@ -51,7 +47,6 @@ public class GroupServiceImpl implements GroupService {
             Group group = groupRepository.save(modelMapper.map(optionalDTO.get(), Group.class));
             return Optional.of(modelMapper.map(group,GroupDTO.class));
         }
-        else
             return Optional.empty();
     }
 
@@ -89,9 +84,8 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<GroupDTO> getAllBySectionId(String sectionId) {
-        Section section = modelMapper.map(sectionService.get(sectionId), Section.class);
         List<GroupDTO> groupsDTO = new ArrayList<>();
-        groupRepository.findAllBySection(section, Sort.by("createdDate").ascending()).forEach(group -> {
+        groupRepository.findAllBySectionId(sectionId, Sort.by("createdDate").ascending()).forEach(group -> {
             groupsDTO.add(modelMapper.map(group, GroupDTO.class));
         });
         return groupsDTO;

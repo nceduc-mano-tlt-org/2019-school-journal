@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import ru.nceduc.journal.dto.StudentDTO;
 import ru.nceduc.journal.entity.Group;
 import ru.nceduc.journal.entity.Student;
-import ru.nceduc.journal.repository.GroupRepository;
 import ru.nceduc.journal.repository.StudentRepository;
 import ru.nceduc.journal.service.StudentService;
 
@@ -21,7 +20,6 @@ import java.util.Optional;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
-    private final GroupRepository groupRepository;
     private final ModelMapper modelMapper;
 
     @Override
@@ -67,10 +65,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Optional<StudentDTO> get(String id) {
-        if (studentRepository.findById(id).isPresent()) {
-            return Optional.of(modelMapper.map(studentRepository.findById(id), StudentDTO.class));
-        } else
-            return Optional.empty();
+        return studentRepository.findById(id).map(student -> modelMapper.map(student, StudentDTO.class));
     }
 
     @Override
@@ -84,9 +79,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<StudentDTO> getAllByGroupId(String groupId) {
-        Group group = groupRepository.findById(groupId).get();
         List<StudentDTO> studentDTO = new ArrayList<>();
-        studentRepository.findAllByGroup(group, Sort.by("createdDate").ascending()).forEach(student -> {
+        studentRepository.findAllByGroupId(groupId, Sort.by("createdDate").ascending()).forEach(student -> {
             studentDTO.add(modelMapper.map(student, StudentDTO.class));
         });
         return studentDTO;

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import ru.nceduc.journal.dto.TeacherDTO;
 import ru.nceduc.journal.entity.Group;
 import ru.nceduc.journal.entity.Teacher;
-import ru.nceduc.journal.repository.GroupRepository;
 import ru.nceduc.journal.repository.TeacherRepository;
 import ru.nceduc.journal.service.TeacherService;
 
@@ -21,7 +20,6 @@ import java.util.Optional;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TeacherServiceImpl implements TeacherService {
     private final TeacherRepository teacherRepository;
-    private final GroupRepository groupRepository;
     private final ModelMapper modelMapper;
 
     @Override
@@ -67,10 +65,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Optional<TeacherDTO> get(String id) {
-        if (teacherRepository.findById(id).isPresent()) {
-            return Optional.of(modelMapper.map(teacherRepository.findById(id), TeacherDTO.class));
-        } else
-            return Optional.empty();
+        return teacherRepository.findById(id).map(teacher -> modelMapper.map(teacher, TeacherDTO.class));
     }
 
     @Override
@@ -84,9 +79,8 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public List<TeacherDTO> getAllByGroupId(String groupId) {
-        Group group = groupRepository.findById(groupId).get();
         List<TeacherDTO> teacherDTO = new ArrayList<>();
-        teacherRepository.findAllByGroup(group, Sort.by("createdDate").ascending()).forEach(teacher -> {
+        teacherRepository.findAllByGroupId(groupId, Sort.by("createdDate").ascending()).forEach(teacher -> {
             teacherDTO.add(modelMapper.map(teacher, TeacherDTO.class));
         });
         return teacherDTO;

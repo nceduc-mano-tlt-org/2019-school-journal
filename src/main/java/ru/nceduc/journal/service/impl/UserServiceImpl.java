@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.nceduc.journal.dto.UserDTO;
 import ru.nceduc.journal.entity.Project;
@@ -24,6 +25,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository repositoryUser;
     private final ProjectRepository repositoryProject;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserEntity getCurrentUser() {
@@ -44,6 +46,9 @@ public class UserServiceImpl implements UserService {
             UserEntity userEntity = modelMapper.map(entity, UserEntity.class);
             userEntity.setProject(projectInDB);
             userEntity.setActive(true);
+
+            userEntity.setPassword(passwordEncoder.encode(entity.getPassword()));
+
             userEntity.setRoles(Collections.singleton(Role.USER));
             UserEntity user = repositoryUser.save(userEntity);
             return Optional.of(modelMapper.map(user, UserDTO.class));
@@ -101,9 +106,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> findAllByProject(String projectId) {
-        Project project = repositoryProject.findById(projectId).get();
         List<UserDTO> userDTO = new ArrayList<>();
-        repositoryUser.findAllByProject(project, Sort.by("createdDate").ascending()).forEach(user -> {
+        repositoryUser.findAllByProjectId(projectId, Sort.by("createdDate").ascending()).forEach(user -> {
             userDTO.add(modelMapper.map(user, UserDTO.class));
         });
         return userDTO;
