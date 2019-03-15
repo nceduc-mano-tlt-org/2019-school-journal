@@ -61,16 +61,16 @@ public class StudentServiceImpl implements StudentService {
             student.setModifiedDate(new Date());
             student = studentRepository.save(student);
             return Optional.of(modelMapper.map(student, StudentDTO.class));
-        }else
-        return Optional.empty();
+        } else
+            return Optional.empty();
     }
 
     @Override
     public Optional<StudentDTO> get(String id) {
-        if (studentRepository.findById(id).isPresent()){
-            return Optional.of(modelMapper.map(studentRepository.findById(id),StudentDTO.class));
-        }else
-        return Optional.empty();
+        if (studentRepository.findById(id).isPresent()) {
+            return Optional.of(modelMapper.map(studentRepository.findById(id), StudentDTO.class));
+        } else
+            return Optional.empty();
     }
 
     @Override

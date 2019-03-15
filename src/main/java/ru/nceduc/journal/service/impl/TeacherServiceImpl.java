@@ -30,8 +30,8 @@ public class TeacherServiceImpl implements TeacherService {
         if (optionalDTO.isPresent()) {
             Teacher teacher = teacherRepository.save(modelMapper.map(optionalDTO.get(), Teacher.class));
             return Optional.of(modelMapper.map(teacher, TeacherDTO.class));
-        }else
-        return Optional.empty();
+        } else
+            return Optional.empty();
     }
 
     @Override
@@ -47,8 +47,8 @@ public class TeacherServiceImpl implements TeacherService {
             TeacherDTO teacherDTO = modelMapper.map(this.get(optionalDTO.get().getId()), TeacherDTO.class);
             modelMapper.map(optionalDTO.get(), teacherDTO);
             return update(teacherDTO);
-        }else
-        return Optional.empty();
+        } else
+            return Optional.empty();
     }
 
     @Override
@@ -61,16 +61,16 @@ public class TeacherServiceImpl implements TeacherService {
             teacher.setModifiedDate(new Date());
             teacher = teacherRepository.save(teacher);
             return Optional.of(modelMapper.map(teacher, TeacherDTO.class));
-        }else
-        return Optional.empty();
+        } else
+            return Optional.empty();
     }
 
     @Override
     public Optional<TeacherDTO> get(String id) {
         if (teacherRepository.findById(id).isPresent()) {
             return Optional.of(modelMapper.map(teacherRepository.findById(id), TeacherDTO.class));
-        }else
-        return Optional.empty();
+        } else
+            return Optional.empty();
     }
 
     @Override
