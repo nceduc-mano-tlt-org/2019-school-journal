@@ -5,21 +5,19 @@ var vm = new Vue({
     },
     methods: {
         signIn: function (element) {
-                axios.post('/api/v1/signin/', {
+            axios.post('/api/v1/user/signin/', {
                     username: document.getElementById("input-username").value,
                     password: document.getElementById("input-password").value,
                 })
                 .then(function (response) {
                     console.log(response);
+                    if (response.status == 200) {
+                        window.location.href = "/project.html";
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
-                this.checkSignIn();
-        },
-        checkSignIn: function () {
-            console.log('Do some signIn check');
-            //window.location.href = "/project";
         }
     }
 });

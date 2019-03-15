@@ -32,24 +32,23 @@ public class UserServiceImpl implements UserService {
         if (principal instanceof UserDetails) {
             username = ((UserDetails)principal).getUsername();
         }
-        UserEntity user = repositoryUser.findByUsername(username);
-        return user;
+        return repositoryUser.findByUsername(username);
     }
 
     @Override
     public Optional<UserDTO> create(UserDTO entity) {
-        if (entity != null && !repositoryUser.existsByUsername(entity.getUsername())) {
+        Optional<UserDTO> optionalDTO = Optional.ofNullable(entity);
+        if (optionalDTO.isPresent() && !repositoryUser.existsByUsername(entity.getUsername())) {
             Project project = new Project();
             Project projectInDB = repositoryProject.save(project);
             UserEntity userEntity = modelMapper.map(entity, UserEntity.class);
             userEntity.setProject(projectInDB);
             userEntity.setActive(true);
             userEntity.setRoles(Collections.singleton(Role.USER));
-            repositoryUser.save(userEntity);
-            Optional<UserDTO> optionalDTO = Optional.of(modelMapper.map(userEntity, UserDTO.class));
-            return optionalDTO;
-        } else
-            return Optional.empty();
+            UserEntity user = repositoryUser.save(userEntity);
+            return Optional.of(modelMapper.map(user, UserDTO.class));
+        }
+        return Optional.empty();
     }
 
     @Override
@@ -59,32 +58,36 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO patch(UserDTO entity) {
-        String id = entity.getId();
-        UserDTO userDTO = this.get(id);
-        modelMapper.map(entity, userDTO);
-        return update(userDTO);
+    public Optional<UserDTO> patch(UserDTO entity) {
+        Optional<UserDTO> optionalDTO = Optional.ofNullable(entity);
+        if (optionalDTO.isPresent() && repositoryUser.findById(optionalDTO.get().getId()).isPresent()) {
+            UserDTO userDTO = modelMapper.map(this.get(optionalDTO.get().getId()), UserDTO.class);
+            modelMapper.map(optionalDTO.get(), userDTO);
+            return update(userDTO);
+        }
+        return Optional.empty();
     }
 
     @Override
-    public UserDTO update(UserDTO entity) {
-        String id = entity.getId();
-        if (id != null && repositoryUser.existsById(id)) {
-            UserEntity userEntity = modelMapper.map(entity, UserEntity.class);
+    public Optional<UserDTO> update(UserDTO entity) {
+        Optional<UserDTO> optionalDTO = Optional.of(entity);
+        String id = optionalDTO.get().getId();
+        if (id != null && repositoryUser.findById(id).isPresent()) {
+            UserEntity userEntity = modelMapper.map(optionalDTO.get(), UserEntity.class);
             userEntity.setCreatedDate(repositoryUser.findById(id).get().getCreatedDate());
             userEntity.setModifiedDate(new Date());
-            repositoryUser.save(userEntity);
-            return entity;
-        } else {
-            return null;
+            userEntity = repositoryUser.save(userEntity);
+            return Optional.of(modelMapper.map(userEntity, UserDTO.class));
         }
+        return Optional.empty();
     }
 
     @Override
-    public UserDTO get(String id) {
-        UserEntity userEntity = repositoryUser.getOne(id);
-        UserDTO userDTO = modelMapper.map(userEntity,UserDTO.class);
-        return userDTO;
+    public Optional<UserDTO> get(String id) {
+        if (repositoryUser.findById(id).isPresent()) {
+            return Optional.of(modelMapper.map(repositoryUser.findById(id), UserDTO.class));
+        }
+        return Optional.empty();
     }
 
     @Override
@@ -94,15 +97,6 @@ public class UserServiceImpl implements UserService {
             all.add(modelMapper.map(user, UserDTO.class));
         });
         return all;
-    }
-
-    @Override
-    public boolean findByName(String name) {
-        UserEntity userEntity = repositoryUser.findByUsername(name);
-        if (userEntity == null){
-            return false;
-        }
-        return true;
     }
 
     @Override

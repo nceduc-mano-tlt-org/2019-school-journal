@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.nceduc.journal.dto.TeacherDTO;
 import ru.nceduc.journal.service.TeacherService;
@@ -22,6 +23,7 @@ public class TeacherController {
     private final TeacherService teacherService;
 
     @ApiOperation(value = "Get all teachers")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/")
     public ResponseEntity<List<TeacherDTO>> getAllTeachers() {
         return new ResponseEntity<>(teacherService.getAll(), HttpStatus.OK);
