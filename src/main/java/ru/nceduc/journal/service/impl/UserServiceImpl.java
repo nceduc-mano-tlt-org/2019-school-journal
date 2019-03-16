@@ -46,9 +46,7 @@ public class UserServiceImpl implements UserService {
             UserEntity userEntity = modelMapper.map(entity, UserEntity.class);
             userEntity.setProject(projectInDB);
             userEntity.setActive(true);
-
             userEntity.setPassword(passwordEncoder.encode(entity.getPassword()));
-
             userEntity.setRoles(Collections.singleton(Role.USER));
             UserEntity user = repositoryUser.save(userEntity);
             return Optional.of(modelMapper.map(user, UserDTO.class));
@@ -64,25 +62,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<UserDTO> patch(UserDTO entity) {
-        Optional<UserDTO> optionalDTO = Optional.ofNullable(entity);
-        if (optionalDTO.isPresent() && repositoryUser.findById(optionalDTO.get().getId()).isPresent()) {
-            UserDTO userDTO = modelMapper.map(this.get(optionalDTO.get().getId()), UserDTO.class);
-            modelMapper.map(optionalDTO.get(), userDTO);
-            return update(userDTO);
+        Optional<UserDTO> patchedOptional = Optional.ofNullable(entity);
+        if (patchedOptional.isPresent()) {
+            Optional<UserDTO> currentOptional = get(entity.getId());
+
+            if (currentOptional.isPresent()) {
+                UserDTO patchedDTO = patchedOptional.get();
+                UserDTO currentDTO = currentOptional.get();
+                modelMapper.map(patchedDTO, currentDTO);
+                return save(currentDTO);
+            }
         }
         return Optional.empty();
     }
 
     @Override
     public Optional<UserDTO> update(UserDTO entity) {
-        Optional<UserDTO> optionalDTO = Optional.of(entity);
-        String id = optionalDTO.get().getId();
-        if (id != null && repositoryUser.findById(id).isPresent()) {
-            UserEntity userEntity = modelMapper.map(optionalDTO.get(), UserEntity.class);
-            userEntity.setCreatedDate(repositoryUser.findById(id).get().getCreatedDate());
-            userEntity.setModifiedDate(new Date());
-            userEntity = repositoryUser.save(userEntity);
-            return Optional.of(modelMapper.map(userEntity, UserDTO.class));
+        Optional<UserDTO> optionalDTO = Optional.ofNullable(entity);
+        if (optionalDTO.isPresent()) {
+            return save(optionalDTO.get());
         }
         return Optional.empty();
     }
@@ -111,6 +109,19 @@ public class UserServiceImpl implements UserService {
             userDTO.add(modelMapper.map(user, UserDTO.class));
         });
         return userDTO;
+    }
+
+    private Optional<UserDTO> save(UserDTO userDTO) {
+        UserEntity userEntity = modelMapper.map(userDTO, UserEntity.class);
+
+        return repositoryUser.findById(userEntity.getId()).map(entity -> {
+            userEntity.setModifiedDate(new Date());
+            userEntity.setCreatedDate(entity.getCreatedDate());
+            userEntity.setProject(entity.getProject());
+            userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+            UserEntity savedUser = repositoryUser.save(userEntity);
+            return modelMapper.map(savedUser, UserDTO.class);
+        });
     }
 }
 
