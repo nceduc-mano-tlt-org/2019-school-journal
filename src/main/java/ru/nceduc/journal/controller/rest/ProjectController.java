@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.nceduc.journal.dto.ProjectDTO;
 import ru.nceduc.journal.service.ProjectService;
@@ -21,6 +22,7 @@ public class ProjectController {
 
     private final ProjectService service;
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ApiOperation(value = "Get all projects")
     @GetMapping("/")
     public ResponseEntity<List<ProjectDTO>> getAllProjects() {
