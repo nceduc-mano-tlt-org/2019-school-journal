@@ -27,10 +27,10 @@ public class ProjectController {
         return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get current project ")
+    @ApiOperation(value = "Get current projects")
     @GetMapping("/current/")
-    public ResponseEntity<List<ProjectDTO>> getProjectByUser() {
-        return new ResponseEntity<>(service.getAllByUser(), HttpStatus.OK);
+    public ResponseEntity<List<ProjectDTO>> getCurrentProjects() {
+        return new ResponseEntity<>(service.getAllByCurrentUser(), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get project details")

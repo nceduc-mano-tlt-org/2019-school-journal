@@ -87,7 +87,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectDTO> getAllByUser() {
+    public List<ProjectDTO> getAllByCurrentUser() {
         UserEntity user = userService.getCurrentUser();
         List<ProjectDTO> projectDTO = new ArrayList<>();
         repository.findAllByUser(user, Sort.by("createdDate").ascending()).forEach(project -> {
