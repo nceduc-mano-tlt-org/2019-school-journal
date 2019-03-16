@@ -1,4 +1,3 @@
-
 package ru.nceduc.journal.service.impl;
 
 import lombok.RequiredArgsConstructor;
@@ -30,7 +29,7 @@ public class ProjectServiceImpl implements ProjectService {
         Optional<ProjectDTO> optionalDTO = Optional.ofNullable(entity);
         if (optionalDTO.isPresent()) {
             Project project = repository.save(modelMapper.map(optionalDTO.get(), Project.class));
-            return Optional.of(modelMapper.map(project,ProjectDTO.class));
+            return Optional.of(modelMapper.map(project, ProjectDTO.class));
         }
         return Optional.empty();
     }
@@ -43,25 +42,25 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Optional<ProjectDTO> patch(ProjectDTO entity) {
-        Optional<ProjectDTO> optionalDTO = Optional.ofNullable(entity);
-        if (optionalDTO.isPresent() && repository.findById(optionalDTO.get().getId()).isPresent()) {
-            ProjectDTO projectDTO = modelMapper.map(this.get(optionalDTO.get().getId()), ProjectDTO.class);
-            modelMapper.map(optionalDTO.get(), projectDTO);
-            return update(projectDTO);
+        Optional<ProjectDTO> patchedOptional = Optional.ofNullable(entity);
+        if (patchedOptional.isPresent()) {
+            Optional<ProjectDTO> currentOptional = get(entity.getId());
+
+            if (currentOptional.isPresent()) {
+                ProjectDTO patchedDTO = patchedOptional.get();
+                ProjectDTO currentDTO = currentOptional.get();
+                modelMapper.map(patchedDTO, currentDTO);
+                return save(currentDTO);
+            }
         }
         return Optional.empty();
     }
 
     @Override
     public Optional<ProjectDTO> update(ProjectDTO entity) {
-        Optional<ProjectDTO> optionalDTO = Optional.of(entity);
-        String id = optionalDTO.get().getId();
-        if (id != null && repository.findById(id).isPresent()) {
-            Project project = modelMapper.map(optionalDTO.get(), Project.class);
-            project.setCreatedDate(repository.findById(id).get().getCreatedDate());
-            project.setModifiedDate(new Date());
-            project = repository.save(project);
-            return Optional.of(modelMapper.map(project,ProjectDTO.class));
+        Optional<ProjectDTO> optionalDTO = Optional.ofNullable(entity);
+        if (optionalDTO.isPresent()) {
+            return save(optionalDTO.get());
         }
         return Optional.empty();
     }
@@ -94,5 +93,17 @@ public class ProjectServiceImpl implements ProjectService {
             projectDTO.add(modelMapper.map(project, ProjectDTO.class));
         });
         return projectDTO;
+    }
+
+    private Optional<ProjectDTO> save(ProjectDTO projectDTO) {
+        Project project = modelMapper.map(projectDTO, Project.class);
+
+        return repository.findById(project.getId()).map(entity -> {
+            project.setModifiedDate(new Date());
+            project.setCreatedDate(entity.getCreatedDate());
+            project.setUser(entity.getUser());
+            Project savedProject = repository.save(project);
+            return modelMapper.map(savedProject, ProjectDTO.class);
+        });
     }
 }
