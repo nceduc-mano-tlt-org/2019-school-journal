@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.nceduc.journal.dto.StudentDTO;
-import ru.nceduc.journal.entity.Group;
 import ru.nceduc.journal.entity.Student;
 import ru.nceduc.journal.repository.StudentRepository;
 import ru.nceduc.journal.service.StudentService;
@@ -40,27 +39,27 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Optional<StudentDTO> patch(StudentDTO entity) {
-        Optional<StudentDTO> optionalDTO = Optional.ofNullable(entity);
-        if (optionalDTO.isPresent() && studentRepository.findById(optionalDTO.get().getId()).isPresent()) {
-            StudentDTO studentDTO = modelMapper.map(this.get(optionalDTO.get().getId()), StudentDTO.class);
-            modelMapper.map(optionalDTO.get(), studentDTO);
-            return update(studentDTO);
-        } else
-            return Optional.empty();
+        Optional<StudentDTO> patchedOptional = Optional.ofNullable(entity);
+        if (patchedOptional.isPresent()) {
+            Optional<StudentDTO> currentOptional = get(entity.getId());
+
+            if (currentOptional.isPresent()) {
+                StudentDTO patchedDTO = patchedOptional.get();
+                StudentDTO currentDTO = currentOptional.get();
+                modelMapper.map(patchedDTO, currentDTO);
+                return save(currentDTO);
+            }
+        }
+        return Optional.empty();
     }
 
     @Override
     public Optional<StudentDTO> update(StudentDTO entity) {
-        Optional<StudentDTO> optionalDTO = Optional.of(entity);
-        String id = optionalDTO.get().getId();
-        if (id != null && studentRepository.findById(id).isPresent()) {
-            Student student = modelMapper.map(optionalDTO.get(), Student.class);
-            student.setCreatedDate(studentRepository.findById(id).get().getCreatedDate());
-            student.setModifiedDate(new Date());
-            student = studentRepository.save(student);
-            return Optional.of(modelMapper.map(student, StudentDTO.class));
-        } else
-            return Optional.empty();
+        Optional<StudentDTO> optionalDTO = Optional.ofNullable(entity);
+        if (optionalDTO.isPresent()) {
+            return save(optionalDTO.get());
+        }
+        return Optional.empty();
     }
 
     @Override
@@ -85,4 +84,17 @@ public class StudentServiceImpl implements StudentService {
         });
         return studentDTO;
     }
+
+    private Optional<StudentDTO> save(StudentDTO studentDTO) {
+        Student student = modelMapper.map(studentDTO, Student.class);
+
+        return studentRepository.findById(student.getId()).map(entity -> {
+            student.setModifiedDate(new Date());
+            student.setCreatedDate(entity.getCreatedDate());
+            student.setGroup(entity.getGroup());
+            Student savedStudent = studentRepository.save(student);
+            return modelMapper.map(savedStudent, StudentDTO.class);
+        });
+    }
+
 }
