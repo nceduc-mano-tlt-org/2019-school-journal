@@ -41,34 +41,32 @@ public class SectionServiceImpl implements SectionService {
         Optional<SectionDTO> optionalDTO = Optional.ofNullable(sectionDTO);
         if (optionalDTO.isPresent()) {
             Section section = sectionRepository.save(modelMapper.map(optionalDTO.get(), Section.class));
-            return Optional.of(modelMapper.map(section,SectionDTO.class));
-        }
-        else
+            return Optional.of(modelMapper.map(section, SectionDTO.class));
+        } else
             return Optional.empty();
     }
 
     @Override
     public Optional<SectionDTO> patch(SectionDTO sectionDTO) {
-        Optional<SectionDTO> optionalDTO = Optional.ofNullable(sectionDTO);
-        if (optionalDTO.isPresent() && sectionRepository.findById(optionalDTO.get().getId()).isPresent()) {
-            SectionDTO dto = modelMapper.map(this.get(optionalDTO.get().getId()), SectionDTO.class);
-            modelMapper.map(optionalDTO.get(), dto);
-            return update(dto);
+        Optional<SectionDTO> patchedOptional = Optional.ofNullable(sectionDTO);
+        if (patchedOptional.isPresent()) {
+            Optional<SectionDTO> currentOptional = get(sectionDTO.getId());
+
+            if (currentOptional.isPresent()) {
+                SectionDTO patchedDTO = patchedOptional.get();
+                SectionDTO currentDTO = currentOptional.get();
+                modelMapper.map(patchedDTO, currentDTO);
+                return save(currentDTO);
+            }
         }
-        else
-            return Optional.empty();
+        return Optional.empty();
     }
 
     @Override
     public Optional<SectionDTO> update(SectionDTO sectionDTO) {
-        Optional<SectionDTO> optionalDTO = Optional.of(sectionDTO);
-        String id = optionalDTO.get().getId();
-        if (id != null && sectionRepository.findById(id).isPresent()) {
-            Section section = modelMapper.map(optionalDTO.get(), Section.class);
-            section.setCreatedDate(sectionRepository.findById(id).get().getCreatedDate());
-            section.setModifiedDate(new Date());
-            section = sectionRepository.save(section);
-            return Optional.of(modelMapper.map(section,SectionDTO.class));
+        Optional<SectionDTO> optionalDTO = Optional.ofNullable(sectionDTO);
+        if (optionalDTO.isPresent()) {
+            return save(optionalDTO.get());
         }
         return Optional.empty();
     }
@@ -88,5 +86,17 @@ public class SectionServiceImpl implements SectionService {
             sectionDTO.add(modelMapper.map(section, SectionDTO.class));
         });
         return sectionDTO;
+    }
+
+    private Optional<SectionDTO> save(SectionDTO sectionDTO) {
+        Section section = modelMapper.map(sectionDTO, Section.class);
+
+        return sectionRepository.findById(section.getId()).map(entity -> {
+            section.setModifiedDate(new Date());
+            section.setCreatedDate(entity.getCreatedDate());
+            section.setProject(entity.getProject());
+            Section savedSection = sectionRepository.save(section);
+            return modelMapper.map(savedSection, SectionDTO.class);
+        });
     }
 }
