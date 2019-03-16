@@ -1,7 +1,8 @@
 package ru.nceduc.journal.entity;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -9,7 +10,8 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "usr")
-@Data
+@Getter
+@Setter
 public class UserEntity extends AbstractEntity {
 
     private String username;
@@ -18,7 +20,7 @@ public class UserEntity extends AbstractEntity {
 
 
     @OneToOne
-    @JoinColumn(name="project_id")
+    @JoinColumn(name = "project_id")
     private Project project;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
