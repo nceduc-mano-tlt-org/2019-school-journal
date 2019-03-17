@@ -1,11 +1,11 @@
 Vue.component('section-list', {
-    props: ['sectionId','sectionName','sectionDescription','sectionProjectId'],
+    props: ['section'],
     template:
         '<div class="card textc-black mt-3">\n' +
         '  <div class="card-header">\n' +
-        '    <h6 class="d-none">Section Id: <b>{{sectionId}}</b></h6>\n' +
-        '    <h6 class="d-none">Section Project Id: <b>{{sectionProjectId}}</b></h6>\n' +
-        '    <h5 class="card-title">{{sectionName}}</h5>\n' +
+        '    <h6 class="d-none">Section Id: <b>{{section.id}}</b></h6>\n' +
+        '    <h6 class="d-none">Section Project Id: <b>{{section.projectId}}</b></h6>\n' +
+        '    <h5 class="card-title">{{section.name}}</h5>\n' +
         '  </div>\n' +
         '  <div class="card-body">\n' +
         '   <button type="button" class="close" aria-label="Close" onclick="vm.deleteSection(this)">\n' +
@@ -13,16 +13,16 @@ Vue.component('section-list', {
         '   </button>'+
         '    <div class="card-info mb-2">'+
         '      <h5>Section description</h5>'+
-        '      <b>{{sectionDescription}}</b>'+
+        '      <b>{{section.description}}</b>'+
         '      <p class="d-none">Groups in this section:</p>\n' +
-        '      <p class="card-text d-none">         \n' +
+        '      <p class="card-text d-none">\n' +
         '        <a href="/group/1" class="badge textc-white bgc-primary">Default 1</a>\n' +
         '        <a href="/group/2" class="badge textc-white bgc-primary">Default 2</a>\n' +
         '        <a href="/section/1" class="badge textc-black">see all...</a>\n' +
         '      </p>\n' +
         '    </div>\n' +
         '    <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditSection(this)"  data-toggle="modal" id data-target="#editSectionModal">Manage section</button>\n' +
-        '    <a :href="\'/group.html?section_id=\' + sectionId" class="btn textc-white bgc-primary">Enter</a>\n' +
+        '    <a :href="\'/group.html?section_id=\' + section.id" class="btn textc-white bgc-primary">Enter</a>\n' +
         '  </div>\n' +
         '</div>'
 });
