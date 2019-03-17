@@ -1,5 +1,5 @@
 Vue.component('project-list', {
-    props: ['projectId','projectName','projectOwner'],
+    props: ['project'],
     template:
         '<div class="card d-inline-block mt-2" style="width: 18rem;">\n' +
         '  <img src="/assets/i/no-image.png" class="card-img-top" alt="">\n' +
@@ -7,17 +7,17 @@ Vue.component('project-list', {
         '   <button type="button" class="close d-none" aria-label="Close" onclick="vm.deleteProject(this)">\n' +
         '       <span aria-hidden="true">&times;</span>\n' +
         '   </button>'+
-        '    <h6 class="d-none" >Project ID: <b>{{projectId}}</b></h6>\n' +
-        '    <h5 class="card-title"><b>{{projectName}}</b></h5>\n' +
-        '    <h6 class="d-none" >Owner ID: <b>{{projectOwner}}</b></h6>\n' +
+        '    <h6 class="d-none" >Project ID: <b>{{project.id}}</b></h6>\n' +
+        '    <h5 class="card-title"><b>{{project.name}}</b></h5>\n' +
+        '    <h6 class="d-none" >Owner ID: <b>{{project.userId}}</b></h6>\n' +
         '    <p class="card-text d-none"><span class="font-weight-bold">Project owner:</span>\n' +
-        '      <span class="badge badge-primary bgc-primary">projectOwner</span>\n' +
+        '      <span class="badge badge-primary bgc-primary">User name</span>\n' + // TODO: display username
         '    </p>\n' +
         '    <p class="card-text d-none"><span class="font-weight-bold">Project description:</span>\n' +
         '      <br>projectDescription \n' +
         '    </p>\n' +
         '    <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditProject(this)"  data-toggle="modal" id data-target="#editProjectModal">Manage</button>\n' +
-        '    <a :href="\'/section.html?project_id=\' + projectId" class="btn textc-white bgc-primary">Enter</a>\n' +
+        '    <a :href="\'/section.html?project_id=\' + project.id" class="btn textc-white bgc-primary">Enter</a>\n' +
         '  </div>\n' +
         '</div>'
 });
