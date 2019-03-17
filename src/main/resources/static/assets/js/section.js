@@ -1,5 +1,5 @@
 Vue.component('section-list', {
-    props: ['sectionId', 'sectionName', 'sectionDescription', 'sectionProjectId'],
+    props: ['sectionId','sectionName','sectionDescription','sectionProjectId'],
     template:
         '<div class="card textc-black mt-3">\n' +
         '  <div class="card-header">\n' +
@@ -11,9 +11,9 @@ Vue.component('section-list', {
         '   <button type="button" class="close" aria-label="Close" onclick="vm.deleteSection(this)">\n' +
         '       <span aria-hidden="true">&times;</span>\n' +
         '   </button>'+
-        '    <div class="card-info mb-2">' +
-        '      <h5>Описание секции</h5>' +
-        '      <b>{{sectionDescription}}</b>' +
+        '    <div class="card-info mb-2">'+
+        '      <h5>Section description</h5>'+
+        '      <b>{{sectionDescription}}</b>'+
         '      <p class="d-none">Groups in this section:</p>\n' +
         '      <p class="card-text d-none">         \n' +
         '        <a href="/group/1" class="badge textc-white bgc-primary">Default 1</a>\n' +
@@ -36,25 +36,25 @@ var vm = new Vue({
     mounted() {
         var url_string = window.location.href;
         var url = new URL(url_string);
-        if (url.searchParams.get("project_id") != '') {
+        if (url.searchParams.get("project_id")!=''){
             axios
-                .get('/api/v1/section/by-project/' + url.searchParams.get("project_id"))
-                .then(response => (this.sections = response.data));
-        } else if (rl.searchParams.get("id") != '') {
+            .get('/api/v1/section/by-project/'+ url.searchParams.get("project_id"))
+            .then(response => (this.sections = response.data));
+        } else if (rl.searchParams.get("id")!=''){
             axios
             .get('/api/v1/section/')
-                .then(response => (this.sections = response.data));
+            .then(response => (this.sections = response.data));
         }
     },
     methods: {
         loadSection: function () {
             var url_string = window.location.href;
             var url = new URL(url_string);
-            if (url.searchParams.get("project_id") != '') {
+            if (url.searchParams.get("project_id")!=''){
                 axios
-                    .get('/api/v1/section/by-project/' + url.searchParams.get("project_id"))
+                    .get('/api/v1/section/by-project/'+ url.searchParams.get("project_id"))
                     .then(response => (this.sections = response.data));
-            } else if (rl.searchParams.get("id") != '') {
+            } else if (rl.searchParams.get("id")!=''){
                 axios
                     .get('/api/v1/section/')
                     .then(response => (this.sections = response.data));
@@ -93,7 +93,7 @@ var vm = new Vue({
         deleteSection: function (element) {
             var button = element;
             var sectionId = button.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
-            axios.delete('/api/v1/section/' + sectionId, {})
+            axios.delete('/api/v1/section/'+sectionId, {})
                 .then(function (response) {
                     console.log(response);
                     setTimeout(vm.loadSection(), 300);
