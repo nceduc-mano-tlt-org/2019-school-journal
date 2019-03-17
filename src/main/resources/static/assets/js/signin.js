@@ -13,6 +13,8 @@ var vm = new Vue({
                     console.log(response);
                     if (response.status == 200) {
                         window.location.href = "/project.html";
+                    } else {
+                        // TODO: make marker
                     }
                 })
                 .catch(function (error) {
