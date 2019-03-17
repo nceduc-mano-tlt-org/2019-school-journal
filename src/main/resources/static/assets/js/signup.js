@@ -12,8 +12,11 @@ var vm = new Vue({
                 })
                 .then(function (response) {
                     console.log(response);
-                    if (response.status == 200) {
+                    if (response.status == 201) {
                         window.location.href = "/signin.html";
+                    }
+                    else {
+                        //TODO: make marker
                     }
                 })
                 .catch(function (error) {
