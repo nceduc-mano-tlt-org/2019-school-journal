@@ -1,11 +1,11 @@
 Vue.component('group-list', {
-    props: ['groupId','groupName','groupDescription','groupSectionId'],
+    props: ['group'],
     template:
         '<div class="card textc-black mt-3">\n' +
         '  <div class="card-header">\n' +
-        '    <h6 class="d-none">Group Id: <b>{{groupId}}</b></h6>\n' +
-        '    <h6 class="d-none">Group Section Id : <b>{{groupSectionId}}</b></h6>\n' +
-        '    <h5 class="card-title">{{groupName}}</h5>\n' +
+        '    <h6 class="d-none">Group Id: <b>{{group.id}}</b></h6>\n' +
+        '    <h6 class="d-none">Group Section Id : <b>{{group.sectionId}}</b></h6>\n' +
+        '    <h5 class="card-title">{{group.name}}</h5>\n' +
         '  </div>\n' +
         '  <div class="card-body">\n' +
         '   <button type="button" class="close" aria-label="Close" onclick="vm.deleteGroup(this)">\n' +
@@ -13,10 +13,10 @@ Vue.component('group-list', {
         '   </button>'+
         '    <div class="card-info mb-2">'+
         '      <h5>Group description: </h5>'+
-        '      <b>{{groupDescription}}</b>'+
+        '      <b>{{group.description}}</b>'+
         '    </div>\n' +
         '    <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditGroup(this)"  data-toggle="modal" id data-target="#editGroupModal">Manage group</button>\n' +
-        '    <a :href="\'/group.html?id=\' + groupId" class="btn textc-white bgc-primary">Enter</a>\n' +
+        '    <a :href="\'/group.html?id=\' + group.id" class="btn textc-white bgc-primary">Enter</a>\n' +
         '  </div>\n' +
         '</div>'
 });

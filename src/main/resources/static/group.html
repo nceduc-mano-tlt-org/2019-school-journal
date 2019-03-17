@@ -107,8 +107,7 @@
         </button>
       </h2>
 
-      <group-list v-for="group in groups" :key="group.id" :group-id="group.id" :group-name="group.name" :group-description="group.description" :group-section-id="group.sectionId">
-      </group-list>
+      <group-list v-for="group in groups" :key="group.id" :group-id="group.id" :group="group"></group-list>
 
 
       </div>
