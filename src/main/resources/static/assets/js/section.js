@@ -22,7 +22,7 @@ Vue.component('section-list', {
         '      </p>\n' +
         '    </div>\n' +
         '    <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditSection(this)"  data-toggle="modal" id data-target="#editSectionModal">Manage section</button>\n' +
-        '    <a :href="\'/group.html?section_id=\' + section.id" class="btn textc-white bgc-primary">Enter</a>\n' +
+        '    <a href="\'/group.html?section_id=\' + section.id" class="btn textc-white bgc-primary">Enter</a>\n' +
         '  </div>\n' +
         '</div>'
 });

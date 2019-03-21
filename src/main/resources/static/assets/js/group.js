@@ -16,7 +16,7 @@ Vue.component('group-list', {
         '      <b>{{group.description}}</b>'+
         '    </div>\n' +
         '    <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditGroup(this)"  data-toggle="modal" id data-target="#editGroupModal">Manage group</button>\n' +
-        '    <a :href="\'/group.html?id=\' + group.id" class="btn textc-white bgc-primary">Enter</a>\n' +
+        '    <a href="\'/group.html?id=\' + group.id" class="btn textc-white bgc-primary">Enter</a>\n' +
         '  </div>\n' +
         '</div>'
 });

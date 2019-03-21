@@ -16,7 +16,7 @@ Vue.component('personlist', {
         '</button>\n' +
         '</div>\n' +
         '</div>'
-})
+});
 
 
 var vm = new Vue({
