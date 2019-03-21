@@ -36,11 +36,11 @@ var vm = new Vue({
     mounted() {
         var url_string = window.location.href;
         var url = new URL(url_string);
-        if (url.searchParams.get("project_id")!=''){
+        if (url.searchParams.get("project_id")!==''){
             axios
             .get('/api/v1/section/by-project/'+ url.searchParams.get("project_id"))
             .then(response => (this.sections = response.data));
-        } else if (rl.searchParams.get("id")!=''){
+        } else if (rl.searchParams.get("id")!==''){
             axios
             .get('/api/v1/section/')
             .then(response => (this.sections = response.data));
@@ -50,11 +50,11 @@ var vm = new Vue({
         loadSection: function () {
             var url_string = window.location.href;
             var url = new URL(url_string);
-            if (url.searchParams.get("project_id")!=''){
+            if (url.searchParams.get("project_id")!==''){
                 axios
                     .get('/api/v1/section/by-project/'+ url.searchParams.get("project_id"))
                     .then(response => (this.sections = response.data));
-            } else if (rl.searchParams.get("id")!=''){
+            } else if (rl.searchParams.get("id")!==''){
                 axios
                     .get('/api/v1/section/')
                     .then(response => (this.sections = response.data));
@@ -91,8 +91,7 @@ var vm = new Vue({
 
         },
         deleteSection: function (element) {
-            var button = element;
-            var sectionId = button.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
+            var sectionId = element.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
             axios.delete('/api/v1/section/'+sectionId, {})
                 .then(function (response) {
                     console.log(response);

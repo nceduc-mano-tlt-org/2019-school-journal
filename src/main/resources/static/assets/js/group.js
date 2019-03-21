@@ -48,12 +48,12 @@ var vm = new Vue({
         loadGroup: function () {
             var url_string = window.location.href;
             var url = new URL(url_string);
-            if (url.searchParams.get("section_id")!=''){
+            if (url.searchParams.get("section_id") !== ''){
                 groupList = true;
                 axios
                     .get('/api/v1/group/by-section/'+ url.searchParams.get("section_id"))
                     .then(response => (this.groups = response.data));
-            } else if (rl.searchParams.get("id")!=''){
+            } else if (rl.searchParams.get("id") !== ''){
                 groupList = false;
                 axios
                     .get('/api/v1/group/')
@@ -63,7 +63,7 @@ var vm = new Vue({
         addGroup: function () {
             var url_string = window.location.href;
             var url = new URL(url_string);
-            if (url.searchParams.get("section_id")!='') {
+            if (url.searchParams.get("section_id")!=='') {
                 axios.post('/api/v1/group/', {
                     id: "1",
                     name: document.getElementById("add_group_name").value,
@@ -96,8 +96,7 @@ var vm = new Vue({
 
         },
         deleteGroup: function (element) {
-            var button = element;
-            var groupId = button.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
+            var groupId = element.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
             axios.delete('/api/v1/group/'+groupId, {})
                 .then(function (response) {
                     console.log(response);

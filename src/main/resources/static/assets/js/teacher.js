@@ -68,8 +68,7 @@ var vm = new Vue({
 
         },
         deletePerson: function (element) {
-            var button = element;
-            personId = button.parentNode.getElementsByTagName("h5")[0].getElementsByTagName("b")[0].innerText;
+            personId = element.parentNode.getElementsByTagName("h5")[0].getElementsByTagName("b")[0].innerText;
 
             axios.delete('/api/v1/person/'+personId, {})
                 .then(function (response) {
