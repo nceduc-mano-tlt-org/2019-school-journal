@@ -25,32 +25,38 @@ Vue.component('group-list', {
 var vm = new Vue({
     el: '#app',
     data: {
-        groups: []
+        groups: [],
+        groupList : true
+        // teachers: [],
+        // students: []
     },
     mounted() {
-        var url_string = window.location.href;
-        var url = new URL(url_string);
-        if (url.searchParams.get("section_id")!=''){
-            axios
-                .get('/api/v1/group/by-section/'+ url.searchParams.get("section_id"))
-                .then(response => (this.groups = response.data));
-        } else if (rl.searchParams.get("id")!=''){
-            axios
-                .get('/api/v1/section/')
-                .then(response => (this.groups = response.data));
-        }
+        // var url_string = window.location.href;
+        // var url = new URL(url_string);
+        // if (url.searchParams.get("section_id")!=''){
+        //     axios
+        //         .get('/api/v1/group/by-section/'+ url.searchParams.get("section_id"))
+        //         .then(response => (this.groups = response.data));
+        // } else if (rl.searchParams.get("id")!=''){
+        //     axios
+        //         .get('/api/v1/section/')
+        //         .then(response => (this.groups = response.data));
+        // }
+        this.loadGroup()
     },
     methods: {
         loadGroup: function () {
             var url_string = window.location.href;
             var url = new URL(url_string);
             if (url.searchParams.get("section_id")!=''){
+                groupList = true;
                 axios
                     .get('/api/v1/group/by-section/'+ url.searchParams.get("section_id"))
                     .then(response => (this.groups = response.data));
             } else if (rl.searchParams.get("id")!=''){
+                groupList = false;
                 axios
-                    .get('/api/v1/section/')
+                    .get('/api/v1/group/')
                     .then(response => (this.groups = response.data));
             }
         },

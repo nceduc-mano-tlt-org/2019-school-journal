@@ -1,119 +1,303 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" href="/assets/css/style.css">
-  <title>Teach'em all!</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <title>Teach'em all!</title>
 </head>
 <body>
 <div id="app">
-<!-- Modal ADD-->
-<div class="modal fade" id="addGroupModal" tabindex="-1" role="dialog" aria-labelledby="addGroupModalTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addGroupModalTitle">Add group</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="vm.loadGroup()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <input id="add_group_id" type="hidden" value="xm234jq">
-          <div class="form-group">
-            <label for="add_group_name">Group name:</label>
-            <input type="text" class="form-control" id="add_group_name">
-          </div>
-          <div class="form-group">
-            <label for="add_group_description">Group description:</label>
-            <textarea class="form-control" rows="5" id="add_group_description"></textarea>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn textc-white bgc-primary" onClick="vm.addGroup()">ADD</button>
-      </div>
+    <!-- Modal ADD-->
+    <div class="modal fade" id="addGroupModal" tabindex="-1" role="dialog" aria-labelledby="addGroupModalTitle"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addGroupModalTitle">Add group</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            onclick="vm.loadGroup()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input id="add_group_id" type="hidden" value="xm234jq">
+                        <div class="form-group">
+                            <label for="add_group_name">Group name:</label>
+                            <input type="text" class="form-control" id="add_group_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="add_group_description">Group description:</label>
+                            <textarea class="form-control" rows="5" id="add_group_description"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="vm.addGroup()">Add</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-
-<!-- Modal EDIT-->
-<div class="modal fade" id="editGroupModal" tabindex="-1" role="dialog" aria-labelledby="editGroupModalTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editGroupModalTitle">Manage group</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="vm.loadGroup()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <input id="edit_group_id" type="hidden" value="xm234jq">
-          <input id="edit_group_section_id" type="hidden" value="xm234jq">
-          <div class="form-group">
-            <label for="edit_group_name">Group name:</label>
-            <input type="text" class="form-control" id="edit_group_name">
-          </div>
-          <div class="form-group">
-            <label for="edit_group_description">Group description:</label>
-            <textarea class="form-control" rows="5" id="edit_group_description"></textarea>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn textc-white bgc-primary" onClick="vm.editGroup()">SAVE</button>
-      </div>
+    <!-- Modal EDIT-->
+    <div class="modal fade" id="editGroupModal" tabindex="-1" role="dialog" aria-labelledby="editGroupModalTitle"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editGroupModalTitle">Manage group</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            onclick="vm.loadGroup()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input id="edit_group_id" type="hidden" value="xm234jq">
+                        <input id="edit_group_section_id" type="hidden" value="xm234jq">
+                        <div class="form-group">
+                            <label for="edit_group_name">Group name:</label>
+                            <input type="text" class="form-control" id="edit_group_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_group_description">Group description:</label>
+                            <textarea class="form-control" rows="5" id="edit_group_description"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="vm.editGroup()">Save</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
+    <div class="container-fluid bgc-white">
+        <div class="header-container">
+            <div class="row header">
+                <div class="col-md-3 pt-2 bgc-primary textc-white logo-container">
+                    <img src="/assets/i/logo/logo-white-bg-none.png" height="50px" class="d-inline-block" alt="...">
+                </div>
+                <div class="col-md-5 pt-4"></div>
+                <div class="col-md-4 pt-4 textc-white text-right">
+                    <h5 class="textc-black d-inline-block pr-3">You are signed as: thirdmadman</h5>
+                    <a href="/logout" class="btn btn-signout d-inline-block">Sign out</a>
+                </div>
+            </div>
+        </div>
+        <span v-if="!groupList">
+            <div class="mainframe-container">
+            <div class="row mainframe">
+                <div class="col-md-3 pt-4 bgc-primary textc-white">
+                    <h2 class="mb-4 pl-3">Project structure:</h2>
+                    <div class="list-group">
+                        <a href="/project/" class="list-group-item list-group-item-action bgc-white">Project name: <b>Some
+                            new Project</b> </a>
+                        <a href="/section/" class="list-group-item list-group-item-action bgc-white">Section: <span
+                                class="badge badge-primary bgc-primary">Box</span></a>
+                        <a href="/group/" class="list-group-item list-group-item-action bgc-white">Groups: <span
+                                class="badge badge-primary bgc-primary">2</span></a>
+                    </div>
+                </div>
+                <div class="col-md-9 pt-3 textc-black">
+                    <h2 class="p-3 cp-title">Groups List:
+                        <button type="button" class="btn textc-white bgc-primary" data-toggle="modal" id
+                                data-target="#addGroupModal">
+                            Add group
+                        </button>
+                    </h2>
+                    <group-list v-for="group in groups" :key="group.id" :group-id="group.id"
+                                :group="group"></group-list>
+                </div>
+            </div>
+            </div>
+        </span>
 
+        <span v-else>
+        <div class="mainframe-container">
+            <div class="row mainframe">
+                <div class="col-md-3 pt-4 bgc-primary textc-white">
+                    <h2 class="mb-4 pl-3">Project structure:</h2>
+                    <div class="list-group">
+                        <a href="/project/" class="list-group-item list-group-item-action bgc-white">Project name: <b>Some
+                            new Project</b> </a>
+                        <a href="/section/" class="list-group-item list-group-item-action bgc-white">Section: <span
+                                class="badge badge-primary bgc-primary">Box</span></a>
+                        <a href="/group/" class="list-group-item list-group-item-action bgc-white">Group: <span
+                                class="badge badge-primary bgc-primary">Пип-1501</span></a>
+                        <a href="/teacher/" class="list-group-item list-group-item-action bgc-white">Teachers: <span
+                                class="badge badge-primary bgc-primary">1</span></a>
+                        <a href="/student/" class="list-group-item list-group-item-action bgc-white">Students: <span
+                                class="badge badge-primary bgc-primary">1</span></a>
 
- <div class="container-fluid bgc-white">
-  <div class="header-container">
-   <div class="row header">
-     <div class="col-md-3 pt-2 bgc-primary textc-white logo-container">
-      <img src="/assets/i/logo/logo-white-bg-none.png" height="50px" class="d-inline-block" alt="...">
+                    </div>
+                </div>
+                <div class="col-md-9 pt-3 textc-black">
+                    <h2 class="p-3 cp-title">About group Box1:
+                        <button type="button" class="btn textc-white bgc-primary" data-toggle="modal" id
+                                data-target="#addTeacherModal">
+                            Add teacher
+                        </button>
+
+                        <button type="button" class="btn textc-white bgc-primary" data-toggle="modal" id
+                                data-target="#addStudentModal">
+                            Add student
+                        </button>
+                    </h2>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3 class="p-3">Teachers list</h3>
+                            <teacher-list v-for="teacher in groups" :key="teacher.id" :teacher-id="teacher.id"
+                                          :teacher="teacher"></teacher-list>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h3 class="p-3">Students list</h3>
+                            <student-list v-for="student in groups" :key="student.id" :student-id="student.id"
+                                          :student="student"></student-list>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+             </span>
     </div>
-    <div class="col-md-5 pt-4"></div>
-    <div class="col-md-4 pt-4 textc-white text-right">
-        <h5 class="textc-black d-inline-block pr-3">You are signed as: thirdmadman</h5>
-        <a href="/logout" class="btn btn-signout d-inline-block">Sign out</a>
-    </div>
-  </div>
-</div>
-<div class="mainframe-container">
-  <div class="row mainframe">
-    <div class="col-md-3 pt-4 bgc-primary textc-white">
-      <h2 class="mb-4 pl-3">Project sructure:</h2>
-      <div class="list-group">
-        <a href="/project/" class="list-group-item list-group-item-action bgc-white">Project name: <b>Some new Project</b> </a>
-        <a href="/section/" class="list-group-item list-group-item-action bgc-white">Section: <span class="badge badge-primary bgc-primary">Box</span></a>
-        <a href="/group/" class="list-group-item list-group-item-action bgc-white">Groups: <span class="badge badge-primary bgc-primary">2</span></a>
-      </div>
-    </div>
-    <div class="col-md-9 pt-3 textc-black">
-      <h2 class="p-3 cp-title">Groups List:
-        <button type="button" class="btn textc-white bgc-primary"  data-toggle="modal" id data-target="#addGroupModal">
-          Add group
-        </button>
-      </h2>
 
-      <group-list v-for="group in groups" :key="group.id" :group-id="group.id" :group="group"></group-list>
+    <!-- Modal ADD-->
+    <div class="modal fade" id="addTeacherModal" tabindex="-1" role="dialog" aria-labelledby="addTeacherModalTitle"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTeacherModalTitle">Add teacher</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            onclick="vm.loadGroup()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input id="add_teacher_id" type="hidden" value="xm234jq">
+                        <label for="add_teacher_first_name">Teacher firstname:</label>
 
+                        <input type="text" class="form-control" id="add_teacher_first_name">
+                        <label for="add_teacher_last_name">Teacher lastname:</label>
 
-      </div>
+                        <input type="text" class="form-control" id="add_teacher_last_name">
+                        <label for="add_teacher_description">Teacher description:</label>
+                        <textarea class="form-control" rows="5" id="add_teacher_description"></textarea>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="vm.addTeacher()">Add</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
+
+    <!-- Modal EDIT-->
+    <div class="modal fade" id="editTeacherModal" tabindex="-1" role="dialog" aria-labelledby="editTeacherModalTitle"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editTeacherModalTitle">Manage teacher</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            onclick="vm.loadGroup()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input id="edit_teacher_id" type="hidden" value="xm234jq">
+                        <input id="edit_teacher_group_id" type="hidden" value="xm234jq">
+
+                        <label for="edit_teacher_first_name">Teacher new firstname:</label>
+                        <input type="text" class="form-control" id="edit_teacher_first_name">
+
+                        <label for="edit_teacher_last_name">Teacher new lastname:</label>
+                        <input type="text" class="form-control" id="edit_teacher_last_name">
+
+                        <label for="edit_teacher_description">Teacher new description:</label>
+                        <textarea class="form-control" rows="5" id="edit_teacher_description"></textarea>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="vm.editTeacher()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal ADD-->
+    <div class="modal fade" id="addStudentModal" tabindex="-1" role="dialog" aria-labelledby="addStudentModalTitle"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addStudentModalTitle">Add student</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            onclick="vm.loadGroup()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input id="add_student_id" type="hidden" value="xm234jq">
+                        <label for="add_student_first_name">Student firstname:</label>
+                        <input type="text" class="form-control" id="add_student_first_name">
+                        <label for="add_student_last_name">Student lastname:</label>
+                        <input type="text" class="form-control" id="add_student_last_name">
+                        <label for="add_student_description">Student description:</label>
+                        <textarea class="form-control" rows="5" id="add_student_description"></textarea>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="vm.addStudent()">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal EDIT-->
+    <div class="modal fade" id="editStudentModal" tabindex="-1" role="dialog" aria-labelledby="editStudentModalTitle"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editStudentModalTitle">Manage student</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            onclick="vm.loadGroup()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input id="edit_student_id" type="hidden" value="xm234jq">
+                        <input id="edit_student_group_id" type="hidden" value="xm234jq">
+
+                        <label for="edit_student_first_name">Student new firstname:</label>
+                        <input type="text" class="form-control" id="edit_student_first_name">
+
+                        <label for="edit_student_last_name">Student new lastname:</label>
+                        <input type="text" class="form-control" id="edit_student_last_name">
+
+                        <label for="edit_student_description">Student new description:</label>
+                        <textarea class="form-control" rows="5" id="edit_student_description"></textarea>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="vm.editStudent()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Optional JavaScript -->
