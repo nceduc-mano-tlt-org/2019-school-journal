@@ -21,7 +21,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="addGroupModalTitle">Add group</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                            onclick="vm.loadGroup()">
+                            onclick="vm.checkParams()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -39,7 +39,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="vm.addGroup()">Add</button>
+                    <button type="button" class="btn btn-secondary" onClick="vm.addGroup()">Add</button>
                 </div>
             </div>
         </div>
@@ -53,7 +53,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="editGroupModalTitle">Manage group</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                            onclick="vm.loadGroup()">
+                            onclick="vm.checkParams()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -90,7 +90,7 @@
                 </div>
             </div>
         </div>
-        <span v-if="!groupList">
+        <span v-if="switcher">
             <div class="mainframe-container">
             <div class="row mainframe">
                 <div class="col-md-3 pt-4 bgc-primary textc-white">
@@ -119,7 +119,7 @@
         </span>
 
         <span v-else>
-        <div class="mainframe-container">
+        <div class="mainframe-container1">
             <div class="row mainframe">
                 <div class="col-md-3 pt-4 bgc-primary textc-white">
                     <h2 class="mb-4 pl-3">Project structure:</h2>
@@ -152,13 +152,13 @@
                     <div class="row">
                         <div class="col-md-6">
                             <h3 class="p-3">Teachers list</h3>
-                            <teacher-list v-for="teacher in groups" :key="teacher.id" :teacher-id="teacher.id"
-                                          :teacher="teacher"></teacher-list>
+                            <teacher-list v-for="teacher in teachers" :key="teacher.id" :group-id="teacher.groupId" :teacher="teacher">
+                            </teacher-list>
                         </div>
 
                         <div class="col-md-6">
                             <h3 class="p-3">Students list</h3>
-                            <student-list v-for="student in groups" :key="student.id" :student-id="student.id"
+                            <student-list v-for="student in students" :key="student.id" :group-id="student.groupId"
                                           :student="student"></student-list>
 
                         </div>
@@ -177,25 +177,23 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="addTeacherModalTitle">Add teacher</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                            onclick="vm.loadGroup()">
+                            onclick="vm.checkParams()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <form>
                         <input id="add_teacher_id" type="hidden" value="xm234jq">
+
                         <label for="add_teacher_first_name">Teacher firstname:</label>
-
                         <input type="text" class="form-control" id="add_teacher_first_name">
-                        <label for="add_teacher_last_name">Teacher lastname:</label>
 
+                        <label for="add_teacher_last_name">Teacher lastname:</label>
                         <input type="text" class="form-control" id="add_teacher_last_name">
-                        <label for="add_teacher_description">Teacher description:</label>
-                        <textarea class="form-control" rows="5" id="add_teacher_description"></textarea>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="vm.addTeacher()">Add</button>
+                    <button type="button" class="btn btn-secondary" onClick="vm.addTeacher()">Add</button>
                 </div>
             </div>
         </div>
@@ -209,7 +207,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="editTeacherModalTitle">Manage teacher</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                            onclick="vm.loadGroup()">
+                            onclick="vm.checkParams()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -223,9 +221,6 @@
 
                         <label for="edit_teacher_last_name">Teacher new lastname:</label>
                         <input type="text" class="form-control" id="edit_teacher_last_name">
-
-                        <label for="edit_teacher_description">Teacher new description:</label>
-                        <textarea class="form-control" rows="5" id="edit_teacher_description"></textarea>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -243,23 +238,23 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="addStudentModalTitle">Add student</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                            onclick="vm.loadGroup()">
+                            onclick="vm.checkParams()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <form>
                         <input id="add_student_id" type="hidden" value="xm234jq">
+
                         <label for="add_student_first_name">Student firstname:</label>
                         <input type="text" class="form-control" id="add_student_first_name">
+
                         <label for="add_student_last_name">Student lastname:</label>
                         <input type="text" class="form-control" id="add_student_last_name">
-                        <label for="add_student_description">Student description:</label>
-                        <textarea class="form-control" rows="5" id="add_student_description"></textarea>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="vm.addStudent()">Add</button>
+                    <button type="button" class="btn btn-secondary" onClick="vm.addStudent()">Add</button>
                 </div>
             </div>
         </div>
@@ -273,13 +268,14 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="editStudentModalTitle">Manage student</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                            onclick="vm.loadGroup()">
+                            onclick="vm.checkParams()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <form>
                         <input id="edit_student_id" type="hidden" value="xm234jq">
+
                         <input id="edit_student_group_id" type="hidden" value="xm234jq">
 
                         <label for="edit_student_first_name">Student new firstname:</label>
@@ -287,9 +283,6 @@
 
                         <label for="edit_student_last_name">Student new lastname:</label>
                         <input type="text" class="form-control" id="edit_student_last_name">
-
-                        <label for="edit_student_description">Student new description:</label>
-                        <textarea class="form-control" rows="5" id="edit_student_description"></textarea>
                     </form>
                 </div>
                 <div class="modal-footer">
