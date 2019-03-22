@@ -22,7 +22,7 @@ Vue.component('section-list', {
         '      </p>\n' +
         '    </div>\n' +
         '    <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditSection(this)"  data-toggle="modal" id data-target="#editSectionModal">Manage section</button>\n' +
-        '    <a href="\'/group.html?section_id=\' + section.id" class="btn textc-white bgc-primary">Enter</a>\n' +
+        '    <a v-bind:href="\'/group.html?section_id=\' + section.id" class="btn textc-white bgc-primary">Enter</a>\n' +
         '  </div>\n' +
         '</div>'
 });
@@ -34,17 +34,18 @@ var vm = new Vue({
         sections: []
     },
     mounted() {
-        var url_string = window.location.href;
-        var url = new URL(url_string);
-        if (url.searchParams.get("project_id")!==''){
-            axios
-            .get('/api/v1/section/by-project/'+ url.searchParams.get("project_id"))
-            .then(response => (this.sections = response.data));
-        } else if (rl.searchParams.get("id")!==''){
-            axios
-            .get('/api/v1/section/')
-            .then(response => (this.sections = response.data));
-        }
+        // var url_string = window.location.href;
+        // var url = new URL(url_string);
+        // if (url.searchParams.get("project_id")!==''){
+        //     axios
+        //     .get('/api/v1/section/by-project/'+ url.searchParams.get("project_id"))
+        //     .then(response => (this.sections = response.data));
+        // } else if (rl.searchParams.get("id")!==''){
+        //     axios
+        //     .get('/api/v1/section/')
+        //     .then(response => (this.sections = response.data));
+        // }
+        this.loadSection()
     },
     methods: {
         loadSection: function () {
@@ -54,7 +55,7 @@ var vm = new Vue({
                 axios
                     .get('/api/v1/section/by-project/'+ url.searchParams.get("project_id"))
                     .then(response => (this.sections = response.data));
-            } else if (rl.searchParams.get("id")!==''){
+            } else if (url.searchParams.get("id")!==''){
                 axios
                     .get('/api/v1/section/')
                     .then(response => (this.sections = response.data));
