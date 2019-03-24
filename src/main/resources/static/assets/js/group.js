@@ -79,7 +79,9 @@ var vm = new Vue({
         //         .get('/api/v1/section/')
         //         .then(response => (this.groups = response.data));
         // }
+        this.showGroupName();
         this.checkParams();
+
     },
     methods: {
         checkParams: function () {
@@ -158,7 +160,21 @@ var vm = new Vue({
             document.getElementById("edit_group_name").value = groupName;
             document.getElementById("edit_group_description").value = groupDescription;
             document.getElementById("edit_group_section_id").value = groupSectionId;
-
+        },
+        getGroup: function () {
+            var url = new URL(window.location.href);
+            axios.get('/api/v1/group/' + url.searchParams.get("group_id"))
+                .then(function (response) {
+                    console.log(response.data);
+                    setTimeout(vm.checkParams(), 300);
+                    return { result: response.data};
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        showGroupName: function () {
+            document.getElementById("show_group_name").value = result.name;
         },
         loadPerson: function () {
             var url = new URL(window.location.href);
