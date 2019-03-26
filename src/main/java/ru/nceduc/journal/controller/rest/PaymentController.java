@@ -46,4 +46,12 @@ public class PaymentController {
         HttpStatus httpStatus = paymentService.withdraw(depositDTO) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
         return new ResponseEntity(httpStatus);
     }
+
+    @PostMapping("/transfer/")
+    @ApiOperation(value = "Transfer certain amount of money")
+    ResponseEntity transfer(@RequestBody PaymentDTO paymentDTO) {
+        HttpStatus httpStatus = paymentService.transfer(paymentDTO) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return new ResponseEntity(httpStatus);
+    }
+
 }
