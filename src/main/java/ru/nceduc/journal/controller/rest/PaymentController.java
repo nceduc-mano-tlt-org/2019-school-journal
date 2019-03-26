@@ -54,4 +54,11 @@ public class PaymentController {
         return new ResponseEntity(httpStatus);
     }
 
+    @DeleteMapping("/cancel/{paymentId}")
+    @ApiOperation(value = "Cancel a payment and return money to the student's account")
+    ResponseEntity cancel(@PathVariable String paymentId) {
+        HttpStatus httpStatus = paymentService.cancel(paymentId) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return new ResponseEntity(httpStatus);
+    }
+
 }
