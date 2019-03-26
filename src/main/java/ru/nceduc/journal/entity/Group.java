@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -16,6 +17,9 @@ public class Group extends AbstractEntity {
 
     private String name;
     private String description;
+    private Date startDate;
+    private long cost;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Section section;
 
@@ -25,7 +29,8 @@ public class Group extends AbstractEntity {
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
     private List<Teacher> teachers;
 
-
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
+    private List<Payment> payments;
 
 
     public Group(String name, String description) {
