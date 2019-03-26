@@ -84,11 +84,13 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<StudentDTO> getAllByGroupId(String groupId) {
-        List<StudentDTO> studentDTO = new ArrayList<>();
+        List<StudentDTO> studentsDTO = new ArrayList<>();
         studentRepository.findAllByGroupId(groupId, Sort.by("createdDate").ascending()).forEach(student -> {
-            studentDTO.add(modelMapper.map(student, StudentDTO.class));
+            StudentDTO studentDTO = modelMapper.map(student, StudentDTO.class);
+            studentDTO.setLastDate(paymentService.getLastDate(student.getId(), groupId));
+            studentsDTO.add(studentDTO);
         });
-        return studentDTO;
+        return studentsDTO;
     }
 
     private Optional<StudentDTO> save(StudentDTO studentDTO) {
