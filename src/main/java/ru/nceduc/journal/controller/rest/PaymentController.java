@@ -6,10 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.nceduc.journal.dto.DepositDTO;
 import ru.nceduc.journal.dto.PaymentDTO;
 import ru.nceduc.journal.service.PaymentService;
 
@@ -35,4 +33,17 @@ public class PaymentController {
         return new ResponseEntity<>(paymentService.getAllByStudentId(studentId), HttpStatus.OK);
     }
 
+    @PutMapping("/deposit/")
+    @ApiOperation(value = "Add certain amount of money to the student's account")
+    ResponseEntity deposit(@RequestBody DepositDTO depositDTO) {
+        HttpStatus httpStatus = paymentService.deposit(depositDTO) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return new ResponseEntity(httpStatus);
+    }
+
+    @PutMapping("/withdraw/")
+    @ApiOperation(value = "Write off certain amount of money to the student's account")
+    ResponseEntity withdraw(@RequestBody DepositDTO depositDTO) {
+        HttpStatus httpStatus = paymentService.withdraw(depositDTO) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return new ResponseEntity(httpStatus);
+    }
 }
