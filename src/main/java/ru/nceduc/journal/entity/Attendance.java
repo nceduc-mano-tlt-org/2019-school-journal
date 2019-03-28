@@ -27,4 +27,8 @@ public class Attendance {
 
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date dateVisit;
+
+    public Attendance() {
+        this.dateVisit = new Date();
+    }
 }
