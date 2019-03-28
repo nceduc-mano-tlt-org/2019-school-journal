@@ -5,7 +5,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import ru.nceduc.journal.dto.AttendanceDTO;
+import ru.nceduc.journal.dto.AttendanceGroupDTO;
+import ru.nceduc.journal.dto.AttendanceStudentDTO;
 import ru.nceduc.journal.dto.StudentDTO;
 import ru.nceduc.journal.entity.Attendance;
 import ru.nceduc.journal.repository.AttendanceRepository;
@@ -24,9 +25,11 @@ public class AttendanceServiceImpl implements AttendanceService {
     private final ModelMapper modelMapper;
 
     @Override
-    public Map<StudentDTO, List<Date>> getAttendanceByGroup(String groupId, Date date) {
+    public Map<StudentDTO, List<Date>> getAttendanceByGroup(AttendanceGroupDTO attendanceGroupDTO) {
+        String groupId = attendanceGroupDTO.getGroupId();
+
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
+        calendar.setTime(attendanceGroupDTO.getDateVisit());
         calendar.set(Calendar.DAY_OF_MONTH,1);
         Date startDate = calendar.getTime();
         calendar.set(Calendar.DAY_OF_MONTH,calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
@@ -45,18 +48,22 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
-    public Optional<AttendanceDTO> create(AttendanceDTO attendanceDTO) {
-        Optional<AttendanceDTO> optionalDTO = Optional.ofNullable(attendanceDTO);
+    public Optional<AttendanceStudentDTO> create(AttendanceStudentDTO attendanceStudentDTO) {
+        Optional<AttendanceStudentDTO> optionalDTO = Optional.ofNullable(attendanceStudentDTO);
         if (optionalDTO.isPresent()) {
+            optionalDTO.get().setDateVisit(new Date());
             Attendance attendance = attendanceRepository.save(modelMapper.map(optionalDTO.get(), Attendance.class));
-            return Optional.of(modelMapper.map(attendance, AttendanceDTO.class));
+            return Optional.of(modelMapper.map(attendance, AttendanceStudentDTO.class));
         } else
             return Optional.empty();
     }
 
     @Override
-    public void delete(String groupId, String studentId) {
-        if (attendanceRepository.existsByGroup_IdAndStudent_Id(groupId,studentId))
-            attendanceRepository.deleteByGroup_IdAndStudent_Id(groupId,studentId);
+    public void delete(AttendanceStudentDTO attendanceStudentDTO) {
+        String groupId = attendanceStudentDTO.getGroupId();
+        String studentId = attendanceStudentDTO.getStudentId();
+        Date date = attendanceStudentDTO.getDateVisit();
+        if (attendanceRepository.existsByGroup_IdAndStudent_IdAndDateVisit(groupId, studentId, date))
+            attendanceRepository.deleteByGroup_IdAndStudent_IdAndDateVisit(groupId, studentId, date);
     }
 }
