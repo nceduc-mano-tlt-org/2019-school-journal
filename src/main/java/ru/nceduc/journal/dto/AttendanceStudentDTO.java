@@ -5,9 +5,9 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class AttendanceDTO {
+public class AttendanceStudentDTO {
     private String id;
     private String studentId;
     private String groupId;
-    private Date date;
+    private Date dateVisit;
 }
