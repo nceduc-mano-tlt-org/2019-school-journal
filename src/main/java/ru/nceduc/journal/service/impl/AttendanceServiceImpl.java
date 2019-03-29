@@ -27,9 +27,12 @@ public class AttendanceServiceImpl implements AttendanceService {
     @Override
     public Map<StudentDTO, List<Date>> getAttendanceByGroup(AttendanceGroupDTO attendanceGroupDTO) {
         String groupId = attendanceGroupDTO.getGroupId();
+        Date dateAttendance = attendanceGroupDTO.getDateVisit();
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(attendanceGroupDTO.getDateVisit());
+        if (dateAttendance != null) {
+            calendar.setTime(dateAttendance);
+        }
         calendar.set(Calendar.DAY_OF_MONTH,1);
         Date startDate = calendar.getTime();
         calendar.set(Calendar.DAY_OF_MONTH,calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
