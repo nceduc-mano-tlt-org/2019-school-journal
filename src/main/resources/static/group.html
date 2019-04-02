@@ -72,7 +72,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="vm.editGroup()">Save</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="vm.editGroup()">Save
+                    </button>
                 </div>
             </div>
         </div>
@@ -96,17 +97,26 @@
                 <div class="col-md-3 pt-4 bgc-primary textc-white">
                     <h2 class="mb-4 pl-3">Project structure:</h2>
                     <div class="list-group">
-                        <a href="/project/" class="list-group-item list-group-item-action bgc-white">Project name: <b>Some
-                            new Project</b> </a>
-                        <a href="/section/" class="list-group-item list-group-item-action bgc-white">Section: <span
-                                class="badge badge-primary bgc-primary">Box</span></a>
-                        <a href="/group/" class="list-group-item list-group-item-action bgc-white">Groups: <span
-                                class="badge badge-primary bgc-primary">2</span></a>
+                        <a href="/project.html/#" class="list-group-item list-group-item-action bgc-white">Project name:
+                            <span class="badge badge-primary bgc-primary">
+                                <output id="show_project_name_in_tree"></output>
+                            </span>
+                        </a>
+                        <span class="list-group-item list-group-item-action bgc-white">Section name:
+                            <span class="badge badge-primary bgc-primary"><output
+                                    id="show_section_name_in_tree"></output>
+                            </span>
+                        </span>
+                        <span class="list-group-item list-group-item-action bgc-white">Groups:
+                            <span class="badge badge-primary bgc-primary"><output
+                                    id="show_group_count_in_tree"></output>
+                            </span>
+                        </span>
                     </div>
                 </div>
                 <div class="col-md-9 pt-3 textc-black">
                     <h2 class="p-3 cp-title">
-                    <label for="show_section_name">Groups list for Section: </label>
+                        <label for="show_section_name">Groups list for Section: </label>
                         <output id="show_section_name"></output>
                         <button type="button" class="btn textc-white bgc-primary" data-toggle="modal" id
                                 data-target="#addGroupModal">
@@ -126,17 +136,31 @@
                 <div class="col-md-3 pt-4 bgc-primary textc-white">
                     <h2 class="mb-4 pl-3">Project structure:</h2>
                     <div class="list-group">
-                        <a href="/project/" class="list-group-item list-group-item-action bgc-white">Project name: <b>Some
-                            new Project</b> </a>
-                        <a href="/section/" class="list-group-item list-group-item-action bgc-white">Section: <span
-                                class="badge badge-primary bgc-primary">Box</span></a>
-                        <a href="/group/" class="list-group-item list-group-item-action bgc-white">Group: <span
-                                class="badge badge-primary bgc-primary">Пип-1501</span></a>
-                        <a href="/teacher/" class="list-group-item list-group-item-action bgc-white">Teachers: <span
-                                class="badge badge-primary bgc-primary">1</span></a>
-                        <a href="/student/" class="list-group-item list-group-item-action bgc-white">Students: <span
-                                class="badge badge-primary bgc-primary">1</span></a>
-
+                        <a href="/project.html/#" class="list-group-item list-group-item-action bgc-white">Project name:
+                            <span class="badge badge-primary bgc-primary">
+                                <output id="show_project_name_in_tree_1"></output>
+                            </span>
+                        </a>
+                        <!--<input id="hidden_section_id" type="hidden" value="">-->
+                        <a id="hidden_section_id" href="" class="list-group-item list-group-item-action bgc-white">Section name:
+                            <span class="badge badge-primary bgc-primary"><output
+                                    id="show_section_name_in_tree_1"></output>
+                            </span>
+                        </a>
+                        <span class="list-group-item list-group-item-action bgc-white">Group name:
+                            <span class="badge badge-primary bgc-primary"><output
+                                    id="show_group_name_in_tree_1"></output>
+                            </span>
+                        </span>
+                        <span class="list-group-item list-group-item-action bgc-white">Teachers:
+                            <span class="badge badge-primary bgc-primary"><output
+                                    id="show_teacher_count_in_tree"></output>
+                            </span>
+                            Students:
+                            <span class="badge badge-primary bgc-primary"><output
+                                    id="show_student_count_in_tree"></output>
+                            </span>
+                        </span>
                     </div>
                 </div>
                 <div class="col-md-9 pt-3 textc-black">
@@ -155,7 +179,8 @@
                     <div class="row">
                         <div class="col-md-6">
                             <h3 class="p-3">Teachers list</h3>
-                            <teacher-list v-for="teacher in teachers" :key="teacher.id" :group-id="teacher.groupId" :teacher="teacher">
+                            <teacher-list v-for="teacher in teachers" :key="teacher.id" :group-id="teacher.groupId"
+                                          :teacher="teacher">
                             </teacher-list>
                         </div>
 
@@ -227,7 +252,9 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="vm.editTeacher()">Save</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="vm.editTeacher()">
+                        Save
+                    </button>
                 </div>
             </div>
         </div>
@@ -289,7 +316,9 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="vm.editStudent()">Save</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="vm.editStudent()">
+                        Save
+                    </button>
                 </div>
             </div>
         </div>

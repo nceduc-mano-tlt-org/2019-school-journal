@@ -46,6 +46,7 @@ var vm = new Vue({
                     .then(function (response) {
                         this.projectName = response.data.name;
                         document.getElementById("show_project_name").value = this.projectName;
+                        document.getElementById("show_project_name_in_tree").value = this.projectName;
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -58,7 +59,13 @@ var vm = new Vue({
             if (url.searchParams.get("project_id") !== '') {
                 axios
                     .get('/api/v1/section/by-project/' + url.searchParams.get("project_id"))
-                    .then(response => (this.sections = response.data));
+                    .then(response => {
+                        this.sections = response.data;
+                        document.getElementById("show_section_count_in_tree").value = this.sections.length;
+                    })
+                    .catch(function (error) {
+                    console.log(error);
+                });
             } else if (url.searchParams.get("id") !== '') {
                 axios
                     .get('/api/v1/section/')

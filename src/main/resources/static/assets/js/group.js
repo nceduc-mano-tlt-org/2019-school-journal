@@ -79,11 +79,14 @@ var vm = new Vue({
                 this.switcher = true;
                 this.showSectionName();
                 this.loadGroup();
+                //document.getElementById("show_group_count_in_tree").value = this.groups.length;
             }
             if (url.searchParams.has("group_id")) {
                 this.switcher = false;
                 this.showGroupName();
                 this.loadPerson();
+                document.getElementById("show_teacher_count_in_tree").value = this.teachers.length;
+                document.getElementById("show_student_count_in_tree").value = this.students.length;
             }
         },
         loadGroup: function () {
@@ -91,7 +94,10 @@ var vm = new Vue({
             if (url.searchParams.get("section_id") !== '') {
                 axios
                     .get('/api/v1/group/by-section/' + url.searchParams.get("section_id"))
-                    .then(response => (this.groups = response.data));
+                    .then(response => {
+                        this.groups = response.data;
+                        document.getElementById("show_group_count_in_tree").value = this.groups.length;
+                    });
             }
         },
         addGroup: function () {
@@ -158,6 +164,16 @@ var vm = new Vue({
                 .then(function (response) {
                     this.groupName = response.data.name;
                     document.getElementById("show_group_name").value = this.groupName;
+                    document.getElementById("show_group_name_in_tree_1").value = this.groupName;
+                    document.getElementById("hidden_section_id").href = '/group.html?section_id=' + response.data.sectionId;
+                    axios.get('/api/v1/section/' + response.data.sectionId)
+                        .then(function(response){
+                            document.getElementById("show_section_name_in_tree_1").value = response.data.name;
+                            axios.get('/api/v1/project/' + response.data.projectId)
+                                .then(function(response){
+                                    document.getElementById("show_project_name_in_tree_1").value = response.data.name;
+                                })
+                        })
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -169,6 +185,11 @@ var vm = new Vue({
                 .then(function (response) {
                     this.sectionName = response.data.name;
                     document.getElementById("show_section_name").value = this.sectionName;
+                    document.getElementById("show_section_name_in_tree").value = this.sectionName;
+                    axios.get('/api/v1/project/' + response.data.projectId)
+                        .then(function(response){
+                            document.getElementById("show_project_name_in_tree").value = response.data.name;
+                        })
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -179,10 +200,16 @@ var vm = new Vue({
             if (url.searchParams.get("group_id") !== '') {
                 axios
                     .get('/api/v1/teacher/by-group/' + url.searchParams.get("group_id"))
-                    .then(response => (this.teachers = response.data));
+                    .then(response => {
+                        this.teachers = response.data;
+                        document.getElementById("show_teacher_count_in_tree").value = this.teachers.length;
+                    });
                 axios
                     .get('/api/v1/student/by-group/' + url.searchParams.get("group_id"))
-                    .then(response => (this.students = response.data));
+                    .then(response => {
+                        this.students = response.data;
+                        document.getElementById("show_student_count_in_tree").value = this.students.length;
+                    });
             }
         },
         addTeacher: function () {
