@@ -63,35 +63,26 @@ var vm = new Vue({
     el: '#app',
     data: {
         switcher: false,
+        groupName: '',
+        sectionName: '',
         groups: [],
         teachers: [],
         students: []
     },
     mounted() {
-        // var url_string = window.location.href;
-        // var url = new URL(url_string);
-        // if (url.searchParams.get("section_id")!=''){
-        //     axios
-        //         .get('/api/v1/group/by-section/'+ url.searchParams.get("section_id"))
-        //         .then(response => (this.groups = response.data));
-        // } else if (rl.searchParams.get("id")!=''){
-        //     axios
-        //         .get('/api/v1/section/')
-        //         .then(response => (this.groups = response.data));
-        // }
-        this.showGroupName();
         this.checkParams();
-
     },
     methods: {
         checkParams: function () {
             var url = new URL(window.location.href);
             if (url.searchParams.has("section_id")) {
                 this.switcher = true;
+                this.showSectionName();
                 this.loadGroup();
             }
             if (url.searchParams.has("group_id")) {
                 this.switcher = false;
+                this.showGroupName();
                 this.loadPerson();
             }
         },
@@ -161,20 +152,27 @@ var vm = new Vue({
             document.getElementById("edit_group_description").value = groupDescription;
             document.getElementById("edit_group_section_id").value = groupSectionId;
         },
-        getGroup: function () {
+        showGroupName: function () {
             var url = new URL(window.location.href);
             axios.get('/api/v1/group/' + url.searchParams.get("group_id"))
                 .then(function (response) {
-                    console.log(response.data);
-                    setTimeout(vm.checkParams(), 300);
-                    return { result: response.data};
+                    this.groupName = response.data.name;
+                    document.getElementById("show_group_name").value = this.groupName;
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
         },
-        showGroupName: function () {
-            document.getElementById("show_group_name").value = result.name;
+        showSectionName: function(){
+            var url = new URL(window.location.href);
+            axios.get('/api/v1/section/' + url.searchParams.get("section_id"))
+                .then(function (response) {
+                    this.sectionName = response.data.name;
+                    document.getElementById("show_section_name").value = this.sectionName;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
         loadPerson: function () {
             var url = new URL(window.location.href);
