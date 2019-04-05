@@ -10,10 +10,10 @@ Vue.component('section-list', {
         '  <div class="card-body">\n' +
         '   <button type="button" class="close" aria-label="Close" onclick="vm.deleteSection(this)">\n' +
         '       <span aria-hidden="true">&times;</span>\n' +
-        '   </button>'+
-        '    <div class="card-info mb-2">'+
-        '      <h5>Section description</h5>'+
-        '      <b>{{section.description}}</b>'+
+        '   </button>' +
+        '    <div class="card-info mb-2">' +
+        '      <h5>Section description</h5>' +
+        '      <b>{{section.description}}</b>' +
         '      <p class="d-none">Groups in this section:</p>\n' +
         '      <p class="card-text d-none">\n' +
         '        <a href="/group/1" class="badge textc-white bgc-primary">Default 1</a>\n' +
@@ -22,7 +22,7 @@ Vue.component('section-list', {
         '      </p>\n' +
         '    </div>\n' +
         '    <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditSection(this)"  data-toggle="modal" id data-target="#editSectionModal">Manage section</button>\n' +
-        '    <a :href="\'/group.html?section_id=\' + section.id" class="btn textc-white bgc-primary">Enter</a>\n' +
+        '    <a v-bind:href="\'/group.html?section_id=\' + section.id" class="btn textc-white bgc-primary">Enter</a>\n' +
         '  </div>\n' +
         '</div>'
 });
@@ -31,30 +31,42 @@ Vue.component('section-list', {
 var vm = new Vue({
     el: '#app',
     data: {
+        projectName: '',
         sections: []
     },
     mounted() {
-        var url_string = window.location.href;
-        var url = new URL(url_string);
-        if (url.searchParams.get("project_id")!=''){
-            axios
-            .get('/api/v1/section/by-project/'+ url.searchParams.get("project_id"))
-            .then(response => (this.sections = response.data));
-        } else if (rl.searchParams.get("id")!=''){
-            axios
-            .get('/api/v1/section/')
-            .then(response => (this.sections = response.data));
-        }
+        this.loadSection();
+        this.showProjectName();
     },
     methods: {
+        showProjectName: function () {
+            var url = new URL(window.location.href);
+            if (url.searchParams.get("project_id") !== '') {
+                axios.get('/api/v1/project/' + url.searchParams.get("project_id"))
+                    .then(function (response) {
+                        this.projectName = response.data.name;
+                        document.getElementById("show_project_name").value = this.projectName;
+                        document.getElementById("show_project_name_in_tree").value = this.projectName;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
+        },
         loadSection: function () {
             var url_string = window.location.href;
             var url = new URL(url_string);
-            if (url.searchParams.get("project_id")!=''){
+            if (url.searchParams.get("project_id") !== '') {
                 axios
-                    .get('/api/v1/section/by-project/'+ url.searchParams.get("project_id"))
-                    .then(response => (this.sections = response.data));
-            } else if (rl.searchParams.get("id")!=''){
+                    .get('/api/v1/section/by-project/' + url.searchParams.get("project_id"))
+                    .then(response => {
+                        this.sections = response.data;
+                        document.getElementById("show_section_count_in_tree").value = this.sections.length;
+                    })
+                    .catch(function (error) {
+                    console.log(error);
+                });
+            } else if (url.searchParams.get("id") !== '') {
                 axios
                     .get('/api/v1/section/')
                     .then(response => (this.sections = response.data));
@@ -91,9 +103,8 @@ var vm = new Vue({
 
         },
         deleteSection: function (element) {
-            var button = element;
-            var sectionId = button.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
-            axios.delete('/api/v1/section/'+sectionId, {})
+            var sectionId = element.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
+            axios.delete('/api/v1/section/' + sectionId, {})
                 .then(function (response) {
                     console.log(response);
                     setTimeout(vm.loadSection(), 300);

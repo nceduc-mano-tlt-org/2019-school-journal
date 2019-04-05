@@ -17,7 +17,7 @@ Vue.component('project-list', {
         '      <br>projectDescription \n' +
         '    </p>\n' +
         '    <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditProject(this)"  data-toggle="modal" id data-target="#editProjectModal">Manage</button>\n' +
-        '    <a :href="\'/section.html?project_id=\' + project.id" class="btn textc-white bgc-primary">Enter</a>\n' +
+        '       <a v-bind:href="\'/section.html?project_id=\' + project.id" class="btn textc-white bgc-primary">Enter</a>\n' +
         '  </div>\n' +
         '</div>'
 });
@@ -66,8 +66,7 @@ var vm = new Vue({
 
         },
         deleteProject: function (element) {
-            var button = element;
-            var projectId = button.parentNode.getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
+            var projectId = element.parentNode.getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
 
             axios.delete('/api/v1/project/'+ projectId, {})
                 .then(function (response) {

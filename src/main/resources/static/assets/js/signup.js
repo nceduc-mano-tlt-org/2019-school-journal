@@ -5,14 +5,14 @@ var vm = new Vue({
     },
     methods: {
         signUp: function (element) {
-            if (document.getElementById("termsAgree").checked == true) {
+            if (document.getElementById("termsAgree").checked === true) {
                 axios.post('/api/v1/user/signup/', {
                     username: document.getElementById("input-username").value,
                     password: document.getElementById("input-password").value,
                 })
                 .then(function (response) {
                     console.log(response);
-                    if (response.status == 201) {
+                    if (response.status === 201) {
                         window.location.href = "/signin.html";
                     }
                     else {

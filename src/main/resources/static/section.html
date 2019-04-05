@@ -40,8 +40,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn textc-white bgc-primary" onClick="vm.addSection()">ADD</button>
+                    <button type="button" class="btn btn-secondary" onClick="vm.addSection()">Add</button>
                 </div>
             </div>
         </div>
@@ -75,8 +74,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn textc-white bgc-primary" onClick="vm.editSection()">SAVE</button>
+                    <button type="button" class="btn btn-secondary" onClick="vm.editSection()">Save</button>
                 </div>
             </div>
         </div>
@@ -99,16 +97,25 @@
         <div class="mainframe-container">
             <div class="row mainframe">
                 <div class="col-md-3 pt-4 bgc-primary textc-white">
-                    <h2 class="mb-4 pl-3">Project sructure:</h2>
+                    <h2 class="mb-4 pl-3">Project structure:</h2>
                     <div class="list-group">
-                        <a href="/project/" class="list-group-item list-group-item-action bgc-white">Project name: <b>Some
-                            new Project</b> </a>
-                        <a href="/section/" class="list-group-item list-group-item-action bgc-white">Sections: <span
-                                class="badge badge-primary bgc-primary">2</span></a>
+                        <a href="/project.html/#" class="list-group-item list-group-item-action bgc-white">Project name:
+                            <span class="badge badge-primary bgc-primary">
+                                <output id="show_project_name_in_tree"></output>
+                            </span>
+                        </a>
+                        <span class="list-group-item list-group-item-action bgc-white">Sections:
+                            <span class="badge badge-primary bgc-primary">
+                                <output id="show_section_count_in_tree"></output>
+                            </span>
+                        </span>
                     </div>
                 </div>
+
                 <div class="col-md-9 pt-3 textc-black">
-                    <h2 class="p-3 cp-title">Sections List:
+                    <h2 class="p-3 cp-title">
+                        <label for="show_project_name">Sections list for Project: </label>
+                        <output id="show_project_name"></output>
                         <button type="button" class="btn textc-white bgc-primary" data-toggle="modal" id
                                 data-target="#addSectionModal">
                             Add section
