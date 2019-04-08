@@ -35,7 +35,7 @@ Vue.component('teacher-list', {
         '       <span aria-hidden="true">&times;</span>\n' +
         '   </button>' +
         '    <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditTeacher(this)"  data-toggle="modal" id data-target="#editTeacherModal">Manage teacher</button>\n' +
-        '    <a :href="\'/teacher.html?id=\' + teacher.id" class="btn textc-white bgc-primary">Enter</a>\n' +
+    //    '    <a :href="\'/teacher.html?id=\' + teacher.id" class="btn textc-white bgc-primary">Enter</a>\n' +
         '  </div>\n' +
         '</div>'
 });
@@ -112,6 +112,10 @@ var vm = new Vue({
                     .then(function (response) {
                         console.log(response);
                         setTimeout(vm.checkParams(), 300);
+                    })
+                    .then(function (){
+                        document.getElementById("add_group_name").value = '';
+                        document.getElementById("add_group_description").value = '';
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -225,6 +229,10 @@ var vm = new Vue({
                         console.log(response);
                         setTimeout(vm.checkParams(), 300);
                     })
+                    .then(function (){
+                        document.getElementById("add_teacher_first_name").value = '';
+                        document.getElementById("add_teacher_last_name").value = '';
+                    })
                     .catch(function (error) {
                         console.log(error);
                     });
@@ -283,6 +291,10 @@ var vm = new Vue({
                     .then(function (response) {
                         console.log(response);
                         setTimeout(vm.checkParams(), 300);
+                    })
+                    .then(function (){
+                        document.getElementById("add_student_first_name").value = '';
+                        document.getElementById("add_student_last_name").value = '';
                     })
                     .catch(function (error) {
                         console.log(error);
