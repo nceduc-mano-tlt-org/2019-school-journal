@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import ru.nceduc.journal.entity.Project;
 import ru.nceduc.journal.entity.UserEntity;
 
-
 import java.util.List;
 
 public interface ProjectRepository extends JpaRepository<Project, String> {

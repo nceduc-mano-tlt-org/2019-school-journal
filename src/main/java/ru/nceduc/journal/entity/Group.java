@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,6 +19,9 @@ public class Group extends AbstractEntity {
 
     private String name;
     private String description;
+    private Date startDate;
+    private long cost;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Section section;
 
@@ -27,8 +31,11 @@ public class Group extends AbstractEntity {
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
     private List<Teacher> teachers;
 
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
+    private List<Payment> payments;
+
     @OneToMany (mappedBy="group", fetch = FetchType.LAZY)
-    private Set<Attendance> attendance = new HashSet<>();;
+    private Set<Attendance> attendance = new HashSet<>();
 
 
     public Group(String name, String description) {

@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import ru.nceduc.journal.dto.StudentDTO;
 import ru.nceduc.journal.entity.Student;
 import ru.nceduc.journal.repository.StudentRepository;
+import ru.nceduc.journal.service.PaymentService;
 import ru.nceduc.journal.service.StudentService;
+import ru.nceduc.journal.service.WalletService;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,7 +20,10 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class StudentServiceImpl implements StudentService {
+
     private final StudentRepository studentRepository;
+    private final PaymentService paymentService;
+    private final WalletService walletService;
     private final ModelMapper modelMapper;
 
     @Override
@@ -26,6 +31,7 @@ public class StudentServiceImpl implements StudentService {
         Optional<StudentDTO> optionalDTO = Optional.ofNullable(entity);
         if (optionalDTO.isPresent()) {
             Student student = studentRepository.save(modelMapper.map(optionalDTO.get(), Student.class));
+            walletService.addWallet(student);
             return Optional.of(modelMapper.map(student, StudentDTO.class));
         } else
             return Optional.empty();
@@ -78,11 +84,13 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<StudentDTO> getAllByGroupId(String groupId) {
-        List<StudentDTO> studentDTO = new ArrayList<>();
+        List<StudentDTO> studentsDTO = new ArrayList<>();
         studentRepository.findAllByGroupId(groupId, Sort.by("createdDate").ascending()).forEach(student -> {
-            studentDTO.add(modelMapper.map(student, StudentDTO.class));
+            StudentDTO studentDTO = modelMapper.map(student, StudentDTO.class);
+            studentDTO.setLastDate(paymentService.getLastDate(student.getId(), groupId));
+            studentsDTO.add(studentDTO);
         });
-        return studentDTO;
+        return studentsDTO;
     }
 
     private Optional<StudentDTO> save(StudentDTO studentDTO) {

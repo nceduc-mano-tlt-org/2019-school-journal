@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface StudentRepository extends JpaRepository<Student, String> {
     List<Student> findAllByGroupId(String groupId, Sort sort);
+    boolean existsByGroupId(String groupId);
 }
