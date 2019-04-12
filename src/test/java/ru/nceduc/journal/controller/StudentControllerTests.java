@@ -83,7 +83,20 @@ public class StudentControllerTests {
     }
 
     @Test
-    public void getAllStudents() {
+    public void getAllStudents() throws Exception {
+        mockMvc.perform(get(mapping + "/"))
+                .andExpect(status().isForbidden());
+    }
+
+    @WithMockUser(authorities = "ADMIN")
+    @Test
+    public void getAllStudentsByAdmin() throws Exception {
+        Mockito.when(studentService.getAll()).thenReturn(allStudents);
+
+        mockMvc.perform(get(mapping + "/"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(allStudents.toArray())));
     }
 
     @Test
