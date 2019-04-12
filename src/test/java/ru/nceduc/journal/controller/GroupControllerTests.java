@@ -167,6 +167,10 @@ public class GroupControllerTests {
     }
 
     @Test
-    public void deleteGroup() {
+    public void deleteGroup() throws Exception {
+        String id = firstGroup.getId();
+
+        mockMvc.perform(delete(mapping + "/" + id))
+                .andExpect(status().isNoContent());
     }
 }
