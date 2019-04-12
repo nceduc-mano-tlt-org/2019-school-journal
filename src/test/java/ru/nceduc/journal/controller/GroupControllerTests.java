@@ -1,5 +1,6 @@
 package ru.nceduc.journal.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,6 +31,7 @@ import static sun.plugin2.util.PojoUtil.toJson;
 @RunWith(SpringRunner.class)
 @WebMvcTest(GroupController.class)
 @WithMockUser(authorities = "USER")
+@Slf4j
 public class GroupControllerTests {
     private final String mapping = "/api/v1/group";
 
@@ -100,7 +102,19 @@ public class GroupControllerTests {
     }
 
     @Test
-    public void getGroupsBySectionId() {
+    public void getGroupsBySectionId() throws Exception {
+        String id = sectionDTO.getId();
+        Mockito.when(groupService.getAllBySectionId(id)).thenReturn(groupsBySection);
+
+        mockMvc.perform(get(mapping + "/by-section/" + id))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(groupsBySection.toArray())));
+
+        mockMvc.perform(get(mapping + "/by-section/" + "invalidId"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().string("[]"));
     }
 
     @Test
