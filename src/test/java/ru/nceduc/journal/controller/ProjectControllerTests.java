@@ -3,9 +3,11 @@ package ru.nceduc.journal.controller;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -16,7 +18,13 @@ import ru.nceduc.journal.service.ProjectService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static sun.plugin2.util.PojoUtil.toJson;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(ProjectController.class)
@@ -47,12 +55,24 @@ public class ProjectControllerTests {
     }
 
     @Test
-    public void getProject() {
+    public void getProject() throws Exception {
+        mockMvc.perform(get(mapping + "/"))
+                .andExpect(status().isForbidden());
     }
 
     @WithMockUser(authorities = "ADMIN")
     @Test
-    public void getProjectByAdmin() {
+    public void getProjectByAdmin() throws Exception {
+        String id = firstProject.getId();
+        Mockito.when(projectService.get(id)).thenReturn(Optional.of(firstProject));
+
+        mockMvc.perform(get(mapping + "/" + id))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(firstProject)));
+
+        mockMvc.perform(get(mapping + "/" + "invalidId"))
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -84,7 +104,7 @@ public class ProjectControllerTests {
     @Test
     public void patchProject() {
     }
-    
+
     @Test
     public void deleteGroup() {
     }
