@@ -169,11 +169,11 @@ public class ProjectControllerTests {
     }
 
     @Test
-    public void deleteGroup() {
+    public void deleteProject() {
     }
 
     @WithMockUser(authorities = "ADMIN")
     @Test
-    public void deleteGroupByAdmin() {
+    public void deleteProjectByAdmin() {
     }
 }
