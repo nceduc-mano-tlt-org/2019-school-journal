@@ -80,18 +80,37 @@ public class SectionControllerTests {
     }
 
     @Test
-    public void getAllSections() {
+    public void getAllSections() throws Exception {
+        mockMvc.perform(get(mapping + "/"))
+                .andExpect(status().isForbidden());
+    }
 
+
+    @WithMockUser(authorities = "ADMIN")
+    @Test
+    public void getAllSectionByAdmin() throws Exception {
+        Mockito.when(sectionService.getAll()).thenReturn(sections);
+
+        mockMvc.perform(get(mapping + "/"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(sections.toArray())));
     }
 
     @Test
-    public void getAllSectionByAdmin() {
+    public void getAllSectionsByProjectId() throws Exception {
+        String id = projectDTO.getId();
+        Mockito.when(sectionService.getAllByProjectId(id)).thenReturn(sections);
 
-    }
+        mockMvc.perform(get(mapping + "/by-project/" + id))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(sections.toArray())));
 
-    @Test
-    public void getAllSectionsByProjectId() {
-
+        mockMvc.perform(get(mapping + "/by-project/" + "invalidId"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().string("[]"));
     }
 
     @Test
