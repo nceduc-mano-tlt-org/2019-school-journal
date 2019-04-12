@@ -22,9 +22,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static sun.plugin2.util.PojoUtil.toJson;
@@ -152,7 +151,20 @@ public class TeacherControllerTests {
     }
 
     @Test
-    public void patchTeacher() {
+    public void patchTeacher() throws Exception {
+        Mockito.when(teacherService.patch(firstTeacher)).thenReturn(Optional.of(firstTeacher));
+
+        mockMvc.perform(patch(mapping + "/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(firstTeacher)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(firstTeacher)));
+
+        mockMvc.perform(patch(mapping + "/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(null)))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
