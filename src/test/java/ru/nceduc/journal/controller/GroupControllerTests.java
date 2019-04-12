@@ -17,10 +17,10 @@ import ru.nceduc.journal.dto.GroupDTO;
 import ru.nceduc.journal.dto.SectionDTO;
 import ru.nceduc.journal.service.GroupService;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -52,10 +52,10 @@ public class GroupControllerTests {
     @Before
     public void setUp() {
         String sectionId = UUID.randomUUID().toString();
-        
+
         sectionDTO = new SectionDTO(sectionId, "English", "En description", UUID.randomUUID().toString());
         firstGroup = new GroupDTO(UUID.randomUUID().toString(), "First group", "Desc for first group", null, 1000, sectionId);
-        secondGroup = new GroupDTO(UUID.randomUUID().toString(), "Second group", "Desc for second group",null, 2000, sectionId);
+        secondGroup = new GroupDTO(UUID.randomUUID().toString(), "Second group", "Desc for second group", null, 2000, sectionId);
         thirdGroup = new GroupDTO(UUID.randomUUID().toString(), "Third group", "Desc for third group", null, 3000, UUID.randomUUID().toString());
 
         allGroups = new ArrayList<>();
@@ -83,13 +83,20 @@ public class GroupControllerTests {
     }
 
     @Test
-    public void getAllGroups() {
+    public void getAllGroups() throws Exception {
+        mockMvc.perform(get(mapping + "/"))
+                .andExpect(status().isForbidden());
     }
 
     @WithMockUser(authorities = "ADMIN")
     @Test
-    public void getAllGroupsByAdmin() {
+    public void getAllGroupsByAdmin() throws Exception {
+        Mockito.when(groupService.getAll()).thenReturn(allGroups);
 
+        mockMvc.perform(get(mapping + "/"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(allGroups.toArray())));
     }
 
     @Test
