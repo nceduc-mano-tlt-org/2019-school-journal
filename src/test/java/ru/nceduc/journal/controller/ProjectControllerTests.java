@@ -169,11 +169,19 @@ public class ProjectControllerTests {
     }
 
     @Test
-    public void deleteProject() {
+    public void deleteProject() throws Exception {
+        String id = firstProject.getId();
+
+        mockMvc.perform(delete(mapping + "/" + id))
+                .andExpect(status().isForbidden());
     }
 
     @WithMockUser(authorities = "ADMIN")
     @Test
-    public void deleteProjectByAdmin() {
+    public void deleteProjectByAdmin() throws Exception {
+        String id = firstProject.getId();
+
+        mockMvc.perform(delete(mapping + "/" + id))
+                .andExpect(status().isNoContent());
     }
 }
