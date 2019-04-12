@@ -35,6 +35,7 @@ public class ProjectController {
         return new ResponseEntity<>(service.getAllByCurrentUser(), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ApiOperation(value = "Get project details")
     @GetMapping("/{id}")
     public ResponseEntity<ProjectDTO> getProject(@PathVariable String id) {
@@ -43,6 +44,7 @@ public class ProjectController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ApiOperation(value = "Create a new project")
     @PostMapping("/")
     public ResponseEntity<ProjectDTO> createProject(@RequestBody ProjectDTO projectDTO) {
@@ -67,6 +69,7 @@ public class ProjectController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ApiOperation(value = "Delete project")
     @DeleteMapping("/{id}")
     public ResponseEntity deleteGroup(@PathVariable String id) {
