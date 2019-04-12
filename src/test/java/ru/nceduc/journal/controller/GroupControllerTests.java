@@ -1,6 +1,5 @@
 package ru.nceduc.journal.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +23,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static sun.plugin2.util.PojoUtil.toJson;
@@ -31,7 +31,6 @@ import static sun.plugin2.util.PojoUtil.toJson;
 @RunWith(SpringRunner.class)
 @WebMvcTest(GroupController.class)
 @WithMockUser(authorities = "USER")
-@Slf4j
 public class GroupControllerTests {
     private final String mapping = "/api/v1/group";
 
@@ -118,7 +117,20 @@ public class GroupControllerTests {
     }
 
     @Test
-    public void createGroup() {
+    public void createGroup() throws Exception {
+        Mockito.when(groupService.create(firstGroup)).thenReturn(Optional.of(firstGroup));
+
+        mockMvc.perform(post(mapping + "/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(firstGroup)))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(firstGroup)));
+
+        mockMvc.perform(post(mapping + "/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(null)))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
