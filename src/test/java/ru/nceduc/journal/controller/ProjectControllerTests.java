@@ -23,6 +23,7 @@ import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static sun.plugin2.util.PojoUtil.toJson;
@@ -136,7 +137,20 @@ public class ProjectControllerTests {
     }
 
     @Test
-    public void updateProject() {
+    public void updateProject() throws Exception {
+        Mockito.when(projectService.update(firstProject)).thenReturn(Optional.of(firstProject));
+
+        mockMvc.perform(put(mapping + "/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(firstProject)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(firstProject)));
+
+        mockMvc.perform(put(mapping + "/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(null)))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
