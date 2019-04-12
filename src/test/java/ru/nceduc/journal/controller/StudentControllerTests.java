@@ -100,7 +100,19 @@ public class StudentControllerTests {
     }
 
     @Test
-    public void getAllStudentsByGroupId() {
+    public void getAllStudentsByGroupId() throws Exception {
+        String id = groupDTO.getId();
+        Mockito.when(studentService.getAllByGroupId(id)).thenReturn(studentsByGroup);
+
+        mockMvc.perform(get(mapping + "/by-group/" + id))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(studentsByGroup.toArray())));
+
+        mockMvc.perform(get(mapping + "/by-group/" + "invalidId"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().string("[]"));
     }
 
     @Test
