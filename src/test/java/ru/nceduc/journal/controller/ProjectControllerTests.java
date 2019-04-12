@@ -11,7 +11,12 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.nceduc.journal.controller.rest.ProjectController;
+import ru.nceduc.journal.dto.ProjectDTO;
 import ru.nceduc.journal.service.ProjectService;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(ProjectController.class)
@@ -28,8 +33,17 @@ public class ProjectControllerTests {
     @Autowired
     private MockMvc mockMvc;
 
+    private ProjectDTO firstProject;
+    private ProjectDTO secondProject;
+    private List<ProjectDTO> currentProjects;
+
     @Before
     public void setUp() {
+        firstProject = new ProjectDTO(UUID.randomUUID().toString(), "First", "First description", UUID.randomUUID().toString());
+        secondProject = new ProjectDTO(UUID.randomUUID().toString(), "Second", "Second description", UUID.randomUUID().toString());
+
+        currentProjects = new ArrayList<>();
+        currentProjects.add(firstProject);
     }
 
     @Test
@@ -70,8 +84,7 @@ public class ProjectControllerTests {
     @Test
     public void patchProject() {
     }
-
-
+    
     @Test
     public void deleteGroup() {
     }
