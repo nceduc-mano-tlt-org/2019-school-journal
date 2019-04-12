@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static sun.plugin2.util.PojoUtil.toJson;
@@ -109,12 +110,29 @@ public class ProjectControllerTests {
     }
 
     @Test
-    public void createProject() {
+    public void createProject() throws Exception {
+        mockMvc.perform(post(mapping + "/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(firstProject)))
+                .andExpect(status().isForbidden());
     }
 
     @WithMockUser(authorities = "ADMIN")
     @Test
-    public void createProjectByAdmin() {
+    public void createProjectByAdmin() throws Exception {
+        Mockito.when(projectService.create(firstProject)).thenReturn(Optional.of(firstProject));
+
+        mockMvc.perform(post(mapping + "/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(firstProject)))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(firstProject)));
+
+        mockMvc.perform(post(mapping + "/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(null)))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
