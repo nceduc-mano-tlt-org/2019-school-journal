@@ -24,6 +24,7 @@ import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static sun.plugin2.util.PojoUtil.toJson;
@@ -134,7 +135,20 @@ public class TeacherControllerTests {
     }
 
     @Test
-    public void updateTeacher() {
+    public void updateTeacher() throws Exception {
+        Mockito.when(teacherService.update(firstTeacher)).thenReturn(Optional.of(firstTeacher));
+
+        mockMvc.perform(put(mapping + "/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(firstTeacher)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(firstTeacher)));
+
+        mockMvc.perform(put(mapping + "/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(null)))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
