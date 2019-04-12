@@ -11,8 +11,14 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.nceduc.journal.controller.rest.SectionController;
+import ru.nceduc.journal.dto.ProjectDTO;
+import ru.nceduc.journal.dto.SectionDTO;
 import ru.nceduc.journal.service.ProjectService;
 import ru.nceduc.journal.service.SectionService;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(SectionController.class)
@@ -32,9 +38,23 @@ public class SectionControllerTests {
     @Autowired
     private MockMvc mockMvc;
 
+    private ProjectDTO projectDTO;
+    private SectionDTO englishSection;
+    private SectionDTO spanishSection;
+    private List<SectionDTO> sections;
+
     @Before
     public void setUp() {
+        String projectId = UUID.randomUUID().toString();
+        String userId = UUID.randomUUID().toString();
 
+        projectDTO = new ProjectDTO(projectId, "Default", "Default Description", userId);
+        englishSection = new SectionDTO(UUID.randomUUID().toString(), "English", "En description", projectId);
+        spanishSection = new SectionDTO(UUID.randomUUID().toString(), "Spanish", "Sp description", projectId);
+
+        sections = new ArrayList<>();
+        sections.add(englishSection);
+        sections.add(spanishSection);
     }
 
     @Test
