@@ -44,6 +44,7 @@ public class ProjectControllerTests {
     private ProjectDTO firstProject;
     private ProjectDTO secondProject;
     private List<ProjectDTO> currentProjects;
+    private List<ProjectDTO> allProjects;
 
     @Before
     public void setUp() {
@@ -52,11 +53,16 @@ public class ProjectControllerTests {
 
         currentProjects = new ArrayList<>();
         currentProjects.add(firstProject);
+        allProjects = new ArrayList<>();
+        allProjects.add(firstProject);
+        allProjects.add(secondProject);
     }
 
     @Test
     public void getProject() throws Exception {
-        mockMvc.perform(get(mapping + "/"))
+        String id = firstProject.getId();
+
+        mockMvc.perform(get(mapping + "/" + id))
                 .andExpect(status().isForbidden());
     }
 
@@ -76,12 +82,20 @@ public class ProjectControllerTests {
     }
 
     @Test
-    public void getAllProjects() {
+    public void getAllProjects() throws Exception {
+        mockMvc.perform(get(mapping + "/"))
+                .andExpect(status().isForbidden());
     }
 
     @WithMockUser(authorities = "ADMIN")
     @Test
-    public void getAllProjectsByAdmin() {
+    public void getAllProjectsByAdmin() throws Exception {
+        Mockito.when(projectService.getAll()).thenReturn(allProjects);
+
+        mockMvc.perform(get(mapping + "/"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(allProjects.toArray())));
     }
 
     @Test
