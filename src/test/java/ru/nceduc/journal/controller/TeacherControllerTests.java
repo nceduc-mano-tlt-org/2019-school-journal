@@ -3,9 +3,11 @@ package ru.nceduc.journal.controller;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -17,12 +19,19 @@ import ru.nceduc.journal.service.TeacherService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static sun.plugin2.util.PojoUtil.toJson;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(TeacherController.class)
 @WithMockUser(authorities = "USER")
 public class TeacherControllerTests {
+    private final String mapping = "/api/v1/teacher";
 
     @MockBean
     private UserDetailsService userDetailsService;
@@ -60,7 +69,17 @@ public class TeacherControllerTests {
     }
 
     @Test
-    public void getTeacher() {
+    public void getTeacher() throws Exception {
+        String id = firstTeacher.getId();
+        Mockito.when(teacherService.get(id)).thenReturn(Optional.of(firstTeacher));
+
+        mockMvc.perform(get(mapping + "/" + id))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(firstTeacher)));
+
+        mockMvc.perform(get(mapping + "/" + "invalidId"))
+                .andExpect(status().isNotFound());
     }
 
     @Test
