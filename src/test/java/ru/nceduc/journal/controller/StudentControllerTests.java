@@ -167,6 +167,10 @@ public class StudentControllerTests {
     }
 
     @Test
-    public void deleteStudent() {
+    public void deleteStudent() throws Exception {
+        String id = firstStudent.getId();
+
+        mockMvc.perform(delete(mapping + "/" + id))
+                .andExpect(status().isNoContent());
     }
 }
