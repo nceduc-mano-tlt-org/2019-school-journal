@@ -24,6 +24,7 @@ import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static sun.plugin2.util.PojoUtil.toJson;
@@ -134,7 +135,20 @@ public class GroupControllerTests {
     }
 
     @Test
-    public void updateGroup() {
+    public void updateGroup() throws Exception {
+        Mockito.when(groupService.update(firstGroup)).thenReturn(Optional.of(firstGroup));
+
+        mockMvc.perform(put(mapping + "/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(firstGroup)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(firstGroup)));
+
+        mockMvc.perform(put(mapping + "/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(null)))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
