@@ -23,6 +23,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static sun.plugin2.util.PojoUtil.toJson;
@@ -116,11 +118,37 @@ public class StudentControllerTests {
     }
 
     @Test
-    public void createStudent() {
+    public void createStudent() throws Exception {
+        Mockito.when(studentService.create(firstStudent)).thenReturn(Optional.of(firstStudent));
+
+        mockMvc.perform(post(mapping + "/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(firstStudent)))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(firstStudent)));
+
+        mockMvc.perform(post(mapping + "/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(null)))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void updateStudent() {
+    public void updateStudent() throws Exception {
+        Mockito.when(studentService.update(firstStudent)).thenReturn(Optional.of(firstStudent));
+
+        mockMvc.perform(put(mapping + "/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(firstStudent)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(firstStudent)));
+
+        mockMvc.perform(put(mapping + "/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(null)))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
