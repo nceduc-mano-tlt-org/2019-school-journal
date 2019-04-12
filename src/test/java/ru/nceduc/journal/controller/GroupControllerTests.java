@@ -11,7 +11,14 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.nceduc.journal.controller.rest.GroupController;
+import ru.nceduc.journal.dto.GroupDTO;
+import ru.nceduc.journal.dto.SectionDTO;
 import ru.nceduc.journal.service.GroupService;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(GroupController.class)
@@ -28,8 +35,30 @@ public class GroupControllerTests {
     @Autowired
     private MockMvc mockMvc;
 
+    private SectionDTO sectionDTO;
+    private GroupDTO firstGroup;
+    private GroupDTO secondGroup;
+    private GroupDTO thirdGroup;
+    private List<GroupDTO> allGroups;
+    private List<GroupDTO> groupsBySection;
+
     @Before
     public void setUp() {
+        String sectionId = UUID.randomUUID().toString();
+        
+        sectionDTO = new SectionDTO(sectionId, "English", "En description", UUID.randomUUID().toString());
+        firstGroup = new GroupDTO(UUID.randomUUID().toString(), "First group", "Desc for first group", new Date(), 1000, sectionId);
+        secondGroup = new GroupDTO(UUID.randomUUID().toString(), "Second group", "Desc for second group", new Date(), 2000, sectionId);
+        thirdGroup = new GroupDTO(UUID.randomUUID().toString(), "Third group", "Desc for third group", new Date(), 3000, UUID.randomUUID().toString());
+
+        allGroups = new ArrayList<>();
+        allGroups.add(firstGroup);
+        allGroups.add(secondGroup);
+        allGroups.add(thirdGroup);
+
+        groupsBySection = new ArrayList<>();
+        groupsBySection.add(firstGroup);
+        groupsBySection.add(secondGroup);
     }
 
     @Test
