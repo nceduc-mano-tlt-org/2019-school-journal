@@ -23,7 +23,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static sun.plugin2.util.PojoUtil.toJson;
@@ -168,6 +167,10 @@ public class TeacherControllerTests {
     }
 
     @Test
-    public void deleteTeacher() {
+    public void deleteTeacher() throws Exception {
+        String id = firstTeacher.getId();
+
+        mockMvc.perform(delete(mapping + "/" + id))
+                .andExpect(status().isNoContent());
     }
 }
