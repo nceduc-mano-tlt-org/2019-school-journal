@@ -11,7 +11,13 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.nceduc.journal.controller.rest.TeacherController;
+import ru.nceduc.journal.dto.GroupDTO;
+import ru.nceduc.journal.dto.TeacherDTO;
 import ru.nceduc.journal.service.TeacherService;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(TeacherController.class)
@@ -27,8 +33,30 @@ public class TeacherControllerTests {
     @Autowired
     private MockMvc mockMvc;
 
+    private GroupDTO groupDTO;
+    private TeacherDTO firstTeacher;
+    private TeacherDTO secondTeacher;
+    private TeacherDTO thirdTeacher;
+    private List<TeacherDTO> allTeachers;
+    private List<TeacherDTO> teachersByGroup;
+
     @Before
     public void setUp() {
+        String groupId = UUID.randomUUID().toString();
+
+        groupDTO = new GroupDTO(groupId, "First group", "Desc for first group", null, 1000, UUID.randomUUID().toString());
+        firstTeacher = new TeacherDTO(UUID.randomUUID().toString(), "Elena", "Sidorova", groupId);
+        secondTeacher = new TeacherDTO(UUID.randomUUID().toString(), "Egor", "Trofimov", groupId);
+        thirdTeacher = new TeacherDTO(UUID.randomUUID().toString(), "Violetta", "Aleeva", UUID.randomUUID().toString());
+
+        allTeachers = new ArrayList<>();
+        allTeachers.add(firstTeacher);
+        allTeachers.add(secondTeacher);
+        allTeachers.add(thirdTeacher);
+
+        teachersByGroup = new ArrayList<>();
+        teachersByGroup.add(firstTeacher);
+        teachersByGroup.add(secondTeacher);
     }
 
     @Test
