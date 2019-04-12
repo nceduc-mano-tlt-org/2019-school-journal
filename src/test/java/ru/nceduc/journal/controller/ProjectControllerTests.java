@@ -99,7 +99,13 @@ public class ProjectControllerTests {
     }
 
     @Test
-    public void getCurrentProjects() {
+    public void getCurrentProjects() throws Exception {
+        Mockito.when(projectService.getAllByCurrentUser()).thenReturn(currentProjects);
+
+        mockMvc.perform(get(mapping + "/current/"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(currentProjects.toArray())));
     }
 
     @Test
