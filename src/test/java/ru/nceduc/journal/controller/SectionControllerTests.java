@@ -166,8 +166,11 @@ public class SectionControllerTests {
     }
 
     @Test
-    public void deleteSection() {
+    public void deleteSection() throws Exception {
+        String id = englishSection.getId();
 
+        mockMvc.perform(delete(mapping + "/" + id))
+                .andExpect(status().isNoContent());
     }
 
 }
