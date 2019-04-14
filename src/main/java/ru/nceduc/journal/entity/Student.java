@@ -18,7 +18,7 @@ public class Student extends Person {
     private Group group;
 
     @OneToMany (mappedBy="student", fetch = FetchType.LAZY)
-    private Set<Attendance> attendance = new HashSet<>();
+    private Set<AttendanceGroup> attendance = new HashSet<>();
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     private List<Payment> payments;

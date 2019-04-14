@@ -342,5 +342,17 @@ var vm = new Vue({
             document.getElementById("edit_student_last_name").value = studentLastName;
             document.getElementById("edit_student_group_id").value = studentGroupId;
         }
+
+        // loadAttendance: function (element) {
+        //         //     var url = new URL(window.location.href);
+        //         //     if (url.searchParams.get("group_id") !== '') {
+        //         //         axios
+        //         //             .get('api/v1/group/attendance', {
+        //         //                 url.searchParams.get("group_id")
+        //         //             })
+        //         //
+        //         // }
+
+
     }
 });

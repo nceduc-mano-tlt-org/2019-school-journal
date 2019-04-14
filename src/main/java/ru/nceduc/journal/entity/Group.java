@@ -35,7 +35,7 @@ public class Group extends AbstractEntity {
     private List<Payment> payments;
 
     @OneToMany (mappedBy="group", fetch = FetchType.LAZY)
-    private Set<Attendance> attendance = new HashSet<>();
+    private Set<AttendanceGroup> attendance = new HashSet<>();
 
 
     public Group(String name, String description) {
