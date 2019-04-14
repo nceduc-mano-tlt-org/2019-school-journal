@@ -31,26 +31,17 @@ public class AttendanceServiceImpl implements AttendanceGroupService {
 
     @Override
     public List<AttendanceStudentDTO> getAll() {
-        List<AttendanceStudentDTO> attendancesDTO = new ArrayList<>();
-        attendanceRepository.findAll(Sort.by("createdDate").ascending()).forEach(attendance -> {
-            attendancesDTO.add(modelMapper.map(attendance, AttendanceStudentDTO.class));
-        });
-        return attendancesDTO;
+
     }
 
     @Override
     public Optional<AttendanceStudentDTO> get(String id) {
-        return attendanceRepository.findById(id).map(attendance -> modelMapper.map(attendance, AttendanceStudentDTO.class));
+
     }
 
     @Override
     public Optional<AttendanceStudentDTO> create(AttendanceStudentDTO attendanceStudentDTO) {
-        Optional<AttendanceStudentDTO> optionalDTO = Optional.ofNullable(attendanceStudentDTO);
-        if (optionalDTO.isPresent()) {
-            AttendanceGroup attendance = attendanceRepository.save(modelMapper.map(optionalDTO.get(), AttendanceGroup.class));
 
-        }
-        return Optional.empty();
     }
 
     @Override
