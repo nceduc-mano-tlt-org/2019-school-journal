@@ -9,7 +9,6 @@ import ru.nceduc.journal.dto.AttendanceGroupDTO;
 import ru.nceduc.journal.dto.AttendanceStudentDTO;
 import ru.nceduc.journal.entity.AttendanceStudent;
 import ru.nceduc.journal.repository.AttendanceStudentRepository;
-import ru.nceduc.journal.service.AttendanceGroupService;
 import ru.nceduc.journal.service.AttendanceStudentService;
 
 import java.time.Month;
