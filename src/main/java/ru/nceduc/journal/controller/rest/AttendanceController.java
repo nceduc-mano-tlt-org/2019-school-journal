@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.nceduc.journal.dto.AttendanceGroupDTO;
 import ru.nceduc.journal.dto.AttendanceStudentDTO;
 import ru.nceduc.journal.dto.StudentDTO;
-import ru.nceduc.journal.service.AttendanceService;
+import ru.nceduc.journal.service.AttendanceGroupService;
 
 import java.util.Date;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.Optional;
 @Api(description = "Operations pertaining to attendance in School Journal", tags = "ATTENDANCE-V1")
 public class AttendanceController {
 
-    private final AttendanceService attendanceService;
+    private final AttendanceGroupService attendanceService;
 
     @ApiOperation(value = "Get all attendances by group")
     @GetMapping("/")
