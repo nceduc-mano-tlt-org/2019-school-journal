@@ -9,8 +9,8 @@ import java.util.List;
 @Data
 public class AttendanceGroupDTO {
     private String groupId;
-    private int month;
-    private int year;
+    private String month;
+    private String year;
 //    List<AttendanceStudentDTO> attendanceStudentDTOS;
 //    @DateTimeFormat(pattern = "yyyy-MM-dd")
 //    private Date dateVisit;

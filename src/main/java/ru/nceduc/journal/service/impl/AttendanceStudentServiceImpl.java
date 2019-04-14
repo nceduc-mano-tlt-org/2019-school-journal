@@ -26,13 +26,13 @@ public class AttendanceStudentServiceImpl implements AttendanceStudentService {
     @Override
     public List<AttendanceStudentDTO> getAllByGroupDTO(AttendanceGroupDTO attendanceGroupDTO) {
         String groupId = attendanceGroupDTO.getGroupId();
-        Month month = Month.of(attendanceGroupDTO.getMonth());
-        int yearNum = attendanceGroupDTO.getYear();
+        int month = Integer.parseInt(attendanceGroupDTO.getMonth());
+        int yearNum = Integer.parseInt(attendanceGroupDTO.getYear());
 
        return getAllByGroupId(groupId)
                 .stream()
                 .filter(attendance -> attendance.getDateVisit().getYear() == yearNum)
-                .filter(attendance -> attendance.getDateVisit().getMonth() == month)
+                .filter(attendance -> attendance.getDateVisit().getMonthValue() == month)
                 .collect(Collectors.toList());
     }
 

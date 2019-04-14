@@ -3,7 +3,6 @@ package ru.nceduc.journal.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -11,19 +10,12 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "attendances-group")
-public class AttendanceGroup {
-
-    @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    private String id;
-
+@Table(name = "attendances_group")
+public class AttendanceGroup extends AbstractEntity  {
     @ManyToOne(fetch = FetchType.LAZY)
     private Group group;
-
-    private int month;
-    private int year;
+    private String month;
+    private String year;
 
 //    @OneToMany(fetch = FetchType.LAZY)
 //    private AttendanceStudent attendanceStudent;

@@ -34,10 +34,10 @@ public class Group extends AbstractEntity {
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
     private List<Payment> payments;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
     private List<AttendanceGroup> attendanceGroupList;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
     private List<AttendanceStudent> attendanceStudentList;
 
 //    @OneToMany (mappedBy="group", fetch = FetchType.LAZY)
