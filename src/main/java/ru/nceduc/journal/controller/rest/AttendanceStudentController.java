@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.nceduc.journal.dto.AttendanceGroupDTO;
 import ru.nceduc.journal.dto.AttendanceStudentDTO;
-import ru.nceduc.journal.dto.GroupDTO;
-import ru.nceduc.journal.dto.StudentDTO;
 import ru.nceduc.journal.service.AttendanceStudentService;
 
 import java.util.List;
@@ -23,20 +21,20 @@ import java.util.Optional;
 public class AttendanceStudentController {
     private final AttendanceStudentService attendanceStudentService;
 
-    @ApiOperation(value = "Get all student by id")
-    @GetMapping("/by-group/{studentId}")
-    public ResponseEntity<List<AttendanceStudentDTO>> getAllByAttendanceStudentId(@PathVariable String studentId) {
-        return new ResponseEntity<>(attendanceStudentService.getAllByGroupId(studentId), HttpStatus.OK);
+    @ApiOperation(value = "Get all student attendances by group id")
+    @GetMapping("/by-group/{groupId}")
+    public ResponseEntity<List<AttendanceStudentDTO>> getAllByAttendanceByGroupId(@PathVariable String groupId) {
+        return new ResponseEntity<>(attendanceStudentService.getAllByGroupId(groupId), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Delete a attendanceStudent")
+    @ApiOperation(value = "Delete a student attendance")
     @DeleteMapping("/{id}")
     public ResponseEntity<AttendanceStudentDTO> deleteAttendanceStudent(@PathVariable String id) {
         attendanceStudentService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @ApiOperation(value = "Create a new attendanceStudent")
+    @ApiOperation(value = "Create a new student attendance")
     @PostMapping("/")
     public ResponseEntity<AttendanceStudentDTO> createAttendanceStudent(@RequestBody AttendanceStudentDTO attendanceStudentDTO) {
         Optional<AttendanceStudentDTO> optionalDTO = attendanceStudentService.create(attendanceStudentDTO);
@@ -44,7 +42,7 @@ public class AttendanceStudentController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
-    @ApiOperation(value = "Get details of specific AttendanceStudent")
+    @ApiOperation(value = "Get details of specific student attendance")
     @GetMapping("/{id}")
     public ResponseEntity<AttendanceStudentDTO> getAttendanceStudent(@PathVariable String id) {
         Optional<AttendanceStudentDTO> optionalDTO = attendanceStudentService.get(id);
@@ -52,10 +50,10 @@ public class AttendanceStudentController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @ApiOperation(value = "Get all group by ID of attendance")
-    @GetMapping("/by-group/{id}")
-    public ResponseEntity<List<AttendanceGroupDTO>> getAllByGroupDTO(@PathVariable String id) {
-        return new ResponseBody<>(attendanceStudentService.getAllByGroupDTO(), HttpStatus.OK);
+    @ApiOperation(value = "Get all student attendances by group id, month and year")
+    @GetMapping("/by-group/")
+    public ResponseEntity<List<AttendanceStudentDTO>> getAllByGroupDTO(@RequestBody AttendanceGroupDTO attendanceGroupDTO) {
+        return new ResponseEntity<>(attendanceStudentService.getAllByGroupDTO(attendanceGroupDTO), HttpStatus.OK);
     }
 
 }

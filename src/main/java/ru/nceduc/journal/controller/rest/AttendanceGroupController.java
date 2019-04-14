@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.nceduc.journal.dto.AttendanceGroupDTO;
-import ru.nceduc.journal.dto.GroupDTO;
-import ru.nceduc.journal.entity.AttendanceGroup;
 import ru.nceduc.journal.service.AttendanceGroupService;
 
 import java.util.List;
@@ -31,7 +29,7 @@ public class AttendanceGroupController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @ApiOperation(value = "Create a new attendance")
+    @ApiOperation(value = "Create a new group attendance")
     @PostMapping("/")
     public ResponseEntity<AttendanceGroupDTO> createAttendance(@RequestBody AttendanceGroupDTO attendanceGroupDTO) {
         Optional<AttendanceGroupDTO> optionalDTO = attendanceService.create(attendanceGroupDTO);
@@ -39,14 +37,14 @@ public class AttendanceGroupController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
-    @ApiOperation(value = "Get all attendance")
+    @ApiOperation(value = "Get all group attendances")
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/")
-    public ResponseEntity<List<AttendanceGroupDTO>> getAllAttendance() {
+    public ResponseEntity<List<AttendanceGroupDTO>> getAllAttendances() {
         return new ResponseEntity<>(attendanceService.getAll(), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get details of specific attendance")
+    @ApiOperation(value = "Get details of specific group attendance")
     @GetMapping("/{id}")
     public ResponseEntity<AttendanceGroupDTO> getAttendance(@PathVariable String id) {
         Optional<AttendanceGroupDTO> optionalDTO = attendanceService.get(id);
@@ -54,9 +52,9 @@ public class AttendanceGroupController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @ApiOperation(value = "Get all groups by id")
+    @ApiOperation(value = "Get all group attendances by group id")
     @GetMapping("/by-group/{groupId}")
-    public ResponseEntity<List<AttendanceGroupDTO>> getAllByAttendanceId(@PathVariable String groupId) {
+    public ResponseEntity<List<AttendanceGroupDTO>> getAllAttendancesByGroupId(@PathVariable String groupId) {
         return new ResponseEntity<>(attendanceService.getAllByGroupId(groupId), HttpStatus.OK);
     }
 
