@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.nceduc.journal.dto.AttendanceStudentDTO;
-import ru.nceduc.journal.entity.AttendanceGroup;
 import ru.nceduc.journal.entity.AttendanceStudent;
 import ru.nceduc.journal.repository.AttendanceStudentRepository;
 import ru.nceduc.journal.service.AttendanceStudentService;
@@ -24,7 +23,10 @@ public class AttendanceStudentServiceImpl implements AttendanceStudentService {
 
     @Override
     public List<AttendanceStudentDTO> getAllByGroupId(String id) {
-        return null;
+        List<AttendanceStudentDTO> attendanceStudentDTOS = new ArrayList<>();
+        attendanceRepository.findAllByGroupId(id).forEach(attendance ->
+                attendanceStudentDTOS.add(modelMapper.map(attendance, AttendanceStudentDTO.class)));
+        return attendanceStudentDTOS;
     }
 
     @Override
@@ -55,6 +57,8 @@ public class AttendanceStudentServiceImpl implements AttendanceStudentService {
 
     @Override
     public void delete(String id) {
-
+        if (id != null && attendanceRepository.existsById(id)){
+            attendanceRepository.deleteById(id);
+        }
     }
 }
