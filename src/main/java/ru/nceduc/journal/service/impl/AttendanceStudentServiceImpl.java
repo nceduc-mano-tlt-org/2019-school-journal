@@ -12,11 +12,8 @@ import ru.nceduc.journal.repository.AttendanceStudentRepository;
 import ru.nceduc.journal.service.AttendanceGroupService;
 import ru.nceduc.journal.service.AttendanceStudentService;
 
-import java.time.LocalDate;
 import java.time.Month;
-import java.time.Year;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,8 +21,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AttendanceStudentServiceImpl implements AttendanceStudentService {
-
-    private final AttendanceGroupService attendanceGroupService;
     private final AttendanceStudentRepository attendanceRepository;
     private final ModelMapper modelMapper;
 
