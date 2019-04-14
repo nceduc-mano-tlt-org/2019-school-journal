@@ -25,8 +25,8 @@ public class AttendanceGroup {
     private int month;
     private int year;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private AttendanceStudent attendanceStudent;
+//    @OneToMany(fetch = FetchType.LAZY)
+//    private AttendanceStudent attendanceStudent;
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    private Student student;
