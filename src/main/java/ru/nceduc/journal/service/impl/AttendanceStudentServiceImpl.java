@@ -7,8 +7,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.nceduc.journal.dto.AttendanceGroupDTO;
 import ru.nceduc.journal.dto.AttendanceStudentDTO;
+import ru.nceduc.journal.entity.AttendanceGroup;
 import ru.nceduc.journal.entity.AttendanceStudent;
 import ru.nceduc.journal.repository.AttendanceStudentRepository;
+import ru.nceduc.journal.service.AttendanceGroupService;
 import ru.nceduc.journal.service.AttendanceStudentService;
 
 import java.time.Month;
@@ -20,20 +22,28 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AttendanceStudentServiceImpl implements AttendanceStudentService {
+    private final AttendanceGroupService attendanceGroupService;
     private final AttendanceStudentRepository attendanceRepository;
     private final ModelMapper modelMapper;
 
     @Override
-    public List<AttendanceStudentDTO> getAllByGroupDTO(AttendanceGroupDTO attendanceGroupDTO) {
-        String groupId = attendanceGroupDTO.getGroupId();
-        int month = Integer.parseInt(attendanceGroupDTO.getMonth());
-        int yearNum = Integer.parseInt(attendanceGroupDTO.getYear());
+    public List<AttendanceStudentDTO> getAllByGroupDTOId(String id) {
+        Optional<AttendanceGroupDTO> optionalDTO = attendanceGroupService.get(id);
+        if (optionalDTO.isPresent()){
+            AttendanceGroup attendanceGroup = modelMapper.map(optionalDTO.get(), AttendanceGroup.class);
+            AttendanceGroupDTO attendanceGroupDTO = modelMapper.map(attendanceGroup, AttendanceGroupDTO.class);
 
-       return getAllByGroupId(groupId)
-                .stream()
-                .filter(attendance -> attendance.getDateVisit().getYear() == yearNum)
-                .filter(attendance -> attendance.getDateVisit().getMonthValue() == month)
-                .collect(Collectors.toList());
+            String groupId = attendanceGroupDTO.getGroupId();
+            Month month = Month.of(attendanceGroup.getMonth());
+            int yearNum = attendanceGroup.getYear();
+
+            return getAllByGroupId(groupId)
+                    .stream()
+                    .filter(attendance -> attendance.getDateVisit().getYear() == yearNum)
+                    .filter(attendance -> attendance.getDateVisit().getMonth() == month)
+                    .collect(Collectors.toList());
+        }
+        return new ArrayList<>();
     }
 
     @Override
@@ -72,7 +82,7 @@ public class AttendanceStudentServiceImpl implements AttendanceStudentService {
 
     @Override
     public void delete(String id) {
-        if (id != null && attendanceRepository.existsById(id)){
+        if (id != null && attendanceRepository.existsById(id)) {
             attendanceRepository.deleteById(id);
         }
     }

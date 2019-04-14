@@ -14,8 +14,8 @@ import javax.persistence.*;
 public class AttendanceGroup extends AbstractEntity  {
     @ManyToOne(fetch = FetchType.LAZY)
     private Group group;
-    private String month;
-    private String year;
+    private int month;
+    private int year;
 
 //    @OneToMany(fetch = FetchType.LAZY)
 //    private AttendanceStudent attendanceStudent;

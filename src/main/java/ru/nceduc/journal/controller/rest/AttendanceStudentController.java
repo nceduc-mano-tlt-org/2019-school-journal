@@ -51,9 +51,9 @@ public class AttendanceStudentController {
     }
 
     @ApiOperation(value = "Get all student attendances by group id, month and year")
-    @GetMapping("/by-group/")
-    public ResponseEntity<List<AttendanceStudentDTO>> getAllByGroupDTO(@RequestBody AttendanceGroupDTO attendanceGroupDTO) {
-        return new ResponseEntity<>(attendanceStudentService.getAllByGroupDTO(attendanceGroupDTO), HttpStatus.OK);
+    @GetMapping("/by-filter/{filterId}")
+    public ResponseEntity<List<AttendanceStudentDTO>> getAllByGroupDTOId(@PathVariable String filterId) {
+        return new ResponseEntity<>(attendanceStudentService.getAllByGroupDTOId(filterId), HttpStatus.OK);
     }
 
 }

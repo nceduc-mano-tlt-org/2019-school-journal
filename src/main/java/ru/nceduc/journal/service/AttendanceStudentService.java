@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AttendanceStudentService{
-    List<AttendanceStudentDTO> getAllByGroupDTO(AttendanceGroupDTO attendanceGroupDTO);
+    List<AttendanceStudentDTO> getAllByGroupDTOId(String id);
 
     List<AttendanceStudentDTO> getAllByGroupId(String id);
 

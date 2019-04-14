@@ -10,9 +10,9 @@ import java.util.Date;
 @Data
 public class AttendanceStudentDTO {
     @ApiModelProperty(readOnly = true)
-    private String id;
-    private String studentId;
-    private String groupId;
+    String id;
+    String studentId;
+    String groupId;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate dateVisit;
+    LocalDate dateVisit;
 }
