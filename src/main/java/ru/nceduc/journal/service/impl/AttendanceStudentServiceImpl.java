@@ -12,6 +12,7 @@ import ru.nceduc.journal.repository.AttendanceStudentRepository;
 import ru.nceduc.journal.service.AttendanceGroupService;
 import ru.nceduc.journal.service.AttendanceStudentService;
 
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +27,13 @@ public class AttendanceStudentServiceImpl implements AttendanceStudentService {
 
     @Override
     public List<AttendanceStudentDTO> getAllByGroupDTO(AttendanceGroupDTO attendanceGroupDTO) {
-        return null;
+        String groupId = attendanceGroupDTO.getGroupId();
+
+        Month month = Month.of(attendanceGroupDTO.getMonth());
+        List<AttendanceStudentDTO> attendanceStudentDTOS = new ArrayList<>();
+        attendanceRepository.findAllByGroupId(groupId).forEach(attendance ->
+                attendanceStudentDTOS.add(modelMapper.map(attendance, AttendanceStudentDTO.class)));
+
     }
 
     @Override
