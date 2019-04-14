@@ -34,8 +34,14 @@ public class Group extends AbstractEntity {
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
     private List<Payment> payments;
 
-    @OneToMany (mappedBy="group", fetch = FetchType.LAZY)
-    private Set<AttendanceGroup> attendance = new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<AttendanceGroup> attendanceGroupList;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<AttendanceStudent> attendanceStudentList;
+
+//    @OneToMany (mappedBy="group", fetch = FetchType.LAZY)
+//    private Set<AttendanceGroup> attendance = new HashSet<>();
 
 
     public Group(String name, String description) {

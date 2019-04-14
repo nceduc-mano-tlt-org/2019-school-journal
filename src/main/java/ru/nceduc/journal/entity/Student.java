@@ -17,8 +17,8 @@ public class Student extends Person {
     @ManyToOne(fetch = FetchType.LAZY)
     private Group group;
 
-    @OneToMany (mappedBy="student", fetch = FetchType.LAZY)
-    private Set<AttendanceGroup> attendance = new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<AttendanceStudent> attendanceStudentList;
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     private List<Payment> payments;

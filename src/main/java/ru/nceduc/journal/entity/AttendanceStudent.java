@@ -24,8 +24,8 @@ public class AttendanceStudent {
     @ManyToOne
     private Group group;
 
-    @ManyToOne
-    private AttendanceGroup attendanceGroup;
+//    @ManyToOne
+//    private AttendanceGroup attendanceGroup;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dateVisit;

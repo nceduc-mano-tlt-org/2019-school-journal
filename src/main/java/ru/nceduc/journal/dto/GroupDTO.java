@@ -10,8 +10,8 @@ public class GroupDTO {
     private String id;
     private String name;
     private String description;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date startDate;
+//    @JsonFormat(pattern = "yyyy-MM-dd")
+//    private Date startDate;
     private long cost;
     private String sectionId;
 }
