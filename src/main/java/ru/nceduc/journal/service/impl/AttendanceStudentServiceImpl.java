@@ -5,9 +5,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import ru.nceduc.journal.dto.AttendanceGroupDTO;
 import ru.nceduc.journal.dto.AttendanceStudentDTO;
 import ru.nceduc.journal.entity.AttendanceStudent;
 import ru.nceduc.journal.repository.AttendanceStudentRepository;
+import ru.nceduc.journal.service.AttendanceGroupService;
 import ru.nceduc.journal.service.AttendanceStudentService;
 
 import java.util.ArrayList;
@@ -18,8 +20,14 @@ import java.util.Optional;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AttendanceStudentServiceImpl implements AttendanceStudentService {
 
+    private final AttendanceGroupService attendanceGroupService;
     private final AttendanceStudentRepository attendanceRepository;
     private final ModelMapper modelMapper;
+
+    @Override
+    public List<AttendanceStudentDTO> getAllByGroupDTO(AttendanceGroupDTO attendanceGroupDTO) {
+        return null;
+    }
 
     @Override
     public List<AttendanceStudentDTO> getAllByGroupId(String id) {
