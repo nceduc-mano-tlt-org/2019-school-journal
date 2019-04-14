@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -28,9 +29,9 @@ public class AttendanceStudent {
 //    private AttendanceGroup attendanceGroup;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date dateVisit;
+    private LocalDate dateVisit;
 
-    public AttendanceStudent() {
-        this.dateVisit = new Date();
-    }
+//    public AttendanceStudent() {
+//        this.dateVisit = new LocalDate();
+//    }
 }

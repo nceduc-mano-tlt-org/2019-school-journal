@@ -12,11 +12,14 @@ import ru.nceduc.journal.repository.AttendanceStudentRepository;
 import ru.nceduc.journal.service.AttendanceGroupService;
 import ru.nceduc.journal.service.AttendanceStudentService;
 
+import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -29,13 +32,14 @@ public class AttendanceStudentServiceImpl implements AttendanceStudentService {
     @Override
     public List<AttendanceStudentDTO> getAllByGroupDTO(AttendanceGroupDTO attendanceGroupDTO) {
         String groupId = attendanceGroupDTO.getGroupId();
-        Month month = Month.of(attendanceGroupDTO.getMonth();
-        Year year = Year.of(attendanceGroupDTO.getYear());
+        Month month = Month.of(attendanceGroupDTO.getMonth());
+        int yearNum = attendanceGroupDTO.getYear();
 
-        List<AttendanceStudentDTO> attendanceStudentDTOS = new ArrayList<>();
-        attendanceRepository.findAllByGroupId(groupId).forEach(attendance ->
-                attendanceStudentDTOS.add(modelMapper.map(attendance, AttendanceStudentDTO.class)));
-
+       return getAllByGroupId(groupId)
+                .stream()
+                .filter(attendance -> attendance.getDateVisit().getYear() == yearNum)
+                .filter(attendance -> attendance.getDateVisit().getMonth() == month)
+                .collect(Collectors.toList());
     }
 
     @Override
