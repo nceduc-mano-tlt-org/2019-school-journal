@@ -20,7 +20,7 @@ public class AttendanceGroupServiceImpl implements AttendanceGroupService {
 
     private final AttendanceGroupRepository attendanceRepository;
     private final ModelMapper modelMapper;
-    
+
     @Override
     public List<AttendanceGroupDTO> getAllByGroupId(String groupId) {
         List<AttendanceGroupDTO> attendanceGroupDTOS = new ArrayList<>();
