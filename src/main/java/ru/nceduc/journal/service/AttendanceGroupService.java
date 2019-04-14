@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AttendanceGroupService{
-    List<AttendanceGroupDTO> getAllByGroupDTO(AttendanceGroupDTO attendanceGroupDTO);
-
     List<AttendanceGroupDTO> getAllByGroupId(String groupId);
 
     List<AttendanceGroupDTO> getAll();
