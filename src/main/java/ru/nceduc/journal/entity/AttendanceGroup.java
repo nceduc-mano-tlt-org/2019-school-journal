@@ -22,7 +22,7 @@ public class AttendanceGroup {
     @ManyToOne(fetch = FetchType.LAZY)
     private Group group;
 
-    private String month;
+    private int month;
     private int year;
 
     @OneToMany(fetch = FetchType.LAZY)
