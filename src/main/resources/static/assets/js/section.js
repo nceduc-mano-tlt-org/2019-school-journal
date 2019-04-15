@@ -37,9 +37,9 @@ var vm = new Vue({
         showProjectName: function () {
             var url = new URL(window.location.href);
             if (url.searchParams.get("project_id") !== '') {
-                axios.get('/api/v1/project/' + url.searchParams.get("project_id"))
+                axios.get('/api/v1/project/current/')
                     .then(function (response) {
-                        this.projectName = response.data.name;
+                        this.projectName = response.data[0].name;
                         document.getElementById("show_project_name").value = this.projectName;
                         document.getElementById("show_project_name_in_tree").value = this.projectName;
                     })

@@ -173,9 +173,9 @@ var vm = new Vue({
                     axios.get('/api/v1/section/' + response.data.sectionId)
                         .then(function(response){
                             document.getElementById("show_section_name_in_tree_1").value = response.data.name;
-                            axios.get('/api/v1/project/' + response.data.projectId)
+                            axios.get('/api/v1/project/current/')
                                 .then(function(response){
-                                    document.getElementById("show_project_name_in_tree_1").value = response.data.name;
+                                    document.getElementById("show_project_name_in_tree_1").value = response.data[0].name;
                                 })
                         })
                 })
@@ -190,9 +190,9 @@ var vm = new Vue({
                     this.sectionName = response.data.name;
                     document.getElementById("show_section_name").value = this.sectionName;
                     document.getElementById("show_section_name_in_tree").value = this.sectionName;
-                    axios.get('/api/v1/project/' + response.data.projectId)
+                    axios.get('/api/v1/project/current/')
                         .then(function(response){
-                            document.getElementById("show_project_name_in_tree").value = response.data.name;
+                            document.getElementById("show_project_name_in_tree").value = response.data[0].name;
                         })
                 })
                 .catch(function (error) {
