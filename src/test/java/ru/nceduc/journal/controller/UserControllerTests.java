@@ -3,11 +3,15 @@ package ru.nceduc.journal.controller;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
 import ru.nceduc.journal.controller.rest.UserController;
 import ru.nceduc.journal.dto.UserDTO;
 import ru.nceduc.journal.service.AuthService;
@@ -15,13 +19,20 @@ import ru.nceduc.journal.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static sun.plugin2.util.PojoUtil.toJson;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(UserController.class)
 @WithMockUser(authorities = "USER")
 public class UserControllerTests {
-    private final String mapping = "api/v1/user";
+    private final String mapping = "/api/v1/user";
 
     @MockBean
     private UserDetailsService userDetailsService;
@@ -31,6 +42,9 @@ public class UserControllerTests {
 
     @MockBean
     private AuthService authService;
+
+    @Autowired
+    private MockMvc mockMvc;
 
     private UserDTO firstUser;
     private UserDTO secondUser;
@@ -47,12 +61,20 @@ public class UserControllerTests {
     }
 
     @Test
-    public void getAllUsers() {
+    public void getAllUsers() throws Exception {
+        mockMvc.perform(get(mapping + "/"))
+                .andExpect(status().isForbidden());
     }
 
     @WithMockUser(authorities = "ADMIN")
     @Test
-    public void getAllUsersByAdmin() {
+    public void getAllUsersByAdmin() throws Exception {
+        Mockito.when(userService.getAll()).thenReturn(users);
+
+        mockMvc.perform(get(mapping + "/"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(users.toArray())));
     }
 
     @Test
