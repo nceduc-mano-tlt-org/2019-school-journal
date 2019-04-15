@@ -16,17 +16,4 @@ public class AttendanceGroup extends AbstractEntity  {
     private Group group;
     private int month;
     private int year;
-
-//    @OneToMany(fetch = FetchType.LAZY)
-//    private AttendanceStudent attendanceStudent;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private Student student;
-
-//    @JsonFormat(pattern="yyyy-MM-dd")
-//    private Date dateVisit;
-
-//    public AttendanceGroup() {
-//        this.dateVisit = new Date();
-//    }
 }

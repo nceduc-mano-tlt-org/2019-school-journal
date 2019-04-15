@@ -7,10 +7,4 @@ import java.util.List;
 
 public interface AttendanceGroupRepository extends JpaRepository<AttendanceGroup, String> {
     List<AttendanceGroup> findAllByGroupId(String groupId);
-
-//    List<AttendanceGroup> findAllByGroup_IdAndStudent_IdAndDateVisitBetween(String groupId, String studentId, Date startDate, Date endDate);
-//
-//    boolean existsByGroup_IdAndStudent_IdAndDateVisit(String group_id, String Student_id, Date date);
-//
-//    void deleteByGroup_IdAndStudent_IdAndDateVisit(String group_id, String Student_id, Date date);
 }

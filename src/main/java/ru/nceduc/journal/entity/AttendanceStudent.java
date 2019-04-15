@@ -20,10 +20,4 @@ public class AttendanceStudent extends AbstractEntity  {
     private Group group;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateVisit;
-
-//    @ManyToOne
-//    private AttendanceGroup attendanceGroup;
-//    public AttendanceStudent() {
-//        this.dateVisit = new LocalDate();
-//    }
 }

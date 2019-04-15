@@ -14,8 +14,4 @@ public class AttendanceGroupDTO {
     String groupId;
     int month;
     int year;
-//    List<AttendanceStudentDTO> attendanceStudentDTOS;
-//    @DateTimeFormat(pattern = "yyyy-MM-dd")
-//    private Date dateVisit;
-
 }
