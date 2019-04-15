@@ -31,7 +31,7 @@ public class PaymentController {
 
     @GetMapping("/by-student/{studentId}")
     @ApiOperation(value = "Get all payments by student id")
-    ResponseEntity<List<PaymentDTO>> getAll(@PathVariable String studentId) {
+    ResponseEntity<List<PaymentDTO>> getAllByStudent(@PathVariable String studentId) {
         return new ResponseEntity<>(paymentService.getAllByStudentId(studentId), HttpStatus.OK);
     }
 
