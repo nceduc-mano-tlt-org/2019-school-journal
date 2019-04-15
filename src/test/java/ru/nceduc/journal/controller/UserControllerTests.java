@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -100,6 +101,17 @@ public class UserControllerTests {
 
     @Test
     @WithAnonymousUser
-    public void authenticate() {
+    public void authenticate() throws Exception {
+        Mockito.doThrow(new UsernameNotFoundException("User not found")).when(authService).authUser(secondUser);
+
+        mockMvc.perform(post(mapping + "/signin/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(firstUser)))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(post(mapping + "/signin/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(secondUser)))
+                .andExpect(status().isForbidden());
     }
 }
