@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -30,7 +31,6 @@ import static sun.plugin2.util.PojoUtil.toJson;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(UserController.class)
-@WithMockUser(authorities = "USER")
 public class UserControllerTests {
     private final String mapping = "/api/v1/user";
 
@@ -61,6 +61,7 @@ public class UserControllerTests {
     }
 
     @Test
+    @WithMockUser(authorities = "USER")
     public void getAllUsers() throws Exception {
         mockMvc.perform(get(mapping + "/"))
                 .andExpect(status().isForbidden());
@@ -78,10 +79,27 @@ public class UserControllerTests {
     }
 
     @Test
-    public void createUser() {
+    @WithAnonymousUser
+    public void createUser() throws Exception {
+        Mockito.when(userService.create(firstUser)).thenReturn(Optional.of(firstUser));
+        Mockito.when(userService.create(secondUser)).thenReturn(Optional.empty());
+
+        mockMvc.perform(post(mapping + "/signup/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(firstUser)))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(firstUser)));
+
+        mockMvc.perform(post(mapping + "/signup/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(secondUser)))
+                .andExpect(status().isBadRequest());
+
     }
 
     @Test
+    @WithAnonymousUser
     public void authenticate() {
     }
 }
