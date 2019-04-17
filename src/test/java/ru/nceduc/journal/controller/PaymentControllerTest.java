@@ -3,9 +3,11 @@ package ru.nceduc.journal.controller;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -18,6 +20,11 @@ import ru.nceduc.journal.service.PaymentService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static sun.plugin2.util.PojoUtil.toJson;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(PaymentController.class)
@@ -64,12 +71,20 @@ public class PaymentControllerTest {
     }
 
     @Test
-    public void getAll() {
+    public void getAll() throws Exception {
+        mockMvc.perform(get(mapping + "/"))
+                .andExpect(status().isForbidden());
     }
 
     @WithMockUser(authorities = "ADMIN")
     @Test
-    public void getAllByAdmin() {
+    public void getAllByAdmin() throws Exception {
+        Mockito.when(paymentService.getAll()).thenReturn(allPayments);
+
+        mockMvc.perform(get(mapping + "/"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(allPayments.toArray())));
     }
 
     @Test
