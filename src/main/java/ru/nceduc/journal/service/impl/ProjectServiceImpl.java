@@ -10,6 +10,7 @@ import ru.nceduc.journal.entity.Project;
 import ru.nceduc.journal.entity.UserEntity;
 import ru.nceduc.journal.repository.ProjectRepository;
 import ru.nceduc.journal.service.ProjectService;
+import ru.nceduc.journal.service.UserService;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,7 +22,7 @@ import java.util.Optional;
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository repository;
-    private final UserServiceImpl userService;
+    private final UserService userService;
     private final ModelMapper modelMapper;
 
     @Override
