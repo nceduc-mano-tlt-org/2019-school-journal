@@ -26,9 +26,9 @@ var vm = new Vue({
                                     .then(function(response){
                                         document.getElementById("show_section_name_in_tree").value = response.data.name;
 
-                                        axios.get('/api/v1/project/' + response.data.projectId)
+                                        axios.get('/api/v1/project/current/')
                                             .then(function(response){
-                                                document.getElementById("show_project_name_in_tree").value = response.data.name;
+                                                document.getElementById("show_project_name_in_tree").value = response.data[0].name;
                                             })
                                     })
                             })

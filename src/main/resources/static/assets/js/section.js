@@ -14,11 +14,6 @@ Vue.component('section-list', {
         '    <div class="card-info mb-2">' +
         '      <h5>Section description</h5>' +
         '      <b>{{section.description}}</b>' +
-        '      <p class="d-none">Groups in this section:</p>\n' +
-        '      <p class="card-text d-none">\n' +
-        '        <a href="/group/1" class="badge textc-white bgc-primary">Default 1</a>\n' +
-        '        <a href="/group/2" class="badge textc-white bgc-primary">Default 2</a>\n' +
-        '        <a href="/section/1" class="badge textc-black">see all...</a>\n' +
         '      </p>\n' +
         '    </div>\n' +
         '    <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditSection(this)"  data-toggle="modal" id data-target="#editSectionModal">Manage section</button>\n' +
@@ -42,9 +37,9 @@ var vm = new Vue({
         showProjectName: function () {
             var url = new URL(window.location.href);
             if (url.searchParams.get("project_id") !== '') {
-                axios.get('/api/v1/project/' + url.searchParams.get("project_id"))
+                axios.get('/api/v1/project/current/')
                     .then(function (response) {
-                        this.projectName = response.data.name;
+                        this.projectName = response.data[0].name;
                         document.getElementById("show_project_name").value = this.projectName;
                         document.getElementById("show_project_name_in_tree").value = this.projectName;
                     })
@@ -64,8 +59,8 @@ var vm = new Vue({
                         document.getElementById("show_section_count_in_tree").value = this.sections.length;
                     })
                     .catch(function (error) {
-                    console.log(error);
-                });
+                        console.log(error);
+                    });
             } else if (url.searchParams.get("id") !== '') {
                 axios
                     .get('/api/v1/section/')
@@ -81,6 +76,10 @@ var vm = new Vue({
                 .then(function (response) {
                     console.log(response);
                     setTimeout(vm.loadSection(), 300);
+                })
+                .then(function (){
+                    document.getElementById("add_section_name").value = '';
+                    document.getElementById("add_section_description").value = '';
                 })
                 .catch(function (error) {
                     console.log(error);

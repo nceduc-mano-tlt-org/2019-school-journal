@@ -12,8 +12,14 @@ Vue.component('group-list', {
         '       <span aria-hidden="true">&times;</span>\n' +
         '   </button>' +
         '    <div class="card-info mb-2">' +
+        '      <h5>Cost: <b>{{group.cost}}</b></h5>' +
+        '    </div>\n' +
+        '    <div class="card-info mb-2">' +
+        '      <h5>Start date: <b>{{group.startDate}}</b></h5>  ' +
+        '    </div>\n' +
+        '    <div class="card-info mb-2">' +
         '      <h5>Group description: </h5>' +
-        '      <b>{{group.description}}</b>' +
+        '     <h5><b>{{group.description}}</b></h5> ' +
         '    </div>\n' +
         '    <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditGroup(this)"  data-toggle="modal" id data-target="#editGroupModal">Manage group</button>\n' +
         '    <a :href="\'/group.html?group_id=\' + group.id" class="btn textc-white bgc-primary">Enter</a>\n' +
@@ -35,7 +41,7 @@ Vue.component('teacher-list', {
         '       <span aria-hidden="true">&times;</span>\n' +
         '   </button>' +
         '    <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditTeacher(this)"  data-toggle="modal" id data-target="#editTeacherModal">Manage teacher</button>\n' +
-        '    <a :href="\'/teacher.html?id=\' + teacher.id" class="btn textc-white bgc-primary">Enter</a>\n' +
+    //    '    <a :href="\'/teacher.html?id=\' + teacher.id" class="btn textc-white bgc-primary">Enter</a>\n' +
         '  </div>\n' +
         '</div>'
 });
@@ -50,6 +56,7 @@ Vue.component('student-list', {
         '    <h5 class="card-title">{{student.firstName}} {{student.lastName}}</h5>\n' +
         '  </div>\n' +
         '  <div class="card-body">\n' +
+        '    <h5 class="card-info mb-2">Last date: <b>{{student.lastDate}}</b></h5>' +
         '   <button type="button" class="close" aria-label="Close" onclick="vm.deleteStudent(this)">\n' +
         '       <span aria-hidden="true">&times;</span>\n' +
         '   </button>' +
@@ -106,12 +113,18 @@ var vm = new Vue({
                 axios.post('/api/v1/group/', {
                     id: "1",
                     name: document.getElementById("add_group_name").value,
+                    cost: document.getElementById("add_group_cost").value,
+                    startDate: document.getElementById("add_group_start_date").value,
                     description: document.getElementById("add_group_description").value,
                     sectionId: url.searchParams.get("section_id")
                 })
                     .then(function (response) {
                         console.log(response);
                         setTimeout(vm.checkParams(), 300);
+                    })
+                    .then(function (){
+                        document.getElementById("add_group_name").value = '';
+                        document.getElementById("add_group_description").value = '';
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -122,6 +135,8 @@ var vm = new Vue({
             axios.put('/api/v1/group/', {
                 id: document.getElementById("edit_group_id").value,
                 name: document.getElementById("edit_group_name").value,
+                cost: document.getElementById("edit_group_cost").value,
+                startDate: document.getElementById("edit_group_start_date").value,
                 description: document.getElementById("edit_group_description").value,
                 sectionId: document.getElementById("edit_group_section_id").value
             })
@@ -151,10 +166,14 @@ var vm = new Vue({
             var groupId = button.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
             var groupSectionId = button.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[1].getElementsByTagName("b")[0].innerText;
             var groupName = button.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h5")[0].innerText;
-            var groupDescription = button.parentNode.getElementsByTagName("div")[0].getElementsByTagName("b")[0].innerText;
+            var groupCost = button.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h5")[0].getElementsByTagName("b")[0].innerText;
+            var groupStartDate = button.parentNode.getElementsByTagName("div")[1].getElementsByTagName("h5")[0].getElementsByTagName("b")[0].innerText;
+            var groupDescription = button.parentNode.getElementsByTagName("div")[2].getElementsByTagName("h5")[1].getElementsByTagName("b")[0].innerText;
 
             document.getElementById("edit_group_id").value = groupId;
             document.getElementById("edit_group_name").value = groupName;
+            document.getElementById("edit_group_cost").value = groupCost;
+            document.getElementById("edit_group_start_date").value = groupStartDate;
             document.getElementById("edit_group_description").value = groupDescription;
             document.getElementById("edit_group_section_id").value = groupSectionId;
         },
@@ -169,9 +188,9 @@ var vm = new Vue({
                     axios.get('/api/v1/section/' + response.data.sectionId)
                         .then(function(response){
                             document.getElementById("show_section_name_in_tree_1").value = response.data.name;
-                            axios.get('/api/v1/project/' + response.data.projectId)
+                            axios.get('/api/v1/project/current/')
                                 .then(function(response){
-                                    document.getElementById("show_project_name_in_tree_1").value = response.data.name;
+                                    document.getElementById("show_project_name_in_tree_1").value = response.data[0].name;
                                 })
                         })
                 })
@@ -186,9 +205,9 @@ var vm = new Vue({
                     this.sectionName = response.data.name;
                     document.getElementById("show_section_name").value = this.sectionName;
                     document.getElementById("show_section_name_in_tree").value = this.sectionName;
-                    axios.get('/api/v1/project/' + response.data.projectId)
+                    axios.get('/api/v1/project/current/')
                         .then(function(response){
-                            document.getElementById("show_project_name_in_tree").value = response.data.name;
+                            document.getElementById("show_project_name_in_tree").value = response.data[0].name;
                         })
                 })
                 .catch(function (error) {
@@ -224,6 +243,10 @@ var vm = new Vue({
                     .then(function (response) {
                         console.log(response);
                         setTimeout(vm.checkParams(), 300);
+                    })
+                    .then(function (){
+                        document.getElementById("add_teacher_first_name").value = '';
+                        document.getElementById("add_teacher_last_name").value = '';
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -284,6 +307,10 @@ var vm = new Vue({
                         console.log(response);
                         setTimeout(vm.checkParams(), 300);
                     })
+                    .then(function (){
+                        document.getElementById("add_student_first_name").value = '';
+                        document.getElementById("add_student_last_name").value = '';
+                    })
                     .catch(function (error) {
                         console.log(error);
                     });
@@ -330,5 +357,17 @@ var vm = new Vue({
             document.getElementById("edit_student_last_name").value = studentLastName;
             document.getElementById("edit_student_group_id").value = studentGroupId;
         }
+
+        // loadAttendance: function (element) {
+        //         //     var url = new URL(window.location.href);
+        //         //     if (url.searchParams.get("group_id") !== '') {
+        //         //         axios
+        //         //             .get('api/v1/group/attendance', {
+        //         //                 url.searchParams.get("group_id")
+        //         //             })
+        //         //
+        //         // }
+
+
     }
 });
