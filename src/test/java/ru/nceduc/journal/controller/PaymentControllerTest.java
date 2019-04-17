@@ -88,7 +88,19 @@ public class PaymentControllerTest {
     }
 
     @Test
-    public void getAllByStudent() {
+    public void getAllByStudent() throws Exception {
+        String id = firstPayment.getId();
+        Mockito.when(paymentService.getAllByStudentId(id)).thenReturn(paymentsByStudent);
+
+        mockMvc.perform(get(mapping + "/by-student/" + id))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(paymentsByStudent.toArray())));
+
+        mockMvc.perform(get(mapping + "/by-student/" + "invalidId"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().string("[]"));
     }
 
     @Test
