@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,8 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static sun.plugin2.util.PojoUtil.toJson;
@@ -46,6 +44,7 @@ public class PaymentControllerTest {
     private PaymentDTO firstPayment;
     private PaymentDTO secondPayment;
     private PaymentDTO thirdPayment;
+    private PaymentDTO wrongPayment;
     private DepositDTO depositDTO;
     private DepositDTO wrongDeposit;
     private List<PaymentDTO> allPayments;
@@ -61,6 +60,7 @@ public class PaymentControllerTest {
         firstPayment = new PaymentDTO(firstStudentId, UUID.randomUUID().toString(), firstGroupId, 100);
         secondPayment = new PaymentDTO(firstStudentId, UUID.randomUUID().toString(), firstGroupId, 200);
         thirdPayment = new PaymentDTO(secondStudentId, UUID.randomUUID().toString(), secondGroupId, 300);
+        wrongPayment = new PaymentDTO("invalidId", "invalidId", "invalidId", 0);
         depositDTO = new DepositDTO(firstStudentId, 200);
         wrongDeposit = new DepositDTO(secondStudentId, 0);
 
@@ -120,7 +120,6 @@ public class PaymentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(wrongDeposit)))
                 .andExpect(status().isBadRequest());
-
     }
 
     @Test
@@ -136,15 +135,32 @@ public class PaymentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(wrongDeposit)))
                 .andExpect(status().isBadRequest());
-
-
     }
 
     @Test
-    public void transfer() {
+    public void transfer() throws Exception {
+        Mockito.when(paymentService.transfer(firstPayment)).thenReturn(Boolean.TRUE);
+
+        mockMvc.perform(post(mapping + "/transfer/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(firstPayment)))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(post(mapping + "/transfer/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(wrongPayment)))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void cancel() {
+    public void cancel() throws Exception {
+        String id = firstPayment.getId();
+        Mockito.when(paymentService.cancel(id)).thenReturn(Boolean.TRUE);
+
+        mockMvc.perform(delete(mapping + "/cancel/" + id))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(delete(mapping + "/cancel/" + "invalidId"))
+                .andExpect(status().isBadRequest());
     }
 }
