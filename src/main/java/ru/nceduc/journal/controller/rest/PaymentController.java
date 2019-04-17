@@ -37,9 +37,9 @@ public class PaymentController {
 
     @PutMapping("/deposit/")
     @ApiOperation(value = "Add certain amount of money to the student's account")
-    ResponseEntity deposit(@RequestBody DepositDTO depositDTO) {
+    ResponseEntity<String> deposit(@RequestBody DepositDTO depositDTO) {
         HttpStatus httpStatus = paymentService.deposit(depositDTO) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
-        return new ResponseEntity(httpStatus);
+        return new ResponseEntity<>(" ", httpStatus);
     }
 
     @PutMapping("/withdraw/")

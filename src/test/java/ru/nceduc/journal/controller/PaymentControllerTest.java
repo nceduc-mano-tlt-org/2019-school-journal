@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static sun.plugin2.util.PojoUtil.toJson;
@@ -30,7 +32,7 @@ import static sun.plugin2.util.PojoUtil.toJson;
 @WebMvcTest(PaymentController.class)
 @WithMockUser(authorities = "USER")
 public class PaymentControllerTest {
-    private final String mapping = "/api/v1/payment/";
+    private final String mapping = "/api/v1/payment";
 
     @MockBean
     private UserDetailsService userDetailsService;
@@ -45,6 +47,7 @@ public class PaymentControllerTest {
     private PaymentDTO secondPayment;
     private PaymentDTO thirdPayment;
     private DepositDTO depositDTO;
+    private DepositDTO wrongDeposit;
     private List<PaymentDTO> allPayments;
     private List<PaymentDTO> paymentsByStudent;
 
@@ -58,7 +61,8 @@ public class PaymentControllerTest {
         firstPayment = new PaymentDTO(firstStudentId, UUID.randomUUID().toString(), firstGroupId, 100);
         secondPayment = new PaymentDTO(firstStudentId, UUID.randomUUID().toString(), firstGroupId, 200);
         thirdPayment = new PaymentDTO(secondStudentId, UUID.randomUUID().toString(), secondGroupId, 300);
-        depositDTO = new DepositDTO(UUID.randomUUID().toString(), firstStudentId, 200);
+        depositDTO = new DepositDTO(firstStudentId, 200);
+        wrongDeposit = new DepositDTO(secondStudentId, 0);
 
         allPayments = new ArrayList<>();
         allPayments.add(firstPayment);
@@ -104,11 +108,36 @@ public class PaymentControllerTest {
     }
 
     @Test
-    public void deposit() {
+    public void deposit() throws Exception {
+        Mockito.when(paymentService.deposit(depositDTO)).thenReturn(true);
+
+        mockMvc.perform(put(mapping + "/deposit/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(depositDTO)))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(put(mapping + "/deposit/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(wrongDeposit)))
+                .andExpect(status().isBadRequest());
+
     }
 
     @Test
-    public void withdraw() {
+    public void withdraw() throws Exception {
+        Mockito.when(paymentService.withdraw(depositDTO)).thenReturn(Boolean.TRUE);
+
+        mockMvc.perform(put(mapping + "/withdraw/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(depositDTO)))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(put(mapping + "/withdraw/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(wrongDeposit)))
+                .andExpect(status().isBadRequest());
+
+
     }
 
     @Test
