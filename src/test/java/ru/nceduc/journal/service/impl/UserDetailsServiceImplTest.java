@@ -42,6 +42,7 @@ public class UserDetailsServiceImplTest {
 
     @After
     public void after() {
+        userRepository.deleteAll();
         userEntity = null;
     }
 
