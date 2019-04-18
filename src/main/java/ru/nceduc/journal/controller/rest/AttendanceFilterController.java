@@ -15,44 +15,44 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/v1/filter/attendance")
+@RequestMapping("api/v1/attendance/filter")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@Api(description = "Operations pertaining to attendance of filters in School Journal", tags = "ATTENDANCE-FILTER-V1")
+@Api(description = "Operations pertaining to filters of attendance in School Journal", tags = "ATTENDANCE-FILTER-V1")
 public class AttendanceFilterController {
     private final AttendanceFilterService attendanceService;
 
 
-    @ApiOperation(value = "Delete a attendance")
+    @ApiOperation(value = "Delete a filter")
     @DeleteMapping("/{id}")
-    public ResponseEntity<AttendanceFilterDTO> deleteAttendance(@PathVariable String id) {
+    public ResponseEntity<AttendanceFilterDTO> deleteFilter(@PathVariable String id) {
         attendanceService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @ApiOperation(value = "Create a new filter attendance")
+    @ApiOperation(value = "Create a new filter")
     @PostMapping("/")
-    public ResponseEntity<AttendanceFilterDTO> createAttendance(@RequestBody AttendanceFilterDTO attendanceFilterDTO) {
+    public ResponseEntity<AttendanceFilterDTO> createFilter(@RequestBody AttendanceFilterDTO attendanceFilterDTO) {
         Optional<AttendanceFilterDTO> optionalDTO = attendanceService.create(attendanceFilterDTO);
         return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.CREATED))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
-    @ApiOperation(value = "Get all filter attendances")
+    @ApiOperation(value = "Get all filters")
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/")
-    public ResponseEntity<List<AttendanceFilterDTO>> getAllAttendances() {
+    public ResponseEntity<List<AttendanceFilterDTO>> getAllFilters() {
         return new ResponseEntity<>(attendanceService.getAll(), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get details of specific filter attendance")
+    @ApiOperation(value = "Get details of specific filter")
     @GetMapping("/{id}")
-    public ResponseEntity<AttendanceFilterDTO> getAttendance(@PathVariable String id) {
+    public ResponseEntity<AttendanceFilterDTO> getFilter(@PathVariable String id) {
         Optional<AttendanceFilterDTO> optionalDTO = attendanceService.get(id);
         return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @ApiOperation(value = "Get all filter attendances by group id")
+    @ApiOperation(value = "Get all filters by group id")
     @GetMapping("/by-filter/{groupId}")
     public ResponseEntity<List<AttendanceFilterDTO>> getAllAttendancesByGroupId(@PathVariable String groupId) {
         return new ResponseEntity<>(attendanceService.getAllByGroupId(groupId), HttpStatus.OK);
