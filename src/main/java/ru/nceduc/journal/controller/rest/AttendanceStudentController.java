@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.nceduc.journal.dto.AttendanceGroupDTO;
 import ru.nceduc.journal.dto.AttendanceStudentDTO;
 import ru.nceduc.journal.service.AttendanceStudentService;
 
@@ -53,7 +52,7 @@ public class AttendanceStudentController {
     @ApiOperation(value = "Get all student attendances by group id, month and year")
     @GetMapping("/by-filter/{filterId}")
     public ResponseEntity<List<AttendanceStudentDTO>> getAllByGroupDTOId(@PathVariable String filterId) {
-        return new ResponseEntity<>(attendanceStudentService.getAllByGroupDTOId(filterId), HttpStatus.OK);
+        return new ResponseEntity<>(attendanceStudentService.getAllByFilterId(filterId), HttpStatus.OK);
     }
 
 }

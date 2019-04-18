@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class AttendanceGroupDTO {
+public class AttendanceFilterDTO {
     @ApiModelProperty(readOnly = true)
     String id;
     String groupId;
