@@ -9,13 +9,13 @@ Vue.component('group-list', {
         '  </div>\n' +
         '  <div class="card-body">\n' +
         '    <div class="card-info mb-2">' +
-        '      <h5>Cost: </h5>{{group.cost}}' +
+        '      <h5>Cost: </h5><span>{{group.cost}}</span>' +
         '    </div>\n' +
         '    <div class="card-info mb-2">' +
-        '      <h5>Start date: </h5>{{group.startDate}}' +
+        '      <h5>Start date: </h5><span>{{group.startDate}}</span>' +
         '    </div>\n' +
         '    <div class="card-info mb-2">' +
-        '      <h5>Group description: </h5>{{group.description}}' +
+        '      <h5>Group description: </h5><span>{{group.description}}</span>' +
         '    </div>\n' +
         '   </div>' +
         '  <div class="card-footer">\n' +
@@ -160,9 +160,9 @@ var vm = new Vue({
             var groupId = button.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
             var groupSectionId = button.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[1].getElementsByTagName("b")[0].innerText;
             var groupName = button.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h5")[0].innerText;
-            var groupCost = button.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h5")[0].innerText;
-            var groupStartDate = button.parentNode.getElementsByTagName("div")[1].getElementsByTagName("h5")[0].innerText;
-            var groupDescription = button.parentNode.getElementsByTagName("div")[2].getElementsByTagName("h5")[1].innerText;
+            var groupCost = button.parentElement.parentNode.getElementsByTagName("div")[1].getElementsByTagName("span")[0].innerText;
+            var groupStartDate =  button.parentElement.parentNode.getElementsByTagName("div")[1].getElementsByTagName("span")[1].innerText;
+            var groupDescription =  button.parentElement.parentNode.getElementsByTagName("div")[1].getElementsByTagName("span")[2].innerText;
 
             document.getElementById("edit_group_id").value = groupId;
             document.getElementById("edit_group_name").value = groupName;

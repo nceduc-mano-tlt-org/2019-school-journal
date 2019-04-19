@@ -10,7 +10,7 @@ Vue.component('section-list', {
         '  <div class="card-body">\n' +
         '    <div class="card-info mb-2">' +
         '      <h5>Section description:</h5>' +
-        '      {{section.description}}' +
+        '      <span>{{section.description}} </span>' +
         '      </p>\n' +
         '    </div>\n' +
         '   </div>' +
@@ -118,7 +118,7 @@ var vm = new Vue({
             var sectionId = button.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
             var sectionProjectId = button.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[1].getElementsByTagName("b")[0].innerText;
             var sectionName = button.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h5")[0].innerText;
-            var sectionDescription = button.parentNode.getElementsByTagName("div")[0].innerText;
+            var sectionDescription = button.parentElement.parentNode.getElementsByTagName("div")[1].getElementsByTagName("span")[0].innerText;
 
             document.getElementById("edit_section_id").value = sectionId;
             document.getElementById("edit_section_name").value = sectionName;
