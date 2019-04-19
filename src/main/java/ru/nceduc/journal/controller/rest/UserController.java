@@ -18,7 +18,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/v1/user")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@Api(description = "Users operations", tags = "USER-V1")
+@Api(description = "Operations pertaining to users", tags = "USER-V1")
 public class UserController {
 
     private final UserService userService;

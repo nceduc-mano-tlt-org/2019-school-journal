@@ -18,7 +18,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("api/v1/group")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@Api(description="Groups operations", tags = "GROUP-V1")
+@Api(description="Operations pertaining to groups", tags = "GROUP-V1")
 public class GroupController {
 
     private final GroupService groupService;

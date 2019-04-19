@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/payment")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@Api(description = "Payments operations", tags = "PAYMENT-V1")
+@Api(description = "Operations pertaining to payments", tags = "PAYMENT-V1")
 public class PaymentController {
 
     private final PaymentService paymentService;
