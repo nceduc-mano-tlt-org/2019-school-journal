@@ -8,7 +8,7 @@ var vm = new Vue({
             let pass = document.getElementById("input-password").value;
             let confPass = document.getElementById("confirm-password").value;
             if (pass !== confPass) {
-                document.getElementById("message").value = "Passwords don't match!";
+                $("#confirmpass").click();
                 document.getElementById("input-password").value = "";
                 document.getElementById("confirm-password").value = "";
             } else {
@@ -22,7 +22,7 @@ var vm = new Vue({
             let pass = document.getElementById("input-password").value;
             let confPass = document.getElementById("confirm-password").value;
             if (login === "" || email === "" || pass === "" || confPass === "") {
-                document.getElementById("message").value = "Not all fields are filled!";
+                $("#checkempty").click();
             } else {
                 this.signUp(element);
             }
@@ -44,7 +44,8 @@ var vm = new Vue({
                         document.getElementById("input-email").value = "";
                         document.getElementById("input-password").value = "";
                         document.getElementById("confirm-password").value = "";
-                        document.getElementById("message").value = "This user already exists!";
+
+                        $("#userexists").click();
                     }
                 })
         }

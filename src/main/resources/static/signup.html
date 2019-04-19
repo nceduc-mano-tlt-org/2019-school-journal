@@ -13,6 +13,57 @@
 </head>
 <body>
 <div id="app">
+    <div class="modal fade bd-example-modal-sm" id="alertPassModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6>Warning!</h6>
+                </div>
+                <div class="modal-body">
+                    Passwords don't match
+                </div>
+                <div class="modal-footer">
+                    <div class="text-right">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade bd-example-modal-sm" id="alertEmptyModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6>Warning!</h6>
+                </div>
+                <div class="modal-body">
+                    Not all fields are filled
+                </div>
+                <div class="modal-footer">
+                    <div class="text-right">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade bd-example-modal-sm" id="alertUserModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6>Error!</h6>
+                </div>
+                <div class="modal-body">
+                    This user already exists
+                </div>
+                <div class="modal-footer">
+                    <div class="text-right">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="signin">
         <div class="row align-items-center  justify-content-center">
             <div class="col-md-4">
@@ -43,12 +94,26 @@
                                    name="confirm-password" placeholder="Confirm password">
                         </div>
 
+
                         <h6>
-                                <output id="message"></output>
+                            <!--<output id="message"></output>-->
                         </h6>
                     </form>
                 </div>
                 <div class="container signin__form textc-white">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertPassModal"
+                            hidden="hidden" id="confirmpass">
+                        Launch demo modal
+                    </button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertEmptyModal"
+                            hidden="hidden" id="checkempty">
+                        Launch demo modal
+                    </button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertUserModal"
+                            hidden="hidden" id="userexists">
+                        Launch demo modal
+                    </button>
+
                     <button class="btn btn-primary" onClick="vm.checkConfirm(this)">Sign Up!</button>
                     <span class="d-inline-block pl-4 pr-4">or</span>
                     <a href="/signin.html" class="d-inline-block">Sign in</a>
