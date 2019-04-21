@@ -29,7 +29,7 @@ import static sun.plugin2.util.PojoUtil.toJson;
 @RunWith(SpringRunner.class)
 @WebMvcTest(PaymentController.class)
 @WithMockUser(authorities = "USER")
-public class PaymentControllerTest {
+public class PaymentControllerTests {
     private final String mapping = "/api/v1/payment";
 
     @MockBean
