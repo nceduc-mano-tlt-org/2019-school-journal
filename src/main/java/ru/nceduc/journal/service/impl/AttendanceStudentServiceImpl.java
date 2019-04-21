@@ -5,12 +5,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import ru.nceduc.journal.dto.AttendanceGroupDTO;
+import ru.nceduc.journal.dto.AttendanceFilterDTO;
 import ru.nceduc.journal.dto.AttendanceStudentDTO;
-import ru.nceduc.journal.entity.AttendanceGroup;
+import ru.nceduc.journal.entity.AttendanceFilter;
 import ru.nceduc.journal.entity.AttendanceStudent;
 import ru.nceduc.journal.repository.AttendanceStudentRepository;
-import ru.nceduc.journal.service.AttendanceGroupService;
+import ru.nceduc.journal.service.AttendanceFilterService;
 import ru.nceduc.journal.service.AttendanceStudentService;
 
 import java.time.Month;
@@ -22,20 +22,20 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AttendanceStudentServiceImpl implements AttendanceStudentService {
-    private final AttendanceGroupService attendanceGroupService;
+    private final AttendanceFilterService attendanceFilterService;
     private final AttendanceStudentRepository attendanceRepository;
     private final ModelMapper modelMapper;
 
     @Override
-    public List<AttendanceStudentDTO> getAllByGroupDTOId(String id) {
-        Optional<AttendanceGroupDTO> optionalDTO = attendanceGroupService.get(id);
+    public List<AttendanceStudentDTO> getAllByFilterId(String id) {
+        Optional<AttendanceFilterDTO> optionalDTO = attendanceFilterService.get(id);
         if (optionalDTO.isPresent()){
-            AttendanceGroup attendanceGroup = modelMapper.map(optionalDTO.get(), AttendanceGroup.class);
-            AttendanceGroupDTO attendanceGroupDTO = modelMapper.map(attendanceGroup, AttendanceGroupDTO.class);
+            AttendanceFilter attendanceFilter = modelMapper.map(optionalDTO.get(), AttendanceFilter.class);
+            AttendanceFilterDTO attendanceFilterDTO = modelMapper.map(attendanceFilter, AttendanceFilterDTO.class);
 
-            String groupId = attendanceGroupDTO.getGroupId();
-            Month month = Month.of(attendanceGroup.getMonth());
-            int yearNum = attendanceGroup.getYear();
+            String groupId = attendanceFilterDTO.getGroupId();
+            Month month = Month.of(attendanceFilter.getMonth());
+            int yearNum = attendanceFilter.getYear();
 
             return getAllByGroupId(groupId)
                     .stream()

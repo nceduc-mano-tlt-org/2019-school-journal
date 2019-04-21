@@ -6,9 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -35,13 +33,10 @@ public class Group extends AbstractEntity {
     private List<Payment> payments;
 
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
-    private List<AttendanceGroup> attendanceGroupList;
+    private List<AttendanceFilter> attendanceFilterList;
 
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
     private List<AttendanceStudent> attendanceStudentList;
-
-//    @OneToMany (mappedBy="group", fetch = FetchType.LAZY)
-//    private Set<AttendanceGroup> attendance = new HashSet<>();
 
 
     public Group(String name, String description) {

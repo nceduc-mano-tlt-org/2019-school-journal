@@ -20,7 +20,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("api/v1/section")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@Api(description="Sections operations", tags = "SECTION-V1")
+@Api(description="Operations pertaining to sections", tags = "SECTION-V1")
 public class SectionController {
 
     private final SectionService sectionService;

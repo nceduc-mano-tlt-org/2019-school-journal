@@ -8,16 +8,16 @@ Vue.component('section-list', {
         '    <h5 class="card-title">{{section.name}}</h5>\n' +
         '  </div>\n' +
         '  <div class="card-body">\n' +
-        '   <button type="button" class="close" aria-label="Close" onclick="vm.deleteSection(this)">\n' +
-        '       <span aria-hidden="true">&times;</span>\n' +
-        '   </button>' +
         '    <div class="card-info mb-2">' +
-        '      <h5>Section description</h5>' +
-        '      <b>{{section.description}}</b>' +
+        '      <h5>Section description:</h5>' +
+        '      <span>{{section.description}} </span>' +
         '      </p>\n' +
         '    </div>\n' +
+        '   </div>' +
+        '  <div class="card-footer">\n' +
         '    <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditSection(this)"  data-toggle="modal" id data-target="#editSectionModal">Manage section</button>\n' +
         '    <a v-bind:href="\'/group.html?section_id=\' + section.id" class="btn textc-white bgc-primary">Enter</a>\n' +
+        ' <button type="button" style="float: right" class="btn textc-white bgc-primary "onclick="vm.deleteTeacher(this)">Delete</button>' +
         '  </div>\n' +
         '</div>'
 });
@@ -118,7 +118,7 @@ var vm = new Vue({
             var sectionId = button.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
             var sectionProjectId = button.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[1].getElementsByTagName("b")[0].innerText;
             var sectionName = button.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h5")[0].innerText;
-            var sectionDescription = button.parentNode.getElementsByTagName("div")[0].getElementsByTagName("b")[0].innerText;
+            var sectionDescription = button.parentElement.parentNode.getElementsByTagName("div")[1].getElementsByTagName("span")[0].innerText;
 
             document.getElementById("edit_section_id").value = sectionId;
             document.getElementById("edit_section_name").value = sectionName;

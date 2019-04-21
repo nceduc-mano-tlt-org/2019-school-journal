@@ -90,6 +90,9 @@ body, html {
 	padding-bottom:10%;
 }
 
+.signup__form {
+	padding-top:5%;
+}
 .signin__form a {
 	color: #ecf0f1;
 }

@@ -17,7 +17,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/v1/project")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@Api(description = "Operations pertaining to project in School Journal", tags = "PROJECT-V1")
+@Api(description = "Operations pertaining to project", tags = "PROJECT-V1")
 public class ProjectController {
 
     private final ProjectService service;

@@ -17,7 +17,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/v1/student")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@Api(description = "Operations pertaining to students in School Journal", tags = "STUDENT-V1")
+@Api(description = "Operations pertaining to students", tags = "STUDENT-V1")
 public class StudentController {
 
     private final StudentService studentService;

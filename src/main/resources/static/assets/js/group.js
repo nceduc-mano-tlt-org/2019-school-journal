@@ -8,21 +8,20 @@ Vue.component('group-list', {
         '    <h5 class="card-title">{{group.name}}</h5>\n' +
         '  </div>\n' +
         '  <div class="card-body">\n' +
-        '   <button type="button" class="close" aria-label="Close" onclick="vm.deleteGroup(this)">\n' +
-        '       <span aria-hidden="true">&times;</span>\n' +
-        '   </button>' +
         '    <div class="card-info mb-2">' +
-        '      <h5>Cost: <b>{{group.cost}}</b></h5>' +
+        '      <h5>Cost: </h5><span>{{group.cost}}</span>' +
         '    </div>\n' +
         '    <div class="card-info mb-2">' +
-        '      <h5>Start date: <b>{{group.startDate}}</b></h5>  ' +
+        '      <h5>Start date: </h5><span>{{group.startDate}}</span>' +
         '    </div>\n' +
         '    <div class="card-info mb-2">' +
-        '      <h5>Group description: </h5>' +
-        '     <h5><b>{{group.description}}</b></h5> ' +
+        '      <h5>Group description: </h5><span>{{group.description}}</span>' +
         '    </div>\n' +
+        '   </div>' +
+        '  <div class="card-footer">\n' +
         '    <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditGroup(this)"  data-toggle="modal" id data-target="#editGroupModal">Manage group</button>\n' +
         '    <a :href="\'/group.html?group_id=\' + group.id" class="btn textc-white bgc-primary">Enter</a>\n' +
+        ' <button type="button" style="float: right" class="btn textc-white bgc-primary "onclick="vm.deleteGroup(this)">Delete</button>' +
         '  </div>\n' +
         '</div>'
 });
@@ -35,13 +34,8 @@ Vue.component('teacher-list', {
         '    <h6 class="d-none">Teacher Id: <b>{{teacher.id}}</b></h6>\n' +
         '    <h6 class="d-none">Teacher Group Id : <b>{{teacher.groupId}}</b></h6>\n' +
         '    <h5 class="card-title">{{teacher.firstName}} {{teacher.lastName}}</h5>\n' +
-        '  </div>\n' +
-        '  <div class="card-body">\n' +
-        '   <button type="button" class="close" aria-label="Close" onclick="vm.deleteTeacher(this)">\n' +
-        '       <span aria-hidden="true">&times;</span>\n' +
-        '   </button>' +
         '    <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditTeacher(this)"  data-toggle="modal" id data-target="#editTeacherModal">Manage teacher</button>\n' +
-    //    '    <a :href="\'/teacher.html?id=\' + teacher.id" class="btn textc-white bgc-primary">Enter</a>\n' +
+        ' <button type="button" style="float: right" class="btn textc-white bgc-primary "onclick="vm.deleteTeacher(this)">Delete</button>' +
         '  </div>\n' +
         '</div>'
 });
@@ -56,12 +50,12 @@ Vue.component('student-list', {
         '    <h5 class="card-title">{{student.firstName}} {{student.lastName}}</h5>\n' +
         '  </div>\n' +
         '  <div class="card-body">\n' +
-        '    <h5 class="card-info mb-2">Last date: <b>{{student.lastDate}}</b></h5>' +
-        '   <button type="button" class="close" aria-label="Close" onclick="vm.deleteStudent(this)">\n' +
-        '       <span aria-hidden="true">&times;</span>\n' +
-        '   </button>' +
-        '    <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditStudent(this)"  data-toggle="modal" id data-target="#editStudentModal">Manage student</button>\n' +
+        '    <h5 class="card-info mb-2">Last date: </h5>{{student.lastDate}}' +
+        '   </div>' +
+        '  <div class="card-footer">\n' +
+        '   <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditStudent(this)"  data-toggle="modal" id data-target="#editStudentModal">Manage student</button>\n' +
         '    <a :href="\'/student.html?id=\' + student.id" class="btn textc-white bgc-primary">Enter</a>\n' +
+        ' <button type="button" style="float: right" class="btn textc-white bgc-primary "onclick="vm.deleteStudent(this)">Delete</button>' +
         '  </div>\n' +
         '</div>'
 });
@@ -166,9 +160,9 @@ var vm = new Vue({
             var groupId = button.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
             var groupSectionId = button.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[1].getElementsByTagName("b")[0].innerText;
             var groupName = button.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h5")[0].innerText;
-            var groupCost = button.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h5")[0].getElementsByTagName("b")[0].innerText;
-            var groupStartDate = button.parentNode.getElementsByTagName("div")[1].getElementsByTagName("h5")[0].getElementsByTagName("b")[0].innerText;
-            var groupDescription = button.parentNode.getElementsByTagName("div")[2].getElementsByTagName("h5")[1].getElementsByTagName("b")[0].innerText;
+            var groupCost = button.parentElement.parentNode.getElementsByTagName("div")[1].getElementsByTagName("span")[0].innerText;
+            var groupStartDate =  button.parentElement.parentNode.getElementsByTagName("div")[1].getElementsByTagName("span")[1].innerText;
+            var groupDescription =  button.parentElement.parentNode.getElementsByTagName("div")[1].getElementsByTagName("span")[2].innerText;
 
             document.getElementById("edit_group_id").value = groupId;
             document.getElementById("edit_group_name").value = groupName;

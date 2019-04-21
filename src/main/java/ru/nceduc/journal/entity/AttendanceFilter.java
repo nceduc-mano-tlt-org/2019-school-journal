@@ -10,8 +10,8 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "attendances_group")
-public class AttendanceGroup extends AbstractEntity  {
+@Table(name = "attendances_filter")
+public class AttendanceFilter extends AbstractEntity  {
     @ManyToOne(fetch = FetchType.LAZY)
     private Group group;
     private int month;
