@@ -66,6 +66,7 @@ var vm = new Vue({
         switcher: false,
         groupName: '',
         sectionName: '',
+        userId: '',
         groups: [],
         teachers: [],
         students: []
@@ -186,6 +187,11 @@ var vm = new Vue({
                             axios.get('/api/v1/project/current/')
                                 .then(function(response){
                                     document.getElementById("show_project_name_in_tree_1").value = response.data[0].name;
+                                    this.userId = response.data[0].userId;
+                                    axios.get('/api/v1/user/' + this.userId)
+                                        .then(function (response) {
+                                            document.getElementById("show_username").value = response.data.username;
+                                        })
                                 })
                         })
                 })
@@ -204,6 +210,11 @@ var vm = new Vue({
                     axios.get('/api/v1/project/current/')
                         .then(function(response){
                             document.getElementById("show_project_name_in_tree").value = response.data[0].name;
+                            this.userId = response.data[0].userId;
+                            axios.get('/api/v1/user/' + this.userId)
+                                .then(function (response) {
+                                    document.getElementById("show_username").value = response.data.username;
+                                })
                         })
                 })
                 .catch(function (error) {

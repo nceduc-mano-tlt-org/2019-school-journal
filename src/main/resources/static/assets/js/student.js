@@ -1,8 +1,8 @@
-
 var vm = new Vue({
     el: '#app',
     data: {
-        studentName: ''
+        studentName: '',
+        userId: ''
     },
     mounted() {
         this.showName();
@@ -23,12 +23,17 @@ var vm = new Vue({
                                 document.getElementById("hidden_section_id").href = '/group.html?section_id=' + response.data.sectionId;
 
                                 axios.get('/api/v1/section/' + response.data.sectionId)
-                                    .then(function(response){
+                                    .then(function (response) {
                                         document.getElementById("show_section_name_in_tree").value = response.data.name;
                                         document.getElementById("hidden_project_id").href = '/section.html?project_id=' + response.data.projectId;
                                         axios.get('/api/v1/project/current/')
-                                            .then(function(response){
+                                            .then(function (response) {
                                                 document.getElementById("show_project_name_in_tree").value = response.data[0].name;
+                                                this.userId = response.data[0].userId;
+                                                axios.get('/api/v1/user/' + this.userId)
+                                                    .then(function (response) {
+                                                        document.getElementById("show_username").value = response.data.username;
+                                                    })
                                             })
                                     })
                             })

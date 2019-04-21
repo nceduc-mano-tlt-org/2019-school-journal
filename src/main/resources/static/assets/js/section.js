@@ -27,6 +27,7 @@ var vm = new Vue({
     el: '#app',
     data: {
         projectName: '',
+        userId: '',
         sections: []
     },
     mounted() {
@@ -42,6 +43,11 @@ var vm = new Vue({
                         this.projectName = response.data[0].name;
                         document.getElementById("show_project_name").value = this.projectName;
                         document.getElementById("show_project_name_in_tree").value = this.projectName;
+                        this.userId = response.data[0].userId;
+                        axios.get('/api/v1/user/' + this.userId)
+                            .then(function (response) {
+                                document.getElementById("show_username").value = response.data.username;
+                            })
                     })
                     .catch(function (error) {
                         console.log(error);
