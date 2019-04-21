@@ -14,6 +14,46 @@
 <body>
 <div id="app">
     <div class="signin">
+        <div class="modal fade bd-example-modal-sm" id="alertEmptyModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6>Warning!</h6>
+                    </div>
+                    <div class="modal-body">
+                        Not all fields are filled
+                    </div>
+                    <div class="modal-footer">
+                        <div class="text-right">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade bd-example-modal-sm" id="alertWrongPassModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6>Error!</h6>
+                    </div>
+                    <div class="modal-body">
+                        Wrong pair of login and password
+                    </div>
+                    <div class="modal-footer">
+                        <div class="text-right">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertEmptyModal"
+                hidden="hidden" id="checkempty">
+        </button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertWrongPassModal"
+                hidden="hidden" id="wrongpass">
+        </button>
         <div class="container signin__form textc-white">
             <div class="row align-items-center justify-content-center">
                 <div class="col-md-4">
@@ -32,7 +72,7 @@
                             <input type="password" class="form-control" id="input-password" name="password"
                                    placeholder="Password">
                         </div>
-                        <button type="button" class="btn btn-primary" onClick="vm.signIn(this)">Sign In!</button>
+                        <button type="button" class="btn btn-primary" onClick="vm.checkEmpty(this)">Sign In!</button>
                         <span class="d-inline-block pl-4 pr-4">or</span>
                         <a href="/signup.html" class="d-inline-block">Sign up</a>
                     </form>
