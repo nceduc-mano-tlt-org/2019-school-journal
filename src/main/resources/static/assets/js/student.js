@@ -25,7 +25,7 @@ var vm = new Vue({
                                 axios.get('/api/v1/section/' + response.data.sectionId)
                                     .then(function(response){
                                         document.getElementById("show_section_name_in_tree").value = response.data.name;
-
+                                        document.getElementById("hidden_project_id").href = '/section.html?project_id=' + response.data.projectId;
                                         axios.get('/api/v1/project/current/')
                                             .then(function(response){
                                                 document.getElementById("show_project_name_in_tree").value = response.data[0].name;
