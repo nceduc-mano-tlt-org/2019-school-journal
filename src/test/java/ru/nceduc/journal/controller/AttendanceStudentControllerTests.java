@@ -20,6 +20,7 @@ import ru.nceduc.journal.service.AttendanceStudentService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -94,7 +95,17 @@ public class AttendanceStudentControllerTests {
     }
 
     @Test
-    public void getAttendanceStudent() {
+    public void getAttendanceStudent() throws Exception {
+        String id = firstAttendanceStudent.getId();
+        Mockito.when(attendanceStudentService.get(id)).thenReturn(Optional.of(firstAttendanceStudent));
+
+        mockMvc.perform(get(mapping + "/" + id))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(firstAttendanceStudent)));
+
+        mockMvc.perform(get(mapping + "/" + "invalidId"))
+                .andExpect(status().isNotFound());
     }
 
     @Test
