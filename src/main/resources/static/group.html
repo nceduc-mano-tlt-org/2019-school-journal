@@ -13,6 +13,60 @@
 </head>
 <body>
 <div id="app">
+    <div class="d-none" id="delete_entity_id"></div>
+    <div class="modal fade bd-example-modal-sm" id="confirmDeleting" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content p-4">
+                <div class="modal-body text-center">
+                    <h4 class="pb-3">Are you sure?</h4>
+                    <button type="button" class="btn btn-primary d-inline-block" data-dismiss="modal"
+                            onclick="vm.deleteGroup(this)">
+                        Yes
+                    </button>
+                    <button type="button" class="btn btn-secondary d-inline-block"
+                            data-dismiss="modal">
+                        No
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bd-example-modal-sm" id="confirmDeletingTeacher" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content p-4">
+                <div class="modal-body text-center">
+                    <h4 class="pb-3">Are you sure?</h4>
+                    <button type="button" class="btn btn-primary d-inline-block" data-dismiss="modal"
+                            onclick="vm.deleteTeacher(this)">
+                        Yes
+                    </button>
+                    <button type="button" class="btn btn-secondary d-inline-block"
+                            data-dismiss="modal">
+                        No
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bd-example-modal-sm" id="confirmDeletingStudent" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content p-4">
+                <div class="modal-body text-center">
+                    <h4 class="pb-3">Are you sure?</h4>
+                    <button type="button" class="btn btn-primary d-inline-block" data-dismiss="modal"
+                            onclick="vm.deleteStudent(this)">
+                        Yes
+                    </button>
+                    <button type="button" class="btn btn-secondary d-inline-block"
+                            data-dismiss="modal">
+                        No
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Modal ADD-->
     <div class="modal fade" id="addGroupModal" tabindex="-1" role="dialog" aria-labelledby="addGroupModalTitle"
          aria-hidden="true">
