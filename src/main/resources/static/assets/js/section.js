@@ -17,7 +17,7 @@ Vue.component('section-list', {
         '  <div class="card-footer">\n' +
         '    <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditSection(this)"  data-toggle="modal" id data-target="#editSectionModal">Manage section</button>\n' +
         '    <a v-bind:href="\'/group.html?section_id=\' + section.id" class="btn textc-white bgc-primary">Enter</a>\n' +
-        ' <button type="button" style="float: right" class="btn textc-white bgc-primary "onclick="vm.deleteTeacher(this)">Delete</button>' +
+        ' <button type="button" style="float: right" class="btn textc-white bgc-primary "onclick="vm.deleteSection(this)">Delete</button>' +
         '  </div>\n' +
         '</div>'
 });
