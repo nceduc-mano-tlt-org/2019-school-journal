@@ -23,7 +23,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static sun.plugin2.util.PojoUtil.toJson;
@@ -109,11 +111,27 @@ public class AttendanceStudentControllerTests {
     }
 
     @Test
-    public void createAttendanceStudent() {
+    public void createAttendanceStudent() throws Exception {
+        Mockito.when(attendanceStudentService.create(firstAttendanceStudent)).thenReturn(Optional.of(firstAttendanceStudent));
+
+        mockMvc.perform(post(mapping + "/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(firstAttendanceStudent)))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(firstAttendanceStudent)));
+
+        mockMvc.perform(post(mapping + "/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(null)))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void deleteAttendanceStudent() {
+    public void deleteAttendanceStudent() throws Exception {
+        String id = firstAttendanceStudent.getId();
 
+        mockMvc.perform(delete(mapping + "/" + id))
+                .andExpect(status().isNoContent());
     }
 }
