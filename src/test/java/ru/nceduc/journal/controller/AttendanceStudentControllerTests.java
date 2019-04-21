@@ -13,6 +13,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.nceduc.journal.controller.rest.AttendanceStudentController;
+import ru.nceduc.journal.dto.AttendanceFilterDTO;
 import ru.nceduc.journal.dto.AttendanceStudentDTO;
 import ru.nceduc.journal.service.AttendanceStudentService;
 
@@ -44,6 +45,7 @@ public class AttendanceStudentControllerTests {
     private String groupId;
     private AttendanceStudentDTO firstAttendanceStudent;
     private AttendanceStudentDTO secondAttendanceStudent;
+    private AttendanceFilterDTO attendanceFilterDTO;
     private List<AttendanceStudentDTO> attendances;
 
     @Before
@@ -53,6 +55,7 @@ public class AttendanceStudentControllerTests {
                 groupId, null);
         secondAttendanceStudent = new AttendanceStudentDTO(UUID.randomUUID().toString(), UUID.randomUUID().toString(),
                 groupId, null);
+        attendanceFilterDTO = new AttendanceFilterDTO(UUID.randomUUID().toString(), groupId, 10, 2020);
 
         attendances = new ArrayList<>();
         attendances.add(firstAttendanceStudent);
@@ -75,11 +78,19 @@ public class AttendanceStudentControllerTests {
     }
 
     @Test
-    public void deleteAttendanceStudent() {
-    }
+    public void getAllByFilter() throws Exception {
+        String id = attendanceFilterDTO.getId();
+        Mockito.when(attendanceStudentService.getAllByFilterId(id)).thenReturn(attendances);
 
-    @Test
-    public void createAttendanceStudent() {
+        mockMvc.perform(get(mapping + "/by-filter/" + id))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(attendances.toArray())));
+
+        mockMvc.perform(get(mapping + "/by-filter/" + "invalidId"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().string("[]"));
     }
 
     @Test
@@ -87,6 +98,11 @@ public class AttendanceStudentControllerTests {
     }
 
     @Test
-    public void getAllByFilter() {
+    public void createAttendanceStudent() {
+    }
+
+    @Test
+    public void deleteAttendanceStudent() {
+
     }
 }
