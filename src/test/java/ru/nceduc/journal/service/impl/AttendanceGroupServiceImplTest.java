@@ -11,12 +11,12 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.nceduc.journal.dto.AttendanceGroupDTO;
-import ru.nceduc.journal.entity.AttendanceGroup;
+import ru.nceduc.journal.dto.AttendanceFilterDTO;
+import ru.nceduc.journal.entity.AttendanceFilter;
 import ru.nceduc.journal.entity.Group;
-import ru.nceduc.journal.repository.AttendanceGroupRepository;
+import ru.nceduc.journal.repository.AttendanceFilterRepository;
 import ru.nceduc.journal.repository.GroupRepository;
-import ru.nceduc.journal.service.AttendanceGroupService;
+import ru.nceduc.journal.service.AttendanceFilterService;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -28,10 +28,10 @@ import java.util.Optional;
 public class AttendanceGroupServiceImplTest {
 
     @Autowired
-    private AttendanceGroupService attendanceGroupService;
+    private AttendanceFilterService attendanceFilterService;
 
     @Autowired
-    private AttendanceGroupRepository attendanceGroupRepository;
+    private AttendanceFilterRepository attendanceFilterRepository;
 
     @Autowired
     private GroupRepository groupRepository;
@@ -39,26 +39,26 @@ public class AttendanceGroupServiceImplTest {
     @Autowired
     private ModelMapper modelMapper;
 
-    private AttendanceGroup attendanceGroupOne;
-    private AttendanceGroup attendanceGroupSecond;
-    private AttendanceGroupDTO attendanceGroupDTO;
+    private AttendanceFilter attendanceGroupOne;
+    private AttendanceFilter attendanceGroupSecond;
+    private AttendanceFilterDTO attendanceGroupDTO;
     private Group group;
 
     @Before
     public void before() {
         group = new Group("test","test");
-        attendanceGroupOne = new AttendanceGroup();
+        attendanceGroupOne = new AttendanceFilter();
         attendanceGroupOne.setMonth(1);
         attendanceGroupOne.setYear(2019);
-        attendanceGroupSecond = new AttendanceGroup();
+        attendanceGroupSecond = new AttendanceFilter();
         attendanceGroupSecond.setMonth(2);
         attendanceGroupSecond.setYear(2019);
-        attendanceGroupDTO = modelMapper.map(attendanceGroupOne,AttendanceGroupDTO.class);
+        attendanceGroupDTO = modelMapper.map(attendanceGroupOne,AttendanceFilterDTO.class);
     }
 
     @After
     public void after() {
-        attendanceGroupRepository.deleteAll();
+        attendanceFilterRepository.deleteAll();
     }
 
     @Test
@@ -66,20 +66,20 @@ public class AttendanceGroupServiceImplTest {
         Group actual = groupRepository.save(group);
         attendanceGroupOne.setGroup(actual);
         attendanceGroupSecond.setGroup(actual);
-        attendanceGroupRepository.save(attendanceGroupOne);
-        attendanceGroupRepository.save(attendanceGroupSecond);
-        Collection<AttendanceGroupDTO> actualCollection = attendanceGroupService.getAllByGroupId(actual.getId());
+        attendanceFilterRepository.save(attendanceGroupOne);
+        attendanceFilterRepository.save(attendanceGroupSecond);
+        Collection<AttendanceFilterDTO> actualCollection = attendanceFilterService.getAllByGroupId(actual.getId());
 
         Assert.assertFalse(actualCollection.isEmpty());
         Assert.assertEquals(2, actualCollection.size());
-        Assert.assertTrue(actualCollection.contains(modelMapper.map(attendanceGroupOne,AttendanceGroupDTO.class)));
-        Assert.assertTrue(actualCollection.contains(modelMapper.map(attendanceGroupSecond,AttendanceGroupDTO.class)));
+        Assert.assertTrue(actualCollection.contains(modelMapper.map(attendanceGroupOne,AttendanceFilterDTO.class)));
+        Assert.assertTrue(actualCollection.contains(modelMapper.map(attendanceGroupSecond,AttendanceFilterDTO.class)));
     }
 
     @Test
     public void get() {
-        AttendanceGroup actual = attendanceGroupRepository.save(attendanceGroupOne);
-        Optional<AttendanceGroupDTO> actualOptional = attendanceGroupService.get(actual.getId());
+        AttendanceFilter actual = attendanceFilterRepository.save(attendanceGroupOne);
+        Optional<AttendanceFilterDTO> actualOptional = attendanceFilterService.get(actual.getId());
 
         Assert.assertTrue(actualOptional.isPresent());
         Assert.assertEquals(attendanceGroupOne.getMonth(),actual.getMonth());
@@ -88,19 +88,19 @@ public class AttendanceGroupServiceImplTest {
 
     @Test
     public void getAll() {
-        AttendanceGroup actualOne = attendanceGroupRepository.save(attendanceGroupOne);
-        AttendanceGroup actualSecond = attendanceGroupRepository.save(attendanceGroupSecond);
-        Collection<AttendanceGroupDTO> actualCollection =attendanceGroupService.getAll();
+        AttendanceFilter actualOne = attendanceFilterRepository.save(attendanceGroupOne);
+        AttendanceFilter actualSecond = attendanceFilterRepository.save(attendanceGroupSecond);
+        Collection<AttendanceFilterDTO> actualCollection = attendanceFilterService.getAll();
 
         Assert.assertFalse(actualCollection.isEmpty());
         Assert.assertEquals(2, actualCollection.size());
-        Assert.assertTrue(actualCollection.contains(modelMapper.map(actualOne,AttendanceGroupDTO.class)));
-        Assert.assertTrue(actualCollection.contains(modelMapper.map(actualSecond,AttendanceGroupDTO.class)));
+        Assert.assertTrue(actualCollection.contains(modelMapper.map(actualOne,AttendanceFilterDTO.class)));
+        Assert.assertTrue(actualCollection.contains(modelMapper.map(actualSecond,AttendanceFilterDTO.class)));
     }
 
     @Test
     public void create() {
-        Optional<AttendanceGroupDTO> actualOptional = attendanceGroupService.create(attendanceGroupDTO);
+        Optional<AttendanceFilterDTO> actualOptional = attendanceFilterService.create(attendanceGroupDTO);
         Assert.assertTrue(actualOptional.isPresent());
         Assert.assertEquals(attendanceGroupDTO.getMonth(), actualOptional.get().getMonth());
         Assert.assertEquals(attendanceGroupDTO.getYear(), actualOptional.get().getYear());
@@ -108,11 +108,11 @@ public class AttendanceGroupServiceImplTest {
 
     @Test
     public void delete() {
-        AttendanceGroup actual = attendanceGroupRepository.save(attendanceGroupOne);
-        Optional<AttendanceGroup> actualOptional = attendanceGroupRepository.findById(actual.getId());
+        AttendanceFilter actual = attendanceFilterRepository.save(attendanceGroupOne);
+        Optional<AttendanceFilter> actualOptional = attendanceFilterRepository.findById(actual.getId());
         Assert.assertTrue(actualOptional.isPresent());
-        attendanceGroupService.delete(actual.getId());
-        actualOptional = attendanceGroupRepository.findById(actual.getId());
+        attendanceFilterService.delete(actual.getId());
+        actualOptional = attendanceFilterRepository.findById(actual.getId());
         Assert.assertFalse(actualOptional.isPresent());
     }
 }
