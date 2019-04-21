@@ -109,8 +109,11 @@ Vue.component('section-list', {
         },
         deleteSection: function (element) {
             axios.delete('/api/v1/section/' + document.getElementById("delete_entity_id").value, {})
+                .then(function (response) {
+                    console.log(response);
+                    setTimeout(vm.loadSection(), 300);
+                })
                 .catch(function (error) {
-                    console.log(error);
                     if (error.response.status === 500) {
                         $("#notempty").click();
                     }
