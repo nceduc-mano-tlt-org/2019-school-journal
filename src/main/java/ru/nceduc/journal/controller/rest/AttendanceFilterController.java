@@ -53,7 +53,7 @@ public class AttendanceFilterController {
     }
 
     @ApiOperation(value = "Get all filters by group id")
-    @GetMapping("/by-filter/{groupId}")
+    @GetMapping("/by-group/{groupId}")
     public ResponseEntity<List<AttendanceFilterDTO>> getAllAttendancesByGroupId(@PathVariable String groupId) {
         return new ResponseEntity<>(attendanceService.getAllByGroupId(groupId), HttpStatus.OK);
     }
