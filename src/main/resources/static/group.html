@@ -32,6 +32,27 @@
         </div>
     </div>
 
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertNotEmptyModal"
+            hidden="hidden" id="notempty">
+    </button>
+    <div class="modal fade bd-example-modal-sm" id="alertNotEmptyModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6>Error!</h6>
+                </div>
+                <div class="modal-body">
+                    Removal is not possible: This group is not empty
+                </div>
+                <div class="modal-footer">
+                    <div class="text-right">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade bd-example-modal-sm" id="confirmDeletingTeacher" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content p-4">
