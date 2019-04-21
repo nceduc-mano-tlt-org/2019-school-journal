@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = "";
         if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         }
         return repositoryUser.findByUsername(username);
     }
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(String id) {
         if (id != null && repositoryUser.existsById(id))
-        repositoryUser.deleteById(id);
+            repositoryUser.deleteById(id);
     }
 
     @Override
@@ -87,10 +87,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<UserDTO> get(String id) {
-        if (repositoryUser.findById(id).isPresent()) {
-            return Optional.of(modelMapper.map(repositoryUser.findById(id), UserDTO.class));
-        }
-        return Optional.empty();
+        return repositoryUser.findById(id).map(userEntity -> modelMapper.map(userEntity, UserDTO.class));
     }
 
     @Override
