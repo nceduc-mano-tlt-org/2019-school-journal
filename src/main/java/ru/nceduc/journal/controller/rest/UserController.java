@@ -31,6 +31,14 @@ public class UserController {
         return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Get specific user details")
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> get(@PathVariable String id) {
+        Optional<UserDTO> optionalDTO = userService.get(id);
+        return optionalDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @ApiOperation(value = "Create a new user")
     @PostMapping("/signup/")
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
