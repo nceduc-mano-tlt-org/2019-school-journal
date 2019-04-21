@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static sun.plugin2.util.PojoUtil.toJson;
@@ -112,10 +112,27 @@ public class AttendanceFilterControllerTests {
     }
 
     @Test
-    public void createFilter() {
+    public void createFilter() throws Exception {
+        Mockito.when(attendanceFilterService.create(firstFilter)).thenReturn(Optional.of(firstFilter));
+
+        mockMvc.perform(post(mapping + "/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(firstFilter)))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().json(toJson(firstFilter)));
+
+        mockMvc.perform(post(mapping + "/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(null)))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void deleteFilter() {
+    public void deleteFilter() throws Exception {
+        String id = firstFilter.getId();
+
+        mockMvc.perform(delete(mapping + "/" + id))
+                .andExpect(status().isNoContent());
     }
 }
