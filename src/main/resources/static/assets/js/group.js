@@ -50,7 +50,7 @@ Vue.component('student-list', {
         '    <h5 class="card-title">{{student.firstName}} {{student.lastName}}</h5>\n' +
         '  </div>\n' +
         '  <div class="card-body">\n' +
-        '    <h5 class="card-info mb-2">Last date: </h5>{{student.lastDate}}' +
+        '    <h5 class="card-info mb-2">Paid to: </h5>{{student.lastDate}}' +
         '   </div>' +
         '  <div class="card-footer">\n' +
         '   <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditStudent(this)"  data-toggle="modal" id data-target="#editStudentModal">Manage student</button>\n' +
