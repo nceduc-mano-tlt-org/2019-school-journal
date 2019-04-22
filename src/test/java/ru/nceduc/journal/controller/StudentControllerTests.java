@@ -57,9 +57,9 @@ public class StudentControllerTests {
         String groupId = UUID.randomUUID().toString();
 
         groupDTO = new GroupDTO(groupId, "First group", "Desc for first group", null, 1000, UUID.randomUUID().toString());
-        firstStudent = new StudentDTO(UUID.randomUUID().toString(), "Ivan", "Ivanov", groupId, null);
-        secondStudent = new StudentDTO(UUID.randomUUID().toString(), "Petr", "Petrov", groupId, null);
-        thirdStudent = new StudentDTO(UUID.randomUUID().toString(), "Alexey", "Frolov", UUID.randomUUID().toString(), null);
+        firstStudent = new StudentDTO(UUID.randomUUID().toString(), "Ivan", "Ivanov", groupId, null, 0);
+        secondStudent = new StudentDTO(UUID.randomUUID().toString(), "Petr", "Petrov", groupId, null, 0);
+        thirdStudent = new StudentDTO(UUID.randomUUID().toString(), "Alexey", "Frolov", UUID.randomUUID().toString(), null, 0);
 
         allStudents = new ArrayList<>();
         allStudents.add(firstStudent);

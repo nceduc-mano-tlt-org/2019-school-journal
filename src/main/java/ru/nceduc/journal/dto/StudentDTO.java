@@ -19,4 +19,5 @@ public class StudentDTO {
     @ApiModelProperty(readOnly = true)
     @JsonFormat(pattern = "yyyy-MM")
     private Date lastDate;
+    private long walletBalance;
 }
