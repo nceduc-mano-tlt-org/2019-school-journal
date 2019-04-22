@@ -1,5 +1,6 @@
 package ru.nceduc.journal.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +18,7 @@ import ru.nceduc.journal.dto.AttendanceFilterDTO;
 import ru.nceduc.journal.dto.AttendanceStudentDTO;
 import ru.nceduc.journal.service.AttendanceStudentService;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +27,6 @@ import java.util.UUID;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static sun.plugin2.util.PojoUtil.toJson;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(AttendanceStudentController.class)
@@ -40,6 +41,9 @@ public class AttendanceStudentControllerTests {
     private AttendanceStudentService attendanceStudentService;
 
     @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
     private MockMvc mockMvc;
 
     private String groupId;
@@ -52,9 +56,9 @@ public class AttendanceStudentControllerTests {
     public void setUp() {
         groupId = UUID.randomUUID().toString();
         firstAttendanceStudent = new AttendanceStudentDTO(UUID.randomUUID().toString(), UUID.randomUUID().toString(),
-                groupId, null);
+                groupId, LocalDate.now());
         secondAttendanceStudent = new AttendanceStudentDTO(UUID.randomUUID().toString(), UUID.randomUUID().toString(),
-                groupId, null);
+                groupId, LocalDate.now());
         attendanceFilterDTO = new AttendanceFilterDTO(UUID.randomUUID().toString(), groupId, 10, 2020);
 
         attendances = new ArrayList<>();
@@ -69,7 +73,7 @@ public class AttendanceStudentControllerTests {
         mockMvc.perform(get(mapping + "/by-group/" + groupId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(attendances.toArray())));
+                .andExpect(content().json(objectMapper.writeValueAsString(attendances.toArray())));
 
         mockMvc.perform(get(mapping + "/by-group/" + "invalidId"))
                 .andExpect(status().isOk())
@@ -85,7 +89,7 @@ public class AttendanceStudentControllerTests {
         mockMvc.perform(get(mapping + "/by-filter/" + id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(attendances.toArray())));
+                .andExpect(content().json(objectMapper.writeValueAsString(attendances.toArray())));
 
         mockMvc.perform(get(mapping + "/by-filter/" + "invalidId"))
                 .andExpect(status().isOk())
@@ -101,7 +105,7 @@ public class AttendanceStudentControllerTests {
         mockMvc.perform(get(mapping + "/" + id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(firstAttendanceStudent)));
+                .andExpect(content().json(objectMapper.writeValueAsString(firstAttendanceStudent)));
 
         mockMvc.perform(get(mapping + "/" + "invalidId"))
                 .andExpect(status().isNotFound());
@@ -113,14 +117,14 @@ public class AttendanceStudentControllerTests {
 
         mockMvc.perform(post(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(firstAttendanceStudent)))
+                .content(objectMapper.writeValueAsString(firstAttendanceStudent)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(firstAttendanceStudent)));
+                .andExpect(content().json(objectMapper.writeValueAsString(firstAttendanceStudent)));
 
         mockMvc.perform(post(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(null)))
+                .content(objectMapper.writeValueAsString(null)))
                 .andExpect(status().isBadRequest());
     }
 

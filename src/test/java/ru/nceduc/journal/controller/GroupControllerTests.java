@@ -1,5 +1,6 @@
 package ru.nceduc.journal.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,15 +18,11 @@ import ru.nceduc.journal.dto.GroupDTO;
 import ru.nceduc.journal.dto.SectionDTO;
 import ru.nceduc.journal.service.GroupService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static sun.plugin2.util.PojoUtil.toJson;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(GroupController.class)
@@ -38,6 +35,9 @@ public class GroupControllerTests {
 
     @MockBean
     private GroupService groupService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     private MockMvc mockMvc;
@@ -55,8 +55,8 @@ public class GroupControllerTests {
 
         sectionDTO = new SectionDTO(sectionId, "English", "En description", UUID.randomUUID().toString());
         firstGroup = new GroupDTO(UUID.randomUUID().toString(), "First group", "Desc for first group", null, 1000, sectionId);
-        secondGroup = new GroupDTO(UUID.randomUUID().toString(), "Second group", "Desc for second group", null, 2000, sectionId);
-        thirdGroup = new GroupDTO(UUID.randomUUID().toString(), "Third group", "Desc for third group", null, 3000, UUID.randomUUID().toString());
+        secondGroup = new GroupDTO(UUID.randomUUID().toString(), "Second group", "Desc for second group", new Date(), 2000, sectionId);
+        thirdGroup = new GroupDTO(UUID.randomUUID().toString(), "Third group", "Desc for third group", new Date(), 3000, UUID.randomUUID().toString());
 
         allGroups = new ArrayList<>();
         allGroups.add(firstGroup);
@@ -76,7 +76,7 @@ public class GroupControllerTests {
         mockMvc.perform(get(mapping + "/" + id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(firstGroup)));
+                .andExpect(content().json(objectMapper.writeValueAsString(firstGroup)));
 
         mockMvc.perform(get(mapping + "/" + "invalidId"))
                 .andExpect(status().isNotFound());
@@ -96,7 +96,7 @@ public class GroupControllerTests {
         mockMvc.perform(get(mapping + "/"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(allGroups.toArray())));
+                .andExpect(content().json(objectMapper.writeValueAsString(allGroups.toArray())));
     }
 
     @Test
@@ -107,7 +107,7 @@ public class GroupControllerTests {
         mockMvc.perform(get(mapping + "/by-section/" + id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(groupsBySection.toArray())));
+                .andExpect(content().json(objectMapper.writeValueAsString(groupsBySection.toArray())));
 
         mockMvc.perform(get(mapping + "/by-section/" + "invalidId"))
                 .andExpect(status().isOk())
@@ -121,14 +121,14 @@ public class GroupControllerTests {
 
         mockMvc.perform(post(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(firstGroup)))
+                .content(objectMapper.writeValueAsString(firstGroup)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(firstGroup)));
+                .andExpect(content().json(objectMapper.writeValueAsString(firstGroup)));
 
         mockMvc.perform(post(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(null)))
+                .content(objectMapper.writeValueAsString(null)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -138,14 +138,14 @@ public class GroupControllerTests {
 
         mockMvc.perform(put(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(firstGroup)))
+                .content(objectMapper.writeValueAsString(firstGroup)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(firstGroup)));
+                .andExpect(content().json(objectMapper.writeValueAsString(firstGroup)));
 
         mockMvc.perform(put(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(null)))
+                .content(objectMapper.writeValueAsString(null)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -155,14 +155,14 @@ public class GroupControllerTests {
 
         mockMvc.perform(patch(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(firstGroup)))
+                .content(objectMapper.writeValueAsString(firstGroup)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(firstGroup)));
+                .andExpect(content().json(objectMapper.writeValueAsString(firstGroup)));
 
         mockMvc.perform(patch(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(null)))
+                .content(objectMapper.writeValueAsString(null)))
                 .andExpect(status().isBadRequest());
     }
 

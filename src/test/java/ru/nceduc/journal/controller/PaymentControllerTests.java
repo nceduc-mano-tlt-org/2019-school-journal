@@ -1,5 +1,6 @@
 package ru.nceduc.journal.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +25,6 @@ import java.util.UUID;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static sun.plugin2.util.PojoUtil.toJson;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(PaymentController.class)
@@ -37,6 +37,9 @@ public class PaymentControllerTests {
 
     @MockBean
     private PaymentService paymentService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     private MockMvc mockMvc;
@@ -88,7 +91,7 @@ public class PaymentControllerTests {
         mockMvc.perform(get(mapping + "/"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(allPayments.toArray())));
+                .andExpect(content().json(objectMapper.writeValueAsString(allPayments.toArray())));
     }
 
     @Test
@@ -99,7 +102,7 @@ public class PaymentControllerTests {
         mockMvc.perform(get(mapping + "/by-student/" + id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(paymentsByStudent.toArray())));
+                .andExpect(content().json(objectMapper.writeValueAsString(paymentsByStudent.toArray())));
 
         mockMvc.perform(get(mapping + "/by-student/" + "invalidId"))
                 .andExpect(status().isOk())
@@ -113,12 +116,12 @@ public class PaymentControllerTests {
 
         mockMvc.perform(put(mapping + "/deposit/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(depositDTO)))
+                .content(objectMapper.writeValueAsString(depositDTO)))
                 .andExpect(status().isOk());
 
         mockMvc.perform(put(mapping + "/deposit/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(wrongDeposit)))
+                .content(objectMapper.writeValueAsString(wrongDeposit)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -128,12 +131,12 @@ public class PaymentControllerTests {
 
         mockMvc.perform(put(mapping + "/withdraw/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(depositDTO)))
+                .content(objectMapper.writeValueAsString(depositDTO)))
                 .andExpect(status().isOk());
 
         mockMvc.perform(put(mapping + "/withdraw/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(wrongDeposit)))
+                .content(objectMapper.writeValueAsString(wrongDeposit)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -143,12 +146,12 @@ public class PaymentControllerTests {
 
         mockMvc.perform(post(mapping + "/transfer/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(firstPayment)))
+                .content(objectMapper.writeValueAsString(firstPayment)))
                 .andExpect(status().isOk());
 
         mockMvc.perform(post(mapping + "/transfer/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(wrongPayment)))
+                .content(objectMapper.writeValueAsString(wrongPayment)))
                 .andExpect(status().isBadRequest());
     }
 

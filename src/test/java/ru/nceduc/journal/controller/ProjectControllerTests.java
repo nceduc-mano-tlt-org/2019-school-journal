@@ -1,5 +1,6 @@
 package ru.nceduc.journal.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +25,6 @@ import java.util.UUID;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static sun.plugin2.util.PojoUtil.toJson;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(ProjectController.class)
@@ -37,6 +37,9 @@ public class ProjectControllerTests {
 
     @MockBean
     private ProjectService projectService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     private MockMvc mockMvc;
@@ -75,7 +78,7 @@ public class ProjectControllerTests {
         mockMvc.perform(get(mapping + "/" + id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(firstProject)));
+                .andExpect(content().json(objectMapper.writeValueAsString(firstProject)));
 
         mockMvc.perform(get(mapping + "/" + "invalidId"))
                 .andExpect(status().isNotFound());
@@ -95,7 +98,7 @@ public class ProjectControllerTests {
         mockMvc.perform(get(mapping + "/"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(allProjects.toArray())));
+                .andExpect(content().json(objectMapper.writeValueAsString(allProjects.toArray())));
     }
 
     @Test
@@ -105,14 +108,14 @@ public class ProjectControllerTests {
         mockMvc.perform(get(mapping + "/current/"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(currentProjects.toArray())));
+                .andExpect(content().json(objectMapper.writeValueAsString(currentProjects.toArray())));
     }
 
     @Test
     public void createProject() throws Exception {
         mockMvc.perform(post(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(firstProject)))
+                .content(objectMapper.writeValueAsString(firstProject)))
                 .andExpect(status().isForbidden());
     }
 
@@ -123,14 +126,14 @@ public class ProjectControllerTests {
 
         mockMvc.perform(post(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(firstProject)))
+                .content(objectMapper.writeValueAsString(firstProject)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(firstProject)));
+                .andExpect(content().json(objectMapper.writeValueAsString(firstProject)));
 
         mockMvc.perform(post(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(null)))
+                .content(objectMapper.writeValueAsString(null)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -140,14 +143,14 @@ public class ProjectControllerTests {
 
         mockMvc.perform(put(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(firstProject)))
+                .content(objectMapper.writeValueAsString(firstProject)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(firstProject)));
+                .andExpect(content().json(objectMapper.writeValueAsString(firstProject)));
 
         mockMvc.perform(put(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(null)))
+                .content(objectMapper.writeValueAsString(null)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -157,14 +160,14 @@ public class ProjectControllerTests {
 
         mockMvc.perform(patch(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(firstProject)))
+                .content(objectMapper.writeValueAsString(firstProject)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(firstProject)));
+                .andExpect(content().json(objectMapper.writeValueAsString(firstProject)));
 
         mockMvc.perform(patch(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(null)))
+                .content(objectMapper.writeValueAsString(null)))
                 .andExpect(status().isBadRequest());
     }
 

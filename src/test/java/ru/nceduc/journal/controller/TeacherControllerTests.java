@@ -1,5 +1,6 @@
 package ru.nceduc.journal.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +26,6 @@ import java.util.UUID;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static sun.plugin2.util.PojoUtil.toJson;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(TeacherController.class)
@@ -38,6 +38,9 @@ public class TeacherControllerTests {
 
     @MockBean
     private TeacherService teacherService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     private MockMvc mockMvc;
@@ -76,7 +79,7 @@ public class TeacherControllerTests {
         mockMvc.perform(get(mapping + "/" + id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(firstTeacher)));
+                .andExpect(content().json(objectMapper.writeValueAsString(firstTeacher)));
 
         mockMvc.perform(get(mapping + "/" + "invalidId"))
                 .andExpect(status().isNotFound());
@@ -96,7 +99,7 @@ public class TeacherControllerTests {
         mockMvc.perform(get(mapping + "/"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(allTeachers.toArray())));
+                .andExpect(content().json(objectMapper.writeValueAsString(allTeachers.toArray())));
     }
 
     @Test
@@ -107,7 +110,7 @@ public class TeacherControllerTests {
         mockMvc.perform(get(mapping + "/by-group/" + id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(teachersByGroup.toArray())));
+                .andExpect(content().json(objectMapper.writeValueAsString(teachersByGroup.toArray())));
 
         mockMvc.perform(get(mapping + "/by-group/" + "invalidId"))
                 .andExpect(status().isOk())
@@ -121,14 +124,14 @@ public class TeacherControllerTests {
 
         mockMvc.perform(post(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(firstTeacher)))
+                .content(objectMapper.writeValueAsString(firstTeacher)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(firstTeacher)));
+                .andExpect(content().json(objectMapper.writeValueAsString(firstTeacher)));
 
         mockMvc.perform(post(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(null)))
+                .content(objectMapper.writeValueAsString(null)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -138,14 +141,14 @@ public class TeacherControllerTests {
 
         mockMvc.perform(put(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(firstTeacher)))
+                .content(objectMapper.writeValueAsString(firstTeacher)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(firstTeacher)));
+                .andExpect(content().json(objectMapper.writeValueAsString(firstTeacher)));
 
         mockMvc.perform(put(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(null)))
+                .content(objectMapper.writeValueAsString(null)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -155,14 +158,14 @@ public class TeacherControllerTests {
 
         mockMvc.perform(patch(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(firstTeacher)))
+                .content(objectMapper.writeValueAsString(firstTeacher)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(firstTeacher)));
+                .andExpect(content().json(objectMapper.writeValueAsString(firstTeacher)));
 
         mockMvc.perform(patch(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(null)))
+                .content(objectMapper.writeValueAsString(null)))
                 .andExpect(status().isBadRequest());
     }
 

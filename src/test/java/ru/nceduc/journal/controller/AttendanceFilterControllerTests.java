@@ -1,5 +1,6 @@
 package ru.nceduc.journal.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +25,6 @@ import java.util.UUID;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static sun.plugin2.util.PojoUtil.toJson;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(AttendanceFilterController.class)
@@ -37,6 +37,9 @@ public class AttendanceFilterControllerTests {
 
     @MockBean
     private AttendanceFilterService attendanceFilterService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     private MockMvc mockMvc;
@@ -73,7 +76,7 @@ public class AttendanceFilterControllerTests {
         mockMvc.perform(get(mapping + "/" + id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(firstFilter)));
+                .andExpect(content().json(objectMapper.writeValueAsString(firstFilter)));
 
         mockMvc.perform(get(mapping + "/" + "invalidId"))
                 .andExpect(status().isNotFound());
@@ -93,7 +96,7 @@ public class AttendanceFilterControllerTests {
         mockMvc.perform(get(mapping + "/"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(allFilters.toArray())));
+                .andExpect(content().json(objectMapper.writeValueAsString(allFilters.toArray())));
     }
 
     @Test
@@ -103,7 +106,7 @@ public class AttendanceFilterControllerTests {
         mockMvc.perform(get(mapping + "/by-group/" + groupId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(filtersByGroup.toArray())));
+                .andExpect(content().json(objectMapper.writeValueAsString(filtersByGroup.toArray())));
 
         mockMvc.perform(get(mapping + "/by-group/" + "invalidId"))
                 .andExpect(status().isOk())
@@ -117,14 +120,14 @@ public class AttendanceFilterControllerTests {
 
         mockMvc.perform(post(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(firstFilter)))
+                .content(objectMapper.writeValueAsString(firstFilter)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(firstFilter)));
+                .andExpect(content().json(objectMapper.writeValueAsString(firstFilter)));
 
         mockMvc.perform(post(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(null)))
+                .content(objectMapper.writeValueAsString(null)))
                 .andExpect(status().isBadRequest());
     }
 

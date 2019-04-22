@@ -1,5 +1,6 @@
 package ru.nceduc.journal.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +27,6 @@ import java.util.UUID;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static sun.plugin2.util.PojoUtil.toJson;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(SectionController.class)
@@ -42,6 +42,9 @@ public class SectionControllerTests {
 
     @MockBean
     private ProjectService projectService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     private MockMvc mockMvc;
@@ -73,7 +76,7 @@ public class SectionControllerTests {
         mockMvc.perform(get(mapping + "/" + id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(englishSection)));
+                .andExpect(content().json(objectMapper.writeValueAsString(englishSection)));
 
         mockMvc.perform(get(mapping + "/" + "invalidId"))
                 .andExpect(status().isNotFound());
@@ -94,7 +97,7 @@ public class SectionControllerTests {
         mockMvc.perform(get(mapping + "/"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(sections.toArray())));
+                .andExpect(content().json(objectMapper.writeValueAsString(sections.toArray())));
     }
 
     @Test
@@ -105,7 +108,7 @@ public class SectionControllerTests {
         mockMvc.perform(get(mapping + "/by-project/" + id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(sections.toArray())));
+                .andExpect(content().json(objectMapper.writeValueAsString(sections.toArray())));
 
         mockMvc.perform(get(mapping + "/by-project/" + "invalidId"))
                 .andExpect(status().isOk())
@@ -120,14 +123,14 @@ public class SectionControllerTests {
 
         mockMvc.perform(post(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(englishSection)))
+                .content(objectMapper.writeValueAsString(englishSection)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(englishSection)));
+                .andExpect(content().json(objectMapper.writeValueAsString(englishSection)));
 
         mockMvc.perform(post(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(null)))
+                .content(objectMapper.writeValueAsString(null)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -137,14 +140,14 @@ public class SectionControllerTests {
 
         mockMvc.perform(put(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(englishSection)))
+                .content(objectMapper.writeValueAsString(englishSection)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(englishSection)));
+                .andExpect(content().json(objectMapper.writeValueAsString(englishSection)));
 
         mockMvc.perform(put(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(null)))
+                .content(objectMapper.writeValueAsString(null)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -154,14 +157,14 @@ public class SectionControllerTests {
 
         mockMvc.perform(patch(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(englishSection)))
+                .content(objectMapper.writeValueAsString(englishSection)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(englishSection)));
+                .andExpect(content().json(objectMapper.writeValueAsString(englishSection)));
 
         mockMvc.perform(patch(mapping + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(null)))
+                .content(objectMapper.writeValueAsString(null)))
                 .andExpect(status().isBadRequest());
     }
 

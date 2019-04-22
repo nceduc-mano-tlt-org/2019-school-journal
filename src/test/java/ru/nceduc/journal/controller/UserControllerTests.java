@@ -1,5 +1,6 @@
 package ru.nceduc.journal.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +29,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static sun.plugin2.util.PojoUtil.toJson;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(UserController.class)
@@ -43,6 +43,9 @@ public class UserControllerTests {
 
     @MockBean
     private AuthService authService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     private MockMvc mockMvc;
@@ -76,7 +79,7 @@ public class UserControllerTests {
         mockMvc.perform(get(mapping + "/"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(users.toArray())));
+                .andExpect(content().json(objectMapper.writeValueAsString(users.toArray())));
     }
 
     @Test
@@ -87,14 +90,14 @@ public class UserControllerTests {
 
         mockMvc.perform(post(mapping + "/signup/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(firstUser)))
+                .content(objectMapper.writeValueAsString(firstUser)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(toJson(firstUser)));
+                .andExpect(content().json(objectMapper.writeValueAsString(firstUser)));
 
         mockMvc.perform(post(mapping + "/signup/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(secondUser)))
+                .content(objectMapper.writeValueAsString(secondUser)))
                 .andExpect(status().isBadRequest());
 
     }
@@ -106,12 +109,12 @@ public class UserControllerTests {
 
         mockMvc.perform(post(mapping + "/signin/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(firstUser)))
+                .content(objectMapper.writeValueAsString(firstUser)))
                 .andExpect(status().isOk());
 
         mockMvc.perform(post(mapping + "/signin/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(secondUser)))
+                .content(objectMapper.writeValueAsString(secondUser)))
                 .andExpect(status().isForbidden());
     }
 }
