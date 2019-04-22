@@ -2,7 +2,8 @@ var vm = new Vue({
     el: '#app',
     data: {
         studentName: '',
-        userId: ''
+        userId: '',
+        groupId: ''
     },
     mounted() {
         this.showName();
@@ -21,7 +22,7 @@ var vm = new Vue({
                                 document.getElementById("show_group_name_in_tree").value = response.data.name;
                                 document.getElementById("hidden_group_id").href = '/group.html?group_id=' + response.data.id;
                                 document.getElementById("hidden_section_id").href = '/group.html?section_id=' + response.data.sectionId;
-
+                                this.groupId = response.data.id;
                                 axios.get('/api/v1/section/' + response.data.sectionId)
                                     .then(function (response) {
                                         document.getElementById("show_section_name_in_tree").value = response.data.name;
@@ -42,6 +43,47 @@ var vm = new Vue({
                         console.log(error);
                     });
             }
+        },
+        deposit: function (element) {
+            axios.put('/api/v1/payment/deposit/', {
+                studentId: new URL(window.location.href).searchParams.get("id"),
+                amount: document.getElementById("deposit_amount").value
+            })
+                .then(function (response) {
+                    if (response.status === 200) {
+                        $("#succesdeposit").click();
+                    }
+                })
+                .then(function () {
+                    document.getElementById("deposit_amount").value = '';
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        transfer: function (element) {
+            axios.get('/api/v1/student/' + new URL(window.location.href).searchParams.get("id"))
+                .then(response => {
+                    axios.post('/api/v1/payment/transfer/', {
+                        amount: document.getElementById("transfer_amount").value,
+                        groupId: response.data.groupId,
+                        studentId: new URL(window.location.href).searchParams.get("id")
+                    })
+                        .then(function (response) {
+                            if (response.status === 200) {
+                                $("#succestransfer").click();
+                            }
+                        })
+                        .then(function () {
+                            document.getElementById("transfer_amount").value = '';
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                            if (error.response.status === 400) {
+                                $("#notenoughtransfer").click();
+                            }
+                        });
+                });
         }
     }
 });
