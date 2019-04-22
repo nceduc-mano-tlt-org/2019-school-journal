@@ -14,6 +14,8 @@ var vm = new Vue({
             if (url.searchParams.get("id") !== '') {
                 axios.get('/api/v1/student/' + url.searchParams.get("id"))
                     .then(function (response) {
+                        document.getElementById("show_balance").value = response.data.walletBalance;
+
                         this.studentName = response.data.firstName + ' ' + response.data.lastName;
                         document.getElementById("show_student_name").value = this.studentName;
                         document.getElementById("show_student_name_in_tree").value = this.studentName;
@@ -56,6 +58,8 @@ var vm = new Vue({
                 })
                 .then(function () {
                     document.getElementById("deposit_amount").value = '';
+
+                    setTimeout(vm.showName(), 300);
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -76,6 +80,8 @@ var vm = new Vue({
                         })
                         .then(function () {
                             document.getElementById("transfer_amount").value = '';
+
+                            setTimeout(vm.showName(), 300);
                         })
                         .catch(function (error) {
                             console.log(error);
