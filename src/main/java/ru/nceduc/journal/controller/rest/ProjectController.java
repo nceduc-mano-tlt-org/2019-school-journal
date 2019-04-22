@@ -72,7 +72,7 @@ public class ProjectController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @ApiOperation(value = "Delete project")
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteGroup(@PathVariable String id) {
+    public ResponseEntity deleteProject(@PathVariable String id) {
         service.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
