@@ -13,6 +13,6 @@ public class StudentDTO {
     private String lastName;
     private String groupId;
     @ApiModelProperty(readOnly = true)
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM")
     private Date lastDate;
 }
