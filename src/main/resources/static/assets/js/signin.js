@@ -4,6 +4,15 @@ var vm = new Vue({
         user: []
     },
     methods: {
+        checkEmpty: function (element) {
+            let login = document.getElementById("input-username").value;
+            let pass = document.getElementById("input-password").value;
+            if (login === "" || pass === "") {
+                $("#checkempty").click();
+            } else {
+                this.signIn(element);
+            }
+        },
         signIn: function (element) {
             axios.post('/api/v1/user/signin/', {
                     username: document.getElementById("input-username").value,
@@ -13,12 +22,15 @@ var vm = new Vue({
                     console.log(response);
                     if (response.status === 200) {
                         window.location.href = "/project.html";
-                    } else {
-                        // TODO: make marker
                     }
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    if (error.response.status === 403) {
+                        document.getElementById("input-username").value = "";
+                        document.getElementById("input-password").value = "";
+
+                        $("#wrongpass").click();
+                    }
                 });
         }
     }

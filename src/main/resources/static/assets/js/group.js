@@ -21,7 +21,7 @@ Vue.component('group-list', {
         '  <div class="card-footer">\n' +
         '    <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditGroup(this)"  data-toggle="modal" id data-target="#editGroupModal">Manage group</button>\n' +
         '    <a :href="\'/group.html?group_id=\' + group.id" class="btn textc-white bgc-primary">Enter</a>\n' +
-        ' <button type="button" style="float: right" class="btn textc-white bgc-primary "onclick="vm.deleteGroup(this)">Delete</button>' +
+        ' <button class="btn textc-white bgc-primary" data-toggle="modal" style="float: right" data-target="#confirmDeleting" onclick="vm.openConfirmDeletion(this)">Delete</button>' +
         '  </div>\n' +
         '</div>'
 });
@@ -35,7 +35,7 @@ Vue.component('teacher-list', {
         '    <h6 class="d-none">Teacher Group Id : <b>{{teacher.groupId}}</b></h6>\n' +
         '    <h5 class="card-title">{{teacher.firstName}} {{teacher.lastName}}</h5>\n' +
         '    <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditTeacher(this)"  data-toggle="modal" id data-target="#editTeacherModal">Manage teacher</button>\n' +
-        ' <button type="button" style="float: right" class="btn textc-white bgc-primary "onclick="vm.deleteTeacher(this)">Delete</button>' +
+        ' <button class="btn textc-white bgc-primary" data-toggle="modal" style="float: right" data-target="#confirmDeletingTeacher" onclick="vm.openConfirmDeletion(this)">Delete</button>' +
         '  </div>\n' +
         '</div>'
 });
@@ -50,12 +50,12 @@ Vue.component('student-list', {
         '    <h5 class="card-title">{{student.firstName}} {{student.lastName}}</h5>\n' +
         '  </div>\n' +
         '  <div class="card-body">\n' +
-        '    <h5 class="card-info mb-2">Last date: </h5>{{student.lastDate}}' +
+        '    <h5 class="card-info mb-2">Paid to: </h5>{{student.lastDate}}' +
         '   </div>' +
         '  <div class="card-footer">\n' +
         '   <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditStudent(this)"  data-toggle="modal" id data-target="#editStudentModal">Manage student</button>\n' +
         '    <a :href="\'/student.html?id=\' + student.id" class="btn textc-white bgc-primary">Enter</a>\n' +
-        ' <button type="button" style="float: right" class="btn textc-white bgc-primary "onclick="vm.deleteStudent(this)">Delete</button>' +
+        ' <button class="btn textc-white bgc-primary" data-toggle="modal" style="float: right" data-target="#confirmDeletingStudent" onclick="vm.openConfirmDeletion(this)">Delete</button>' +
         '  </div>\n' +
         '</div>'
 });
@@ -66,6 +66,7 @@ var vm = new Vue({
         switcher: false,
         groupName: '',
         sectionName: '',
+        userId: '',
         groups: [],
         teachers: [],
         students: []
@@ -118,6 +119,8 @@ var vm = new Vue({
                     })
                     .then(function (){
                         document.getElementById("add_group_name").value = '';
+                        document.getElementById("add_group_cost").value = '';
+                        document.getElementById("add_group_start_date").value = '';
                         document.getElementById("add_group_description").value = '';
                     })
                     .catch(function (error) {
@@ -144,14 +147,15 @@ var vm = new Vue({
 
         },
         deleteGroup: function (element) {
-            var groupId = element.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
-            axios.delete('/api/v1/group/' + groupId, {})
+            axios.delete('/api/v1/group/' + document.getElementById("delete_entity_id").value, {})
                 .then(function (response) {
                     console.log(response);
                     setTimeout(vm.checkParams(), 300);
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    if (error.response.status === 500) {
+                        $("#notempty").click();
+                    }
                 });
 
         },
@@ -171,6 +175,13 @@ var vm = new Vue({
             document.getElementById("edit_group_description").value = groupDescription;
             document.getElementById("edit_group_section_id").value = groupSectionId;
         },
+        openConfirmDeletion: function(element){
+            document.getElementById("delete_entity_id").value = element.parentElement.parentNode
+                .getElementsByTagName("div")[0]
+                .getElementsByTagName("h6")[0]
+                .getElementsByTagName("b")[0]
+                .innerText;
+        },
         showGroupName: function () {
             var url = new URL(window.location.href);
             axios.get('/api/v1/group/' + url.searchParams.get("group_id"))
@@ -186,6 +197,11 @@ var vm = new Vue({
                             axios.get('/api/v1/project/current/')
                                 .then(function(response){
                                     document.getElementById("show_project_name_in_tree_1").value = response.data[0].name;
+                                    this.userId = response.data[0].userId;
+                                    axios.get('/api/v1/user/' + this.userId)
+                                        .then(function (response) {
+                                            document.getElementById("show_username").value = response.data.username;
+                                        })
                                 })
                         })
                 })
@@ -204,6 +220,11 @@ var vm = new Vue({
                     axios.get('/api/v1/project/current/')
                         .then(function(response){
                             document.getElementById("show_project_name_in_tree").value = response.data[0].name;
+                            this.userId = response.data[0].userId;
+                            axios.get('/api/v1/user/' + this.userId)
+                                .then(function (response) {
+                                    document.getElementById("show_username").value = response.data.username;
+                                })
                         })
                 })
                 .catch(function (error) {
@@ -267,8 +288,7 @@ var vm = new Vue({
             }
         },
         deleteTeacher: function (element) {
-            var teacherId = element.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
-            axios.delete('/api/v1/teacher/' + teacherId, {})
+            axios.delete('/api/v1/teacher/' + document.getElementById("delete_entity_id").value, {})
                 .then(function (response) {
                     console.log(response);
                     setTimeout(vm.checkParams(), 300);
@@ -330,8 +350,7 @@ var vm = new Vue({
             }
         },
         deleteStudent: function (element) {
-            var studentId = element.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
-            axios.delete('/api/v1/student/' + studentId, {})
+            axios.delete('/api/v1/student/' + document.getElementById("delete_entity_id").value, {})
                 .then(function (response) {
                     console.log(response);
                     setTimeout(vm.checkParams(), 300);
@@ -353,17 +372,5 @@ var vm = new Vue({
             document.getElementById("edit_student_last_name").value = studentLastName;
             document.getElementById("edit_student_group_id").value = studentGroupId;
         }
-
-        // loadAttendance: function (element) {
-        //         //     var url = new URL(window.location.href);
-        //         //     if (url.searchParams.get("group_id") !== '') {
-        //         //         axios
-        //         //             .get('api/v1/group/attendance', {
-        //         //                 url.searchParams.get("group_id")
-        //         //             })
-        //         //
-        //         // }
-
-
     }
 });

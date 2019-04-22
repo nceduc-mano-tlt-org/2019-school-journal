@@ -13,7 +13,44 @@
 </head>
 <body>
 <div id="app">
-
+    <div class="d-none" id="delete_entity_id"></div>
+    <div class="modal fade bd-example-modal-sm" id="confirmDeleting" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content p-4">
+                <div class="modal-body text-center">
+                    <h4 class="pb-3">Are you sure?</h4>
+                    <button type="button" class="btn btn-primary d-inline-block" data-dismiss="modal"
+                            onclick="vm.deleteSection(this)">
+                        Yes
+                    </button>
+                    <button type="button" class="btn btn-secondary d-inline-block"
+                            data-dismiss="modal">
+                        No
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertNotEmptyModal"
+            hidden="hidden" id="notempty">
+    </button>
+    <div class="modal fade bd-example-modal-sm" id="alertNotEmptyModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6>Error!</h6>
+                </div>
+                <div class="modal-body">
+                    Removal is not possible: This section is not empty
+                </div>
+                <div class="modal-footer">
+                    <div class="text-right">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Modal ADD-->
     <div class="modal fade" id="addSectionModal" tabindex="-1" role="dialog" aria-labelledby="addSectionModalTitle"
          aria-hidden="true">
@@ -40,7 +77,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="vm.addSection()">Add</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="vm.addSection()">Add
+                    </button>
                 </div>
             </div>
         </div>
@@ -74,7 +112,9 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="vm.editSection()">Save</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="vm.editSection()">
+                        Save
+                    </button>
                 </div>
             </div>
         </div>
@@ -89,7 +129,11 @@
                 </div>
                 <div class="col-md-5 pt-4"></div>
                 <div class="col-md-4 pt-4 textc-white text-right">
-                    <h5 class="textc-black d-inline-block pr-3">You are signed as: thirdmadman</h5>
+                    <h5 class="textc-black d-inline-block pr-3">You are signed as:
+                        <span class="badge badge-primary bgc-primary">
+                        <output id="show_username"></output>
+                        </span>
+                    </h5>
                     <a href="/logout" class="btn btn-signout d-inline-block">Sign out</a>
                 </div>
             </div>

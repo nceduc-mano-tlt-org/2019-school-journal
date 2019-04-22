@@ -17,16 +17,17 @@ Vue.component('section-list', {
         '  <div class="card-footer">\n' +
         '    <button type="button" class="btn textc-white bgc-primary" onClick="vm.openEditSection(this)"  data-toggle="modal" id data-target="#editSectionModal">Manage section</button>\n' +
         '    <a v-bind:href="\'/group.html?section_id=\' + section.id" class="btn textc-white bgc-primary">Enter</a>\n' +
-        ' <button type="button" style="float: right" class="btn textc-white bgc-primary "onclick="vm.deleteSection(this)">Delete</button>' +
+        '   <button class="btn textc-white bgc-primary" data-toggle="modal" style="float: right" data-target="#confirmDeleting" onclick="vm.openConfirmDeletion(this)">Delete</button>' +
         '  </div>\n' +
         '</div>'
 });
 
 
-var vm = new Vue({
+    var vm = new Vue({
     el: '#app',
     data: {
         projectName: '',
+        userId: '',
         sections: []
     },
     mounted() {
@@ -42,6 +43,11 @@ var vm = new Vue({
                         this.projectName = response.data[0].name;
                         document.getElementById("show_project_name").value = this.projectName;
                         document.getElementById("show_project_name_in_tree").value = this.projectName;
+                        this.userId = response.data[0].userId;
+                        axios.get('/api/v1/user/' + this.userId)
+                            .then(function (response) {
+                                document.getElementById("show_username").value = response.data.username;
+                            })
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -102,14 +108,15 @@ var vm = new Vue({
 
         },
         deleteSection: function (element) {
-            var sectionId = element.parentElement.parentNode.getElementsByTagName("div")[0].getElementsByTagName("h6")[0].getElementsByTagName("b")[0].innerText;
-            axios.delete('/api/v1/section/' + sectionId, {})
+            axios.delete('/api/v1/section/' + document.getElementById("delete_entity_id").value, {})
                 .then(function (response) {
                     console.log(response);
                     setTimeout(vm.loadSection(), 300);
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    if (error.response.status === 500) {
+                        $("#notempty").click();
+                    }
                 });
 
         },
@@ -124,7 +131,13 @@ var vm = new Vue({
             document.getElementById("edit_section_name").value = sectionName;
             document.getElementById("edit_section_description").value = sectionDescription;
             document.getElementById("edit_section_project_id").value = sectionProjectId;
-
+        },
+        openConfirmDeletion: function(element){
+            document.getElementById("delete_entity_id").value = element.parentElement.parentNode
+                .getElementsByTagName("div")[0]
+                .getElementsByTagName("h6")[0]
+                .getElementsByTagName("b")[0]
+                .innerText;
         }
     }
 });
