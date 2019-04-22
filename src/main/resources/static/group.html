@@ -140,7 +140,6 @@
                     <h5 class="modal-title" id="editGroupModalTitle">Manage group</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"
                             onclick="vm.checkParams()">
-                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
@@ -274,10 +273,10 @@
                             Add student
                         </button>
 
-                        <button type="button" class="btn textc-white bgc-primary" data-toggle="modal" id
-                                data-target="#attendanceModal">
-                            Students attendance
-                        </button>
+                        <!--<button type="button" class="btn textc-white bgc-primary" data-toggle="modal" id-->
+                                <!--data-target="#attendanceModal">-->
+                            <!--Students attendance-->
+                        <!--</button>-->
                     </h2>
                     <div class="row">
                         <div class="col-md-6">
@@ -418,67 +417,6 @@
                         <label for="edit_student_last_name">Student new lastname:</label>
                         <input type="text" class="form-control" id="edit_student_last_name">
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="vm.editStudent()">
-                        Save
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="attendanceModal" tabindex="-1" role="dialog" aria-labelledby="studentsAttendance"
-         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="studentsAttendance">Attendance</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                            onclick="vm.checkParams()">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">1.04.2019</th>
-                            <th scope="col">2.04.2019</th>
-                            <th scope="col">3.04.2019</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>
-                            <span class="badge badge-primary bgc-primary"><output
-                                    id="1">Alex Alex</output>
-                            </span>
-                            </td>
-                            <td>
-                            <span class="badge badge-primary bgc-primary"><output
-                                    id="2">Alex Alex</output>
-                            </span>
-                            </td>
-                            <td>
-                            <span class="badge badge-primary bgc-primary"><output
-                                    id="3">Alex Alex</output>
-                            </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                            </td>
-                            <td>
-                            </td>
-                            <td>
-                           <span class="badge badge-primary bgc-primary"><output
-                                   id="5">Alex Alex</output>
-                            </span>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="vm.editStudent()">
