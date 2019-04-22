@@ -31,15 +31,15 @@ public class PaymentController {
 
     @GetMapping("/by-student/{studentId}")
     @ApiOperation(value = "Get all payments by student id")
-    ResponseEntity<List<PaymentDTO>> getAll(@PathVariable String studentId) {
+    ResponseEntity<List<PaymentDTO>> getAllByStudent(@PathVariable String studentId) {
         return new ResponseEntity<>(paymentService.getAllByStudentId(studentId), HttpStatus.OK);
     }
 
     @PutMapping("/deposit/")
     @ApiOperation(value = "Add certain amount of money to the student's account")
-    ResponseEntity deposit(@RequestBody DepositDTO depositDTO) {
+    ResponseEntity<String> deposit(@RequestBody DepositDTO depositDTO) {
         HttpStatus httpStatus = paymentService.deposit(depositDTO) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
-        return new ResponseEntity(httpStatus);
+        return new ResponseEntity<>(" ", httpStatus);
     }
 
     @PutMapping("/withdraw/")

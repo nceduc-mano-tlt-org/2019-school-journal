@@ -10,9 +10,9 @@
     </parent>
     <groupId>ru.nceduc</groupId>
     <artifactId>journal</artifactId>
-    <version>0.3.1-SNAPSHOT</version>
+    <version>0.4.0-SNAPSHOT</version>
     <name>journal</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Teach'em all project</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -58,6 +58,13 @@
             <!--<artifactId>spring-boot-starter-thymeleaf</artifactId>-->
         <!--</dependency>-->
         <!-- For dev purposes -->
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>

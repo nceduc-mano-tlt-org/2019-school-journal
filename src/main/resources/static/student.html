@@ -42,12 +42,14 @@
                         </span>
                         </a>
                         <!--<input id="hidden_section_id" type="hidden" value="">-->
-                        <a id="hidden_project_id" href=""  class="list-group-item list-group-item-action bgc-white">Section name:
+                        <a id="hidden_project_id" href="" class="list-group-item list-group-item-action bgc-white">Section
+                            name:
                             <span class="badge badge-primary bgc-primary"><output
                                     id="show_section_name_in_tree"></output>
                         </span>
                         </a>
-                        <a id="hidden_section_id" href="" class="list-group-item list-group-item-action bgc-white">Group name:
+                        <a id="hidden_section_id" href="" class="list-group-item list-group-item-action bgc-white">Group
+                            name:
                             <span class="badge badge-primary bgc-primary"><output
                                     id="show_group_name_in_tree"></output>
                         </span>
@@ -56,7 +58,7 @@
                             <span class="badge badge-primary bgc-primary"><output
                                     id="show_student_name_in_tree"></output>
                             </span>
-                    </a>
+                        </a>
                     </div>
                 </div>
                 <div class="col-md-9 pt-3 textc-black">
@@ -64,6 +66,133 @@
                         <label for="show_student_name">Info about Student: </label>
                         <output id="show_student_name"></output>
                     </h2>
+
+                    <div class="textc-white">
+                        <button type="button" class="btn bgc-primary textc-white" data-toggle="modal"
+                                data-target="#depositModal">Deposit to the student's account
+                        </button>
+                        <br><br>
+                        <button type="button" class="btn bgc-primary textc-white" data-toggle="modal"
+                                data-target="#transferModal">Pay for group lessons
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="depositModal" tabindex="-1" role="dialog" aria-labelledby="depositModalTitle"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="depositModalTitle">Deposit money</h5>
+                </div>
+                <div class="modal-body">
+                    <form>
+
+                        <div class="form-group">
+                            <label for="deposit_amount">Amount:</label>
+                            <input type="number" class="form-control" id="deposit_amount">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onClick="vm.deposit(this)">
+                        Conduct
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="transferModal" tabindex="-1" role="dialog" aria-labelledby="transferModalTitle"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="transferModalTitle">Transfer money</h5>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="transfer_amount">Amount:</label>
+                            <input type="number" class="form-control" id="transfer_amount">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onClick="vm.transfer(this)">
+                        Conduct
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#succesfullDepositModal"
+            hidden="hidden" id="succesdeposit">
+    </button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#succesfullTransferModal"
+            hidden="hidden" id="succestransfer">
+    </button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#NotEnoughTransferModal"
+            hidden="hidden" id="notenoughtransfer">
+    </button>
+
+    <div class="modal fade bd-example-modal-sm" id="succesfullDepositModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6>Success!</h6>
+                </div>
+                <div class="modal-body">
+                    Successful deposit
+                </div>
+                <div class="modal-footer">
+                    <div class="text-right">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bd-example-modal-sm" id="succesfullTransferModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6>Success!</h6>
+                </div>
+                <div class="modal-body">
+                    Successful transfer
+                </div>
+                <div class="modal-footer">
+                    <div class="text-right">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bd-example-modal-sm" id="NotEnoughTransferModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6>Error!</h6>
+                </div>
+                <div class="modal-body">
+                    Transfer failed: insufficient funds
+                </div>
+                <div class="modal-footer">
+                    <div class="text-right">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
