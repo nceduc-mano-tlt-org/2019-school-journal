@@ -23,6 +23,7 @@ spring:
     driverClassName: org.h2.Driver
     username: admin
     password:
+    initialization-mode: never
   jpa:
     show-sql: true
     hibernate:
