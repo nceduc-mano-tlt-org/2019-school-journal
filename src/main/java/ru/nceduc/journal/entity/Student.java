@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.List;
 
 @Entity
@@ -20,7 +18,7 @@ public class Student extends Person {
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     private List<AttendanceStudent> attendanceStudentList;
 
-    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "student", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     private List<Payment> payments;
 
     @OneToOne(mappedBy = "student", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
